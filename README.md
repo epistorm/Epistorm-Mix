@@ -7,15 +7,15 @@ The **Observatory of US Contact Patterns** contains post-COVID-19 pandemic conta
 # Citation
 The preprint describing the data collection and estimation of the contact matrices is available [here](). To reference our work, please use the following citation: 
 
-@article{XXX,<br/> author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani, Alessandro and Ajelli, Marco},
-        title = {The Post-Pandemic Contact Landscape in the United States: Implications for Respiratory Pathogen Transmission},
-        elocation-id = {},
-        year = {2025},
-        doi = {},
-        publisher = {},
-        URL = {},
-        eprint = {},
-        journal = {}   
+@article{XXX,<br/> author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani, Alessandro and Ajelli, Marco},<br/>
+        title = {The Post-Pandemic Contact Landscape in the United States: Implications for Respiratory Pathogen Transmission},<br/>
+        elocation-id = {},<br/>
+        year = {2025},<br/>
+        doi = {},<br/>
+        publisher = {},<br/>
+        URL = {},<br/>
+        eprint = {},<br/>
+        journal = {}<br/>   
 }
 
 # License
