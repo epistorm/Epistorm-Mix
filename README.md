@@ -24,7 +24,7 @@ INSERT CODE FOR EXAMPLE
 ### Tutorials
 We provide a series of totorials to help you get started with the Observatory of US Contact Patterns. 
 - [Tutorial 1](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/tutorials/1_Imputing_missing_data): Imputing missing data
-- [Tutorial 2](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/tutorials/2_Constructing_contact_matrices): Constructing contact matrices
+- [Tutorial 2](): Constructing contact matrices
 - [Tutorial 3](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/tutorials/3_Modeling_with_contact_matrices): Modeling with contact matrices
 
 
