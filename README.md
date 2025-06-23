@@ -15,8 +15,7 @@ The preprint describing the data collection and estimation of the contact matric
         publisher = {},<br/>
         URL = {},<br/>
         eprint = {},<br/>
-        journal = {}<br/>   
-}
+        journal = {}<br/>}
 
 # License
 This project is licensed under the GPL-3.0 License. See the [LICENSE](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/LICENSE) file for more details.
