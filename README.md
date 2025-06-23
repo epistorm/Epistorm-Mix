@@ -6,6 +6,9 @@ The **Observatory of US Contact Patterns** contains post-COVID-19 pandemic conta
 
 
 ## Downloads
+[Contact patterns data](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/data)<br/>
+[Contact matrices](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/matrices)<br/>
+[Code]()
 
 
 ## Quick Start
