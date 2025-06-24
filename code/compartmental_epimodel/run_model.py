@@ -463,7 +463,6 @@ def run_single_simulation(i_sim: int, params: Params, data: Data):
         initial_infec_num = params.model_initial_infec  # -()- Number
     elif params.model_initial_mode == "fraction":
         initial_infec_num = int(round(total_pop * params.model_initial_infec_fraction))  # -()- Fraction
-        print(f"WATCH: {initial_infec_num=}")
     else:
         raise ValueError(f"Invalid value: {params.model_initial_mode}")
 
