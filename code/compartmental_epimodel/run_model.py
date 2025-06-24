@@ -64,7 +64,6 @@ class Params:
     model_beta: float   # Per-contact transmission rate
     model_gamma: float  # Recovery/removal rate
 
-
     def __init__(self):
         # Parameters with default values (optional from the input file)
         # ===========================
@@ -99,7 +98,7 @@ class Params:
         self.summary_file_basename: str = "summary.yaml"
         self.simulations_summary_file_basename: str = "simulations_summary.csv"
 
-    def preprocess(self):
+    def preprocess(self, args):
         """This function is called once after the parameters were read
         from the input file.
         """
@@ -111,6 +110,10 @@ class Params:
         for key in self.__dict__.keys():
             if key.endswith("_fpath"):
                 setattr(self, key, Path(getattr(self, key)))
+
+        # --- Override some parameters with arguments
+        if args.export is not None:
+            self.do_export = args.export
 
 
 class Data:
@@ -196,8 +199,9 @@ def get_arg_parser() -> argparse.ArgumentParser:
 
     # --- Optional flags
     parser.add_argument(  # Example. Retrieve as `optional_arg`
-        "--optional-arg", type=str,
-        help="Example of optional argument. Default value on `Params`. ",
+        "--export", type=bool, action=argparse.BooleanOptionalAction,
+        help="Whether to produce any output files. Use `--no-export` to "
+             "suppress outputs. By default, outputs are exported.",
     )
 
     return parser
@@ -280,7 +284,7 @@ def import_and_preprocess_params(args, params: Params, data: Data):
     # data.input_dict = input_dict  # Use this to keep the input_dict
 
     # --- Preprocessing
-    params.preprocess()
+    params.preprocess(args)
 
 
 def import_and_preprocess_program_data(params: Params, data: Data):
