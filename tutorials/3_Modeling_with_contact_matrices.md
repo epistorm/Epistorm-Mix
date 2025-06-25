@@ -19,7 +19,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-## Working with contact matrices
+## Loading the necessary data
 
 For simple transmission models, we need at least two data elements: a population distribution by age and a contact matrix. 
 
@@ -130,7 +130,7 @@ agg_df = df.groupby("age_group_label", observed=False).agg(
 
 # Recompute the distribution as normalized counts
 agg_df["distribution"] = agg_df["n_indiv"] / agg_df["n_indiv"].sum()
-agg_df["age_min"] = age_groups_array  # Add the column with the lower bound of each age group
+agg_df["age_min"] = age_groups  # Add the column with the lower bound of each age group
 
 # Update the distribution df so it contains age group information
 age_distribution_df = df.set_index("age")
@@ -165,16 +165,17 @@ Let's first define the arrays that will keep information on the status of the mo
 
 ```python
 # Define structures and initialize simulation
-S = np.zeros((nsteps_max + 1, num_ages), dtype=int)
-I = np.zeros((nsteps_max + 1, num_ages), dtype=int)
-R = np.zeros((nsteps_max + 1, num_ages), dtype=int)
-incidence = np.zeros((nsteps_max + 1, num_ages), dtype=int)
+S = np.zeros((n_steps + 1, num_ages), dtype=int)
+I = np.zeros((n_steps + 1, num_ages), dtype=int)
+R = np.zeros((n_steps + 1, num_ages), dtype=int)
+incidence = np.zeros((n_steps + 1, num_ages), dtype=int)
 ```
 
 Where `S`, `I` and `R` are arrays containing the numbers of susceptible, infectious and removed individuals, respectively. They are all 2D arrays with the first index representing time steps and the second index the age of individuals. 
 
 
-Next, let's initialize a random number generator (RNG) with numpy.
+Next, let's initialize a random number generator (RNG) with numpy. 
+You can set the seed to any integer number. 
 
 ```python
 # Setup a random number generator
@@ -187,7 +188,7 @@ Now we need to set the initial conditions of the system. As a simple approach, w
 
 ```python
 # First define all individuals as susceptible
-S[0] = age_counts_array  
+S[0] = n_indiv_array  
 
 # Then set the infectious fraction
 initial_infec_num = int(round(total_pop * initial_infec_fraction)) 
@@ -223,6 +224,8 @@ Translating this equation into our code, we get:
     p_inf = p_inf_grp[age_to_group]  # Broadcast back to ages
 ```
 
+
+
 where `p_inf_grp` is the infection probability vector indexed by age groups, and `p_inf` is the infection probability vector by indivdual ages. 
 
 With the infection probability calculated for each age, we can proceed to calculating the transitions between compartments using random numbers. This can be done with the following code:
@@ -251,7 +254,7 @@ The next procedure is to calculate the numbers of susceptible, infectious and re
 Finally and optionally, we shorten the simulation loop by breaking it if there are no remaining infectious individuals. In this case, we also fill the remaining positions of the status vectors `S`, `I` and `R` with latest values.
 
 ```python
-    # === Apply Stop condition Here
+    # Apply stop condition
     if I[i_step + 1].sum() == 0:
         # Fill remaining
         S[i_step + 2:] = S[i_step + 1]
@@ -286,6 +289,8 @@ ax.set_ylabel("Normalized Infection Incidence")
 fig.show()
 ```
 
+![](figures/fig_compartmental_incidence.png)
+
 We can also plot the attack rate by for each age:
 
 ```python
@@ -298,7 +303,11 @@ ax.set_ylabel("Attack rate")
 fig.show()
 ```
 
+![](figures/fig_compartmental_atk_rate.png)
 
+### Full code
+
+You can check the full code for this tutorial here: [tutorial_code.py](/code/compartmental_epimodel/tutorial_code.py) 
 
 ## Using age-stratified contact matrices in an agent-based models
 
