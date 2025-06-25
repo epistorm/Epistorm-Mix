@@ -146,6 +146,7 @@ Before anything, let's define some model and simulation parameters, along with s
 dt = 1.0  # Length of the time step, in days
 beta = 0.090  # Per-contact transmission risk
 gamma = 0.333  # Rate of removal from the infectious compartment
+n_steps = 800  # Number of steps of the model
 initial_infec_fraction = 1.E-5  # Fraction to start as infectious
 initial_infec_age = 45  # Age of initial infections
 total_pop = age_distribution_df["n_indiv"].sum()  # Total number of individuals
@@ -154,9 +155,8 @@ num_ages = age_distribution_df.shape[0]  # Number of ages accounted in the distr
 # Etc
 cmat = contact_matrix_df.to_numpy()  # For use with other numpy arrays
 age_to_group = age_distribution_df["age_group_index"].to_numpy()  # Array to convert from age to age group index
+n_indiv_array = age_groups_distribution_df["n_indiv"].to_numpy()  # Population distribution as a numpy arrray 
 ```
-
-This leaves us ready to implement the dynamic rules of our compartmental model.
 
 ### Model Initialization 
 
@@ -193,6 +193,74 @@ initial_infec_num = int(round(total_pop * initial_infec_fraction))
 I[0, initial_infec_age] = initial_infec_num
 S[0, initial_infec_age] -= initial_infec_num
 ```
+
+This leaves us ready to implement the dynamic rules of our compartmental model.
+
+
+### Model simulation
+
+The simulation consists in repeating the model rules for multiple time steps. Thus, all code in this function must be placed inside a for loop like this:
+
+```python
+for i_step in range(n_steps):
+    # ....
+```
+
+At each iteration, the first task is to calculate the probability of infection of a susceptible individual given its age. Remind that we design the model such that _respondents_ get the infection from their _contacts_. The probability of infection $p_a(t)$ of an individual belonging to age group $a$ at time $t$ is calculated as:
+
+$$p_a(t) = \beta \cdot \Delta t \cdot \sum_{b} M_{ab} \cdot \frac{I_b(t)}{N_b}$$
+
+where $\beta$ is the per-contact transmission risk, $\Delta t$ is the length of the time step, $M_{ab}$ is the contact matrix element for respondent age $a$ and contact age $b$, $I_b(t) / N_b$ is the infection prevalence at age group $b$, with $I_b(t)$ being the number of infectious individuals at age group $b$ and time $t$ and $N_b$ being the number of individuals at age group $b$. 
+
+Translating this equation into our code, we get:  
+
+```python
+    # Force of infection (p_inf) for each age group
+    prevalence = np.bincount(age_to_group, weights=I[i_step]) / n_indiv_array  # Fraction of infectious by age group
+    lambda_t = beta * (cmat @ prevalence)  # By age group. Implements the formula above.
+    p_inf_grp = np.clip(lambda_t * dt, 0, 1)
+    p_inf = p_inf_grp[age_to_group]  # Broadcast back to ages
+```
+
+where `p_inf_grp` is the infection probability vector indexed by age groups, and `p_inf` is the infection probability vector by indivdual ages. 
+
+With the infection probability calculated for each age, we can proceed to calculating the transitions between compartments using random numbers. This can be done with the following code:
+
+```python
+    # New infections: Binomial(S, p_inf Δt)
+    new_infections = rng.binomial(S[i_step], p_inf)
+    incidence[i_step] = new_infections
+
+    # New removals: Binomial(I, γ Δt)
+    p_rem = np.clip(gamma * dt, 0, 1)
+    new_removals = rng.binomial(I[i_step], p_rem)
+```
+
+Notice that we store the number of new infections in the 2D array `incidence`, which will be useful for visualization and post-processing. 
+
+The next procedure is to calculate the numbers of susceptible, infectious and removed individuals by updating the current values with the random numbers calculated above:
+
+```python
+    # Update compartments for the next time step
+    S[i_step + 1] = S[i_step] - new_infections
+    I[i_step + 1] = I[i_step] + new_infections - new_removals
+    R[i_step + 1] = R[i_step] + new_removals
+```
+
+Finally and optionally, we shorten the simulation loop by breaking it if there are no remaining infectious individuals. In this case, we also fill the remaining positions of the status vectors `S`, `I` and `R` with latest values.
+
+```python
+    # === Apply Stop condition Here
+    if I[i_step + 1].sum() == 0:
+        # Fill remaining
+        S[i_step + 2:] = S[i_step + 1]
+        I[i_step + 2:] = I[i_step + 1]
+        R[i_step + 2:] = R[i_step + 1]
+        break
+```
+
+This defines a closed simulation loop, in which the rules of a compartmental, stochastic and age-structured SIR model are applied.
+
 
 
 [TODO REMOVE]
