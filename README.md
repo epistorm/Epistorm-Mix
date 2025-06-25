@@ -6,9 +6,9 @@ The **Observatory of US Contact Patterns** contains post-COVID-19 pandemic conta
 
 
 ## Downloads
-[Contact patterns data](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/data)<br/>
-[Contact matrices](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/matrices)<br/>
-[Code](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/code)
+[Contact patterns data](/data)<br/>
+[Contact matrices](/matrices)<br/>
+[Code](/code)
 
 
 ## Quick Start
@@ -23,9 +23,9 @@ INSERT CODE FOR EXAMPLE
 
 ### Tutorials
 We provide a series of totorials to help you get started with the Observatory of US Contact Patterns. 
-- [Tutorial 1](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/tutorials/1_Imputing_missing_data): Imputing missing data
-- [Tutorial 2](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/tutorials/2_Constructing_contact_matrices): Constructing contact matrices
-- [Tutorial 3](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/tutorials/3_Modeling_with_contact_matrices): Modeling with contact matrices
+- [Tutorial 1](/tutorials/1_Imputing_missing_data.md): Imputing missing data
+- [Tutorial 2](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
+- [Tutorial 3](/tutorials/3_Modeling_with_contact_matrices.md): Modeling with contact matrices
 
 
 ## Citation
@@ -47,7 +47,7 @@ The preprint describing the data collection and estimation of the contact matric
 
 
 ## License
-This project is licensed under the GPL-3.0 License. See the [LICENSE](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/blob/main/LICENSE) file for more details.
+This project is licensed under the GPL-3.0 License. See the [LICENSE](/LICENSE) file for more details.
 
 
 ## Contact
