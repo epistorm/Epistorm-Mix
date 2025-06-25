@@ -1,12 +1,9 @@
-# Using contact matrices for Epidemiological Modeling
+# Using contact matrices for Compartmental Epidemiological Modeling
 
-In this tutorial, we will explore how to use demographically stratified contact matrices estimated using contact patterns data to model the spread of respiratory infectious diseases. We will take a practical approach by demonstrating how to download the contact matrices, integrate them with various epidemiological models, and run simulations. 
+In this tutorial, we will explore how to use demographically stratified contact matrices estimated using contact patterns data to simulate an epidemic using a compartmental model with age-structured contacts. Here, we show an example using a simple *Susceptible Infectious Removed* (SIR) model. 
 
-Let's start by ...
+[//]: # (Todo later: improve introdoction)
 
-```python
-INSERT CODE
-```
 
 ## Requirements for this tutorial
 
@@ -137,8 +134,8 @@ age_distribution_df = df.set_index("age")
 ```
 
 
-## Using age-stratified contact matrices in a compartmental model
-Now that we have imported a contact matrix and have both aggregated and year-wise population distributions, we can simulate an epidemic using a compartmental model with age-structured contacts. Here, we show an example using a simple *Susceptible Infectious Removed* (SIR) model. In this example, we will run a single simulation, but you may wish to run simulations in a loop with a different random state every iteration to obtain multiple independent executions.  
+## Using the age-stratified contact matrices in a compartmental model
+Now that we have imported a contact matrix and have both aggregated and year-wise population distributions, we can use them into a compartmental transmission model. In this example, we will run a single simulation, but you may wish to run simulations in a loop with a different random state every iteration to obtain multiple independent executions.  
 
 Before anything, let's define some model and simulation parameters, along with some useful data structures:
 
@@ -305,12 +302,6 @@ fig.show()
 
 ![](figures/fig_compartmental_atk_rate.png)
 
-### Full code
+## Full code
 
 You can check the full code for this tutorial here: [tutorial_code.py](/code/compartmental_epimodel/tutorial_code.py) 
-
-## Using age-stratified contact matrices in an agent-based models
-
-```
-INSERT CODE
-```
