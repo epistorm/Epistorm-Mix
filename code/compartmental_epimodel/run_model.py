@@ -162,10 +162,6 @@ def main(params: Params, data: Data, argv: list[str] = None):
     # Import from input file
     import_and_preprocess_params(args, params, data)
 
-    # # Main operations
-    # # (check imported parameters. You can erase the line below)
-    # print(f"Your parameters are: \n{params.__dict__}")
-
     # ------
     import_and_preprocess_program_data(params, data)
     run_simulations(params, data)
@@ -474,7 +470,7 @@ def run_single_simulation(i_sim: int, params: Params, data: Data):
     # =========================
     loop_xt0 = time.time()
 
-    i_step = 0
+    i_step = 0  # This ensures it is defined after the loop.
     for i_step in range(params.model_nsteps_max):
         t = i_step * dt
 
