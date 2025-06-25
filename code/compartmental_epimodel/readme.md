@@ -10,7 +10,7 @@ the contact patterns data.
 ## Create and activate a python environment
 
 > NOTICE: These instructions are valid for a Unix system (Linux, MacOS) 
-> and might need to be adapted for use with Windows.
+> and might need to be adapted for using with Windows.
 
 If you have this repository cloned, open a terminal and move to this 
 directory (this is, the subdirectory `code/compartmental_epimodel`).
