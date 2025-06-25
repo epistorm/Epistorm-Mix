@@ -16,6 +16,7 @@ Imports:
 ```python
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 ```
 
 ## Working with contact matrices
@@ -262,17 +263,42 @@ Finally and optionally, we shorten the simulation loop by breaking it if there a
 This defines a closed simulation loop, in which the rules of a compartmental, stochastic and age-structured SIR model are applied.
 
 
+### Post-processing and visualization
 
-[TODO REMOVE]
+After the simulation loop ends, we can extract useful information from the status arrays, `S`, `I`, `R`, and the `incidence` array. For example, we can calculate the infection incidence among all ages, the infection attack rate by age (this is, the fraction of people at each age that was infected at some point of the outbreak), and the average attack rate: 
+
 ```python
-# create a simple SIR model
-
-# incorporate contact matrix
-
-# simulate an epidemic
-
-#plot results
+overall_incidence = incidence.sum(axis=1)  # Infection incidence over time for all ages
+attack_rate_array = R[-1] / n_indiv_array  # Infected fraction by age. We can use R here because immunity does not wane.
+avg_attack_rate = R[-1].sum() / total_pop  # Fraction of the entire population that was infected at some point.
 ```
+
+We can use a `matpltlib` plot to visualize the incidence over time, normalized by the total population:
+
+```python
+fig, ax = plt.subplots()
+
+t_array = dt * np.arange(incidence.shape[0])  # Create array of time
+ax.plot(t_array, incidence / total_pop)
+ax.set_xlabel("Time (days)")
+ax.set_ylabel("Normalized Infection Incidence")
+
+fig.show()
+```
+
+We can also plot the attack rate by for each age:
+
+```python
+fig, ax = plt.subplots()
+
+ax.plot(age_distribution_df.index, attack_rate_array)
+ax.set_xlabel("Age")
+ax.set_ylabel("Attack rate")
+
+fig.show()
+```
+
+
 
 ## Using age-stratified contact matrices in an agent-based models
 
