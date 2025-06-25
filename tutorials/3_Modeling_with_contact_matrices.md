@@ -160,7 +160,7 @@ n_indiv_array = age_groups_distribution_df["n_indiv"].to_numpy()  # Population d
 
 ### Model Initialization 
 
-Let's first define the arrays that will keep information on the status of the model at each time step and for each age. Notice that we simulate each age individually $(0, 1, 2, ..., \text{max_age - 1})$, although information on contacts is stratified into age groups.
+Let's first define the arrays that will keep information on the status of the model at each time step and for each age. Notice that we simulate each age individually $(0, 1, 2, ..., \text{numages - 1})$, although information on contacts is stratified into age groups.
 
 ```python
 # Define structures and initialize simulation
