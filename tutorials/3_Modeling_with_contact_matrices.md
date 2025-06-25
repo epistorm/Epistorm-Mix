@@ -136,19 +136,66 @@ age_distribution_df = df.set_index("age")
 ```
 
 
-## Using age-stratified contact matrices in compartmental models
-Now that we have imported a contact matrix and have both aggregated and year-wise population distributions, we can simulate an epidemic using a compartmental model with age-structured contacts. Here, we show an example using a simple *Susceptible Infectious Removed* (SIR) model. 
+## Using age-stratified contact matrices in a compartmental model
+Now that we have imported a contact matrix and have both aggregated and year-wise population distributions, we can simulate an epidemic using a compartmental model with age-structured contacts. Here, we show an example using a simple *Susceptible Infectious Removed* (SIR) model. In this example, we will run a single simulation, but you may wish to run simulations in a loop with a different random state every iteration to obtain multiple independent executions.  
 
-Let's start by defining some parameters for the model and the simulation:
+Before anything, let's define some model and simulation parameters, along with some useful data structures:
 
 ```python
+# Parameters
 dt = 1.0  # Length of the time step, in days
 beta = 0.090  # Per-contact transmission risk
 gamma = 0.333  # Rate of removal from the infectious compartment
-total_pop = data.age_distribution_df["n_indiv"].sum()  # Total number of individuals
+initial_infec_fraction = 1.E-5  # Fraction to start as infectious
+initial_infec_age = 45  # Age of initial infections
+total_pop = age_distribution_df["n_indiv"].sum()  # Total number of individuals
+num_ages = age_distribution_df.shape[0]  # Number of ages accounted in the distribution
 
+# Etc
+cmat = contact_matrix_df.to_numpy()  # For use with other numpy arrays
+age_to_group = age_distribution_df["age_group_index"].to_numpy()  # Array to convert from age to age group index
 ```
 
+This leaves us ready to implement the dynamic rules of our compartmental model.
+
+### Model Initialization 
+
+Let's first define the arrays that will keep information on the status of the model at each time step and for each age. Notice that we simulate each age individually $(0, 1, 2, ..., \text{max_age - 1})$, although information on contacts is stratified into age groups.
+
+```python
+# Define structures and initialize simulation
+S = np.zeros((nsteps_max + 1, num_ages), dtype=int)
+I = np.zeros((nsteps_max + 1, num_ages), dtype=int)
+R = np.zeros((nsteps_max + 1, num_ages), dtype=int)
+incidence = np.zeros((nsteps_max + 1, num_ages), dtype=int)
+```
+
+Where `S`, `I` and `R` are arrays containing the numbers of susceptible, infectious and removed individuals, respectively. They are all 2D arrays with the first index representing time steps and the second index the age of individuals. 
+
+
+Next, let's initialize a random number generator (RNG) with numpy.
+
+```python
+# Setup a random number generator
+seed = 42
+#seed = seed + i_sim  # If running a loop of simulations, uncomment this to change the seed every iteration 
+rng = np.random.default_rng(seed)
+```
+
+Now we need to set the initial conditions of the system. As a simple approach, we can impose a given fraction of the population to start as infectious, attributing all initial infections to a single age. If the fraction is small enough, this should not affect the dynamic of outbreak and its final results. 
+
+```python
+# First define all individuals as susceptible
+S[0] = age_counts_array  
+
+# Then set the infectious fraction
+initial_infec_num = int(round(total_pop * initial_infec_fraction)) 
+I[0, initial_infec_age] = initial_infec_num
+S[0, initial_infec_age] -= initial_infec_num
+```
+
+
+[TODO REMOVE]
 ```python
 # create a simple SIR model
 
