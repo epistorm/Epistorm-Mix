@@ -1,19 +1,31 @@
 # Using contact matrices for Compartmental Epidemiological Modeling
 
-In this tutorial, we will explore how to use demographically stratified contact matrices estimated using contact patterns data to simulate an epidemic using a compartmental model with age-structured contacts. Here, we show an example using a simple *Susceptible Infectious Removed* (SIR) model. 
+In this tutorial, we will explore how to use the contact matrices estimated using contact patterns data to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
 
-[//]: # (Todo later: improve introdoction)
+> For an agent-based formulation, please check [this tutorial](4_Agent_based_modeling_with_contact_matrices.md).
 
 
-## Requirements for this tutorial
+## Requirements
 
-[TODO]
+This tutorial is presented with code examples in [python](https://www.python.org/), but the sequence of steps would be similar in other high-level languages like [R](https://www.r-project.org/) or [julia](https://julialang.org/). In any case, it assumes some familiarity with a programming language.   
 
-Imports:
+In the code examples, we directly use the following python packages:
+
+- [`numpy`](https://numpy.org/) for efficient numeric operations with vectors and matrices.
+- [`pandas`](https://pandas.pydata.org/) for working with indexed data frames and series objects.
+- [`matplotlib`](https://matplotlib.org/) for visualizing results.
+
+The code was tested with a python interpreter version 3.9.6, numpy 2.0.2, pandas 2.2.3 and matplotlib 3.9.4. Having a python interpreter with `pip`, you can install these packages and all its dependencies by running the following line on a terminal:
+
+```shell
+pip install numpy pandas matplotlib
+```
+
+In a `.py` python code file or `.ipynb` jupyter notebook, you can import these libraries using:
 ```python
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 ```
 
 ## Loading the necessary data
@@ -44,7 +56,7 @@ age_structure_fpath = "example_age_structure.csv"
 age_distribution_df = pd.read_csv(age_structure_fpath, index_col="age")
 ```
 
-Where we use the `age` colum for indexing rows of the data frame. 
+Where we use the `age` colum for indexing rows of the data frame, and the `n_indiv` column to represent the number of individuals having each age in the population. 
 
 
 ### Loading a contact matrix
@@ -91,7 +103,7 @@ First, let's define the age groups as an array containing the first age of each 
 age_groups = np.array([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80])
 ```
 
-Which reads as follows: the first age group goes from 0 to 4 years, the second ranges from 5 to 9, the third from 10 to 14, and so on. The last age group starts at 80 and represnts all ages 80 and older.
+Which reads as follows: the first age group goes from 0 to 4 years, the second ranges from 5 to 9, the third from 10 to 14, and so on. The last age group starts at 80 and represnts all ages 80 and older. Notice that, by manually defining the array of age groups, the definition must match that of the contact matrix. 
 
 Then, we aggregate the age distribution by:
 
