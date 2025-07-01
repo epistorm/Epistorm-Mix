@@ -24,9 +24,10 @@ INSERT CODE FOR EXAMPLE
 ### Tutorials
 We provide a series of totorials to help you get started with the Observatory of US Contact Patterns. 
 - [Tutorial 1](/tutorials/1_Imputing_missing_data.md): Imputing missing data
-- [Tutorial 2](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
-- [Tutorial 3](/tutorials/3_Compartmental_modeling_with_contact_matrices.md): Modeling with contact matrices (compartmental formulation)
-- [Tutorial 4](/tutorials/4_Agent_based_modeling_with_contact_matrices.md): Modeling with contact matrices (agent-based formulation)
+- [Tutorial 2](): Accessing/extracting data 
+- [Tutorial 3](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
+- [Tutorial 4](/tutorials/3_Compartmental_modeling_with_contact_matrices.md): Modeling with contact matrices (compartmental formulation)
+
 
 
 ## Citation
