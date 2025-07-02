@@ -2,8 +2,6 @@
 
 In this tutorial, we will explore how to use the contact matrices estimated using contact patterns data to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
 
-> For an agent-based formulation, please check [this tutorial](4_Agent_based_modeling_with_contact_matrices.md).
-
 
 ## Requirements
 
