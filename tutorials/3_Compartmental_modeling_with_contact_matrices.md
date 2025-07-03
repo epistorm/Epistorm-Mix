@@ -1,6 +1,6 @@
 # Using contact matrices for Compartmental Epidemiological Modeling
 
-In this tutorial, we will explore how to use the contact matrices estimated using contact patterns data to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
+In this tutorial, we will explore how to use the age-specific contact matrices estimated using contact patterns data ([Tutorial 2](tutorials/2_Constructing_contact_matrices.md)) to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
 
 
 ## Requirements
@@ -28,11 +28,11 @@ import pandas as pd
 
 ## Loading the necessary data
 
-For simple transmission models, we need at least two data elements: a population distribution by age and a contact matrix. 
+For simple transmission models, we need at least two data elements: a population distribution by age and an age-specific contact matrix. 
 
 ### Loading the population distribution by age
 
-Here we will assume that we have a distribution with one-year resolution, 
+Here, we will assume that we have a distribution with one-year resolution, 
 meaning that we know the number of individuals with 0 years old, 1 years old, 2 years old, and so on until the last age considered, for example, 99+ years or older. 
 Such population distribution can be represented as a csv file like this 
 (full example [here](/code/compartmental_epimodel/data/age_distributions/singleyr-age-dist.csv)):
