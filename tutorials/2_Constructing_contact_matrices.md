@@ -62,8 +62,9 @@ cont_imp = read.csv("imputed-contacts-common.csv")
 Documentation describing the variables of both contact patterns datasets are available [here]().
 
 
-## Estimating sinlge-year age-specific contact matrices 
-Before we can create the contact matrices, we need to combine the respondent- and contact-level data into a single dataset. 
+## Estimating age-specific contact matrices 
+### Preparing the dataset for analysis
+Before we can create the contact matrices, we need to combine the respondent- and contact-level data into a single dataset, and we do this using a `left_join` function from the `dplyr` package. 
 ```R
 combined_df = left_join(resp_imp, cont_imp, by = "part_id")
 ```
@@ -98,7 +99,8 @@ combined_df$part_age[which(combined_df$part_age >= 85 &
 combined_df$cnt_age[which(combined_df$cnt_age > 90)] = 83
 combined_df$part_age[which(combined_df$part_age > 90)] = 83
 ```
-To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by estimating the sum of the weights for all participants of a given age. 
+### Estimating the number of contacts between single-year respondent-contact age groups
+To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by using a `group-by` to group the respondent and estimate the mean of the weights to obtain the weight of the single respondent, and then we use `group_by` to group all respondents of a given age group and sum their weights to obtain the number of respondents of a given age. 
 ```R
 age_matrix_n = combined_df %>%
   group_by(part_age, part_id) %>%
@@ -107,14 +109,14 @@ age_matrix_n = combined_df %>%
   summarise(n = sum(weight, na.rm = TRUE))
 ```
 
-Then, we need to supply a dataframe containing the ages to include in our matrix for both the participants and contacts. We do that by: 
+Then, we used `expand.grid` to create a dataframe containing the ages to include in our matrix for both the participants and contacts: 
 ```R
 nd = expand.grid(part_age = c(0:max(combined_df$part_age)),
                  cnt_age = c(0:max(combined_df$part_age)))
 
 predict.m = as.data.frame(nd)
 ```
-Now, we are ready to estimate the age-specific contact matrices. For this tutorial, we will estimate the matrix for contacts in the household. The first step requires that we estimate the weighted sum of contacts by the respondent-contact age group. (Example: the weighted sum of contacts between respondents ages 0-4 years old with contacts ages 0-4 years old). Here, we assume that `NA` is equivalent to a weighted sum of 0. Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
+Then, we estimate the weighted sum of contacts by the respondent-contact age group. (Example: the weighted sum of contacts between respondents ages 0-4 years old with contacts ages 0-4 years old). Here, we assume that `NA` is equivalent to a weighted sum of 0. Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
 ```R
 # obtain the weighted sum of contacts per respondent-contact group
   age_matrix = combined_df %>%
@@ -139,7 +141,9 @@ Now, we are ready to estimate the age-specific contact matrices. For this tutori
   age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
   
 ```
-Once we have the average number of contacts, we fit a generalized additive model (GAM) with a log link to the data where the average number of contacts is the dependent variable and the respodents age and the contacts age are the independent variables. This allows us to capture non-linear realtionships between the respondent-contact age groups and the number of contacts they have. In the GAM, we also consider different smoothing procedures based on the setting of the contact. For contacts in workplaces, we use a thin plate regression spline which allows more flexibility in modeling complex non-linear relationships, such as those with workplace contacts. For contacts in other settings, we use a cyclic cubic smoothing spline as this method assumes the contacts to be continous and smooth across age groups. The GAM for contacts in the workplace is formulated as:
+### Using generalized additive models to predict contacts
+Once we have the average number of contacts, we fit a generalized additive model (GAM) with a log link to the data where the average number of contacts is the dependent variable and the respodents age and the contacts age are the independent variables. We do this using the `gam ` function from the library `mgc`. Using a GAM allows us to capture non-linear realtionships between the respondent-contact age groups and the number of contacts they have. In the GAM, we also consider different smoothing procedures based on the setting of the contact, which were implemented using the function `te`. For contacts in workplaces, we use a thin plate regression spline which allows more flexibility in modeling complex non-linear relationships, such as those with workplace contacts. For contacts in other settings, we use a cyclic cubic smoothing spline as this method assumes the contacts to be continous and smooth across age groups. 
+The GAM for contacts in the workplace is formulated as:
 
 To continue with estimating contacts in the household, the GAM is formulated as: 
 ```R
@@ -162,3 +166,58 @@ Then, we predict the number of contacts by respondent-contact age group
 ```
 
 ### Visualizing the contact matrix
+To visualize the age-specific household contact matrix, we plot the predicted average number of contacts by respondent-contact age using the `geom_raster` function where the x-axis is the age of the respondent and the y-axis is the age of the contact. Using the `scale_fill_gradient` function, we specify the colors to use to fill the plot, and the order of the colors indicates that as the numbers increase, the gradient moves toward "white". The code below shows the specification of plot.
+
+```R
+age_plot = ggplot(age_matrix) +
+    geom_raster(aes(x = part_age, y = cnt_age, fill = pred), interpolate = TRUE) +
+    ggtitle("Setting: Household") + # Main title
+    xlab("Respondent Age") + # X-axis title
+    ylab("Contact Age") + # Y-axis title
+    scale_fill_gradientn(colors = c("#005f87", "#87afd7"), "white"),
+                         values = c(0, 0.4, 1),
+                         name = "") + # Legend title
+    scale_y_continuous(breaks = c(0,20,40,60,80)) +
+    scale_x_continuous(breaks = c(0,20,40,60,80)) +
+    coord_fixed(ratio = 1) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          plot.title = element_text(hjust = 0.5, size = 16),
+          axis.title = element_text(size = 12),
+          axis.text = element_text(size = 10),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_rect(fill = "transparent", color = "black"),
+          plot.background = element_rect(fill = "transparent", color = NA)
+
+age_plot
+```
+![household-CM](https://github.com/user-attachments/assets/61ee6a64-8c29-4c6e-8738-924eb15dcc79)
+
+### Estimating the number of contacts between 5-year respondent-contact age groups
+Many times, you will opt for creating contact matrices using age groups rather than single-year ages. For the remainder of this tutorial, we will create the age-specific household contact matrix using 5-year age groups. 
+
+To do this, we need to specify the age groups for both the respondents and their contacts.
+```R
+age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120))
+
+
+for(i in 1:length(age.breaks)){
+  resp_imp[, paste0("part_age", names(age.breaks)[i])] = cut(resp_imp$part_age, 
+                                                             breaks = age.breaks[[i]],
+                                                             right = F)
+  
+  cont_imp[, paste0("cnt_age", names(age.breaks)[i])] = cut(cont_imp$cnt_age, 
+                                                            breaks = age.breaks[[i]],
+                                                            right = F)
+}
+```
+Respondent specific weights, weighted sum of contacts between respondent-contact age groups, and estimating the average number of contacts between groups follows the same procedures shown previously. For this example, we will reference these average contacts by age groups as `age.matrix.by5`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to predict contacts as we do not need to smooth the estimates.  After `age.matrix.by5` is obtained, we will use the `pivot_wider` function to convert this into a matrix by respondent-contact age groups. 
+```R
+ matrix_age = age.matrix.by5 %>% 
+    select("part_age_by5_80", "cnt_age_by5_80", "ncont") %>% 
+    pivot_wider(names_from = "cnt_age_by5_80", values_from = "ncont")
+```
+The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3]() to demonstrate how contact matrices can be used in compartmental models. 
+
+## Full code
+You can check the full code for this tutorial here: [tutorial_code.r](tutorials/3_Compartmental_modeling_with_contact_matrices.md)
