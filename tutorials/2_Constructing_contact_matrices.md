@@ -114,14 +114,14 @@ nd = expand.grid(part_age = c(0:max(combined_df$part_age)),
 
 predict.m = as.data.frame(nd)
 ```
-Now, we are ready to estimate the age-specific contact matrices. The first step requires that we estimate the weighted sum of contacts by the respondent-contact age group. (Example: the weighted sum of contacts between respondents ages 0-4 years old with contacts ages 0-4 years old). Here, we assume that `NA` is equivalent to a weighted sum of 0. Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
+Now, we are ready to estimate the age-specific contact matrices. For this tutorial, we will estimate the matrix for contacts in the household. The first step requires that we estimate the weighted sum of contacts by the respondent-contact age group. (Example: the weighted sum of contacts between respondents ages 0-4 years old with contacts ages 0-4 years old). Here, we assume that `NA` is equivalent to a weighted sum of 0. Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
 ```R
 # obtain the weighted sum of contacts per respondent-contact group
   age_matrix = combined_df %>%
     filter(!is.na(!!sym("cnt_age"))) %>%
     arrange(!!sym("cnt_age")) %>%
     group_by(!!sym("cnt_age"), !!sym("part_age")) %>%
-    summarise(weighted_sum = sum(weight*!!sym(setting), na.rm = T))
+    summarise(weighted_sum = sum(weight*!!sym("cnt_home"), na.rm = T))
   
   # combine weighted sum with the data for predictions
   age_matrix = left_join(predict.m, age_matrix)
@@ -138,6 +138,27 @@ Now, we are ready to estimate the age-specific contact matrices. The first step 
   # average number of contacts for the matrix
   age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
   
-
-  age_matrix$age_diff = as.numeric(age_matrix$part_age) - as.numeric(age_matrix$cnt_age)
 ```
+Once we have the average number of contacts, we fit a generalized additive model (GAM) with a log link to the data where the average number of contacts is the dependent variable and the respodents age and the contacts age are the independent variables. This allows us to capture non-linear realtionships between the respondent-contact age groups and the number of contacts they have. In the GAM, we also consider different smoothing procedures based on the setting of the contact. For contacts in workplaces, we use a thin plate regression spline which allows more flexibility in modeling complex non-linear relationships, such as those with workplace contacts. For contacts in other settings, we use a cyclic cubic smoothing spline as this method assumes the contacts to be continous and smooth across age groups. The GAM for contacts in the workplace is formulated as:
+
+To continue with estimating contacts in the household, the GAM is formulated as: 
+```R
+model = gam(ncont ~ te(as.numeric(part_age), as.numeric(cnt_age),
+                        k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
+                family = nb(),
+                data = age_matrix)
+```
+That model would also be used for estimating contacts in schools and other settings. To estimate contacts in the workplace, the GAM would need to be formulated as: 
+```R
+model = gam(ncont ~ te(as.numeric(part_age), as.numeric(cnt_age),
+                        k = c(4,4), bs = c("tp","tp"), m = c(0,0)),
+                family = nb(),
+                data = age_matrix)
+```
+
+Then, we predict the number of contacts by respondent-contact age group
+```R
+ age_matrix$pred = predict(model, newdata = age_matrix, type = "response")
+```
+
+### Visualizing the contact matrix
