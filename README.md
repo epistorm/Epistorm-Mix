@@ -1,4 +1,4 @@
-# Observatory of US Contact Patterns
+# Epistorm-Mix: Mapping Social Contact Patterns in the Post-Pandemic United States
 
 [**Documentation**]() | [**Website**]() | [**Tutorials**](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/tutorials) 
 
