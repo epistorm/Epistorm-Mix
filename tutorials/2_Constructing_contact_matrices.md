@@ -217,7 +217,41 @@ Respondent specific weights, weighted sum of contacts between respondent-contact
     select("part_age_by5_80", "cnt_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cnt_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3]() to demonstrate how contact matrices can be used in compartmental models. 
+The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](tutorials/3_Compartmental_modeling_with_contact_matrices.md) to demonstrate how contact matrices can be used in compartmental models. 
 
-## Full code
-You can check the full code for this tutorial here: [tutorial_code.r](tutorials/3_Compartmental_modeling_with_contact_matrices.md)
+### Using `socialmixr` to estimate 5-year age-specific contact matrices
+Alternatively, contact matrices can be estimated using the `contact_matrix` function in the `socialmixr` R package. Once you have loaded the data from Zenodo following the example in [Tutorial 1](tutorials/1_Accessing_and_extracting_data.md), we can estimate the contact matrices following the syntax below:
+```R
+contacts = contact_matrix(epistorm_mix,  age.limits = seq(0, 80, by = 5))
+```
+This function produces a two-element list. The first element is the 5-year age-specific contact matrix: 
+```R
+contacts$matrix
+
+#               contact.age.group
+# age.group     [0,5)    [5,10)   [10,15)   [15,20)   [20,25)   [25,30)   [30,35)   [35,40)   [40,45)   [45,50)   [50,55)   [55,60)
+# [0,5)   
+# [5,10) 
+# [10,15) 
+# [15,20) 
+# [20,25)
+# [25,30) 
+...
+```
+The second element is a dataframe containing the frequency and proportion of participation by 5-year age group:
+```R
+contacts$participants
+
+#       age.group   participants  proportion
+#       <char>      <int>         <num>
+# 1:      [0,5)          
+# 2:     [5,10)         
+# 3:    [10,15)          
+# 4:    [15,20)          
+# 5:    [20,25)          
+# 6:    [25,30)          
+...      
+```
+
+### Full code
+You can check out the full code for this tutorial here: [tutorial_code.r](tutorials/3_Compartmental_modeling_with_contact_matrices.md)
