@@ -254,4 +254,4 @@ contacts$participants
 ```
 
 ### Full code
-You can check out the full code for this tutorial here: [tutorial_code.r](code/contact_matrices/tutoral_code.r)
+You can check out the full code for this tutorial here: [tutorial_code.r](../code/contact_matrices/tutoral_code.r)
