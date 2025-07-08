@@ -2,7 +2,7 @@
 In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 3](tutorials/3_Compartmental_modeling_with_contact_matrices.md).  
 
 ## Requirements
-This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming language. 
+This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages. 
 
 In the code examples, we directly use the following R packages: 
 - [`dplyr`](https://cran.r-project.org/web/packages/dplyr/) for efficient operations with dataframes.
