@@ -11,8 +11,6 @@ In this tutorial, we will be using the following R packages:
 
 
 ## Accessing data through `github` 
-- Brief explanation of data on github
-
 ### Downloading the data
 To download the data files from `github`, go to the data folder of the `github` repository by clicking [here](https://github.com/allisandrak/Epistorm-Mix/tree/main/data). Within this folder, click on the file you want to download for analysis. Then, press the download button at the top right-hand side of the file, as shown below:
 
@@ -48,7 +46,9 @@ resp_imp = read.csv(resp.url)
 
 
 ## Accessing data through Zenodo
-- Brief explanation of Zenodo social contact patterns
-### Downloading
+[Zenodo](https://zenodo.org/) is an open-source data repository built and developed by reasearchers that allows researchers to share and access data. Inside Zenodo, there is a section specifically for [contact patterns data](https://zenodo.org/communities/social_contact_data/records?q=&l=list&p=1&s=10&sort=newest) where data collected from social contact surveys conducted all over the world, including our [Epistorm-Mix data](), are available.
+
+### Downloading the data
+###
 ### R package socialmixr
 
