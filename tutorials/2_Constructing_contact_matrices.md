@@ -1,5 +1,5 @@
 # Estimating age-specific contact matrices 
-In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 3](tutorials/3_Compartmental_modeling_with_contact_matrices.md).  
+In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 3](../tutorials/3_Compartmental_modeling_with_contact_matrices.md).  
 
 ## Requirements
 This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages. 
@@ -22,7 +22,7 @@ lapply(c("dplyr", "mgcv", "ggplot2", "tidyr"), function(x){
 ## Loading the necessary data
 To estimate age-specific contact matrices, we need at least two data elements: respondent-level contact patterns data and contact-level contact patterns data.
 
-These contact patterns data can be imported into the program by either using the `socialmixr` R package or reading a file. Accessing and extracting contact patterns data using these two methods are described in [Tutorial 1](tutorials/1_Accessing_and_extracting_data.md).
+These contact patterns data can be imported into the program by either using the `socialmixr` R package or reading a file. Accessing and extracting contact patterns data using these two methods are described in [Tutorial 1](../tutorials/1_Accessing_and_extracting_data.md).
 
 In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code. The respondent-level contact patterns data should be formatted as follows:
 
@@ -217,10 +217,10 @@ Respondent specific weights, weighted sum of contacts between respondent-contact
     select("part_age_by5_80", "cnt_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cnt_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](tutorials/3_Compartmental_modeling_with_contact_matrices.md) to demonstrate how contact matrices can be used in compartmental models. 
+The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](../tutorials/3_Compartmental_modeling_with_contact_matrices.md) to demonstrate how contact matrices can be used in compartmental models. 
 
 ### Using `socialmixr` to estimate 5-year age-specific contact matrices
-Alternatively, contact matrices can be estimated using the `contact_matrix` function in the `socialmixr` R package. Once you have loaded the data from Zenodo following the example in [Tutorial 1](tutorials/1_Accessing_and_extracting_data.md), we can estimate the contact matrices following the syntax below:
+Alternatively, contact matrices can be estimated using the `contact_matrix` function in the `socialmixr` R package. Once you have loaded the data from Zenodo following the example in [Tutorial 1](../tutorials/1_Accessing_and_extracting_data.md), we can estimate the contact matrices following the syntax below:
 ```R
 contacts = contact_matrix(epistorm_mix,  age.limits = seq(0, 80, by = 5))
 ```
