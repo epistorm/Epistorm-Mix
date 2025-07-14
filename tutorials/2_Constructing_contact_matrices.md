@@ -22,7 +22,7 @@ lapply(c("dplyr", "mgcv", "ggplot2", "tidyr"), function(x){
 ## Loading the necessary data
 To estimate age-specific contact matrices, we need at least two data elements: respondent-level contact patterns data and contact-level contact patterns data.
 
-These contact patterns data can be imported into the program by either using the `socialmixr` R package or reading a file. Accessing and extracting contact patterns data using these two methods are described in [Tutorial 1](../tutorials/1_Accessing_and_extracting_data.md).
+These contact patterns data can be imported into the program by reading the url of a raw file from github, extracting the data from Zenodo using the `socialmixr` R package, or reading a downloaded file. Accessing and extracting contact patterns data using these methods are described in [Tutorial 1](../tutorials/1_Accessing_and_extracting_data.md).
 
 In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code. The respondent-level contact patterns data should be formatted as follows:
 
