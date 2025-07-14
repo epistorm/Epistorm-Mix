@@ -26,17 +26,7 @@ These contact patterns data can be imported into the program by reading the url 
 
 In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code. The respondent-level contact patterns data should be formatted as follows:
 
-```csv
-part_id	part_age	part_gender	part_educator	weight
-163925	67	Female	No	1.201913059
-210129	64	Male	No	0.747552347
-218353	52	Female	No	1.075171403
-269795	54	Male	No	1.344802089
-325231	15	Male	No	0.948429747
-344409	3	Female	No	0.434861996
-
-...
-```
+<img width="486" height="351" alt="Screenshot 2025-07-14 at 4 09 49 PM" src="https://github.com/user-attachments/assets/209b5e90-c9ea-41c6-94b0-c00361868926" />
 
 and can be loaded by: 
 ```R
@@ -44,16 +34,8 @@ resp_imp = read.csv("imputed-resp-common.csv")
 ```
 
 The contact-level patterns data should be formatted as: 
-```csv
-part_id	cont_id	cnt_age	cnt_setting	cnt_ethn	  cnt_gender	cnt_relationship	                    cnt_home	cnt_other	cnt_school	cnt_work
-163925	1066	  80	    Household	  NH White	  Male	      Person [My Child Lives/I Live] With	  TRUE	    FALSE	    FALSE	      FALSE
-163925	1067	  25	    Other	      NH White	  Female	    Other	                                FALSE	    TRUE	    FALSE	      FALSE
-210129	1652	  70	    Household	  NH Other	  Female	    Person [My Child Lives/I Live] With	  TRUE	    FALSE	    FALSE	      FALSE
-210129	1653	  60	    Work	      NH Other	  Male	      Work Colleague	                      FALSE	    FALSE	    FALSE	      TRUE
-210129	1654	  80	    Work	      NH White    Female	    Work Colleague	                      FALSE	    FALSE	    FALSE	      TRUE
-210129	1655	  31	    Other	      NH Black	  Female	    Other	                                FALSE	    TRUE	    FALSE	      FALSE
-...
-```
+
+<img width="839" height="203" alt="Screenshot 2025-07-14 at 4 11 13 PM" src="https://github.com/user-attachments/assets/1330f449-e180-46ad-af88-e028aacd5ab7" />
 
 and can be loaded into the program by:
 ```R
