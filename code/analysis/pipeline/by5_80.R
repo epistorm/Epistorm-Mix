@@ -4,7 +4,6 @@ ca.var = c("cont_age_by5_80", "cont_age_by5_75")
   
 # define folders to save results
 csv.dir = paste0(output.dir, "csv/by5/")
-# pdf.dir = paste0(output.dir, "by5_80/")
 
 for (age in 1:length(ra.var)) {
 
@@ -50,14 +49,6 @@ for (age in 1:length(ra.var)) {
                    setting = setting,
                    predict.m = predict.m,
                    denumer.n = age_matrix_n)
-    
-    ##### troubleshoot school outlier ######
-    # idx.40 = which(merged.df$resp_age_by5_80 == "40-44")
-    # idx.15 = which(merged.df$cont_age_by5_80 == "15-19")
-    # idx.sc = which(merged.df$cont_setting == "School")
-    # idx.outlier = intersect(idx.40, idx.15)
-    # idx.outlier = intersect(idx.outlier, idx.sc)
-    # View(merged.df[idx.outlier,])
     
     # add setting identifier
     m$setting = setting
