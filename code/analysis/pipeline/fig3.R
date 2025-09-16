@@ -1,7 +1,3 @@
-# ## additional directory for assortativity values
-# # assort.dir = "./Epistorm-survey/papers/US_POLYMOD/SUPPMAT/assortativity/"
-# assort.dir = "./papers/US_POLYMOD/SUPPMAT/assortativity/"
-
 # levels
 ethn_cols <- c("White, Non-Hispanic",
                "Hispanic/Latino",
