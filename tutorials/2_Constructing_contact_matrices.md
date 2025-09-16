@@ -1,5 +1,5 @@
 # Estimating age-specific contact matrices 
-In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 3](../tutorials/3_Compartmental_modeling_with_contact_matrices.md).  
+In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 2](../tutorials/2_Compartmental_modeling_with_contact_matrices.md).  
 
 ## Requirements
 This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages. 
@@ -22,15 +22,13 @@ lapply(c("dplyr", "mgcv", "ggplot2", "tidyr"), function(x){
 ## Loading the necessary data
 To estimate age-specific contact matrices, we need at least two data elements: respondent-level contact patterns data and contact-level contact patterns data.
 
-These contact patterns data can be imported into the program by reading the url of a raw file from github, extracting the data from Zenodo using the `socialmixr` R package, or reading a downloaded file. Accessing and extracting contact patterns data using these methods are described in [Tutorial 1](../tutorials/1_Accessing_and_extracting_data.md).
-
 In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code. The respondent-level contact patterns data should be formatted as follows:
 
 <img width="486" height="351" alt="Screenshot 2025-07-14 at 4 09 49 PM" src="https://github.com/user-attachments/assets/209b5e90-c9ea-41c6-94b0-c00361868926" />
 
 and can be loaded by: 
 ```R
-resp_imp = read.csv("imputed-resp-common.csv")
+resp_imp = read.csv("imputed-resp2.csv")
 ```
 
 The contact-level patterns data should be formatted as: 
@@ -39,7 +37,7 @@ The contact-level patterns data should be formatted as:
 
 and can be loaded into the program by:
 ```R
-cont_imp = read.csv("imputed-contacts-common.csv")
+cont_imp = read.csv("imputed-contacts2.csv")
 ```
 Documentation describing the variables of both contact patterns datasets are available [here]().
 
@@ -48,53 +46,49 @@ Documentation describing the variables of both contact patterns datasets are ava
 ### Preparing the dataset for analysis
 Before we can create the contact matrices, we need to combine the respondent- and contact-level data into a single dataset, and we do this using a `left_join` function from the `dplyr` package. 
 ```R
-combined_df = left_join(resp_imp, cont_imp, by = "part_id")
+merged_df = left_join(resp_imp, cont_imp, by = "resp_id")
 ```
-We also need to do a little preprocessing. In this analysis, we assume that contacts that are described as "Student" to respondents who have indicated that they work in a profession where they work with or around children are had in the school setting. We adjust the `cnt_school` variable to reflect this:
-```R
-idx.students = which(combined_df$cnt_relationship == "Student" &
-                       combined_df$part_educator == "Yes")
+We also need to do a little preprocessing. In this analysis, we assume that contacts that are described as "Student" to respondents who have indicated that they work in a profession where they work with or around children are had in the school setting. We adjust the setting variable to reflect this:
 
-combined_df$cnt_school[idx.students] = TRUE
+```R
+idx.students = which(merged.df$cont_relationship == "Student" &
+                       merged.df$resp_industry == "Education, Tutoring, and Child Care")
+merged.df$cont_setting[idx.students] = "School"
 ```
 Then, we create a new binary variable that indicates whether or not a respondent reported contacts, where `0` = no  and `1` = yes.
 ```R
-cnt_setting = c("cnt_home", "cnt_school", "cnt_work", "cnt_other")
-cont_cols = which(colnames(combined_df) %in% cnt_setting)
-
-nocont = rowSums(!is.na(combined_df[, cont_cols])) == 0
-combined_df$binary_col = ifelse(nocont, 0, 1)
+cont_cols = grep("^cont_", colnames(merged.df), value = TRUE)
+nocont = rowSums(!is.na(merged.df[, cont_cols])) == 0
+merged.df$binary_col = ifelse(nocont, 0, 1)
 ```
 
 For visualization purposes, we recode the ages of contacts and respondents that are 80 years and older as follows:
 ```R
-combined_df$cnt_age[which(combined_df$cnt_age >= 80 &
-                             combined_df$cnt_age < 85)] = 81
-combined_df$part_age[which(combined_df$part_age >= 80 &
-                             combined_df$part_age < 85)] = 81
-
-combined_df$cnt_age[which(combined_df$cnt_age >= 85 &
-                             combined_df$cnt_age < 90)] = 82
-combined_df$part_age[which(combined_df$part_age >= 85 &
-                             combined_df$part_age < 90)] = 82
-
-combined_df$cnt_age[which(combined_df$cnt_age > 90)] = 83
-combined_df$part_age[which(combined_df$part_age > 90)] = 83
+merged.df$cont_age_plot[which(merged.df$cont_age_plot >= 80 &
+                             merged.df$cont_age_plot < 85)] = 81
+merged.df$resp_age_plot[which(merged.df$resp_age_plot >= 80 &
+                             merged.df$resp_age_plot < 85)] = 81
+merged.df$cont_age_plot[which(merged.df$cont_age_plot >= 85 &
+                             merged.df$cont_age_plot < 90)] = 82
+merged.df$resp_age_plot[which(merged.df$resp_age_plot >= 85 &
+                             merged.df$resp_age_plot < 90)] = 82
+merged.df$cont_age_plot[which(merged.df$cont_age_plot > 90)] = 83
+merged.df$resp_age_plot[which(merged.df$resp_age_plot > 90)] = 83
 ```
 ### Estimating the number of contacts between single-year respondent-contact age groups
 To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by using a `group-by` to group the respondent and estimate the mean of the weights to obtain the weight of the single respondent, and then we use `group_by` to group all respondents of a given age group and sum their weights to obtain the number of respondents of a given age. 
 ```R
-age_matrix_n = combined_df %>%
-  group_by(part_age, part_id) %>%
+age_matrix_n = merged_df %>%
+  group_by(resp_age, resp_id) %>%
   summarise(weight = mean(weight, na.rm = TRUE)) %>%
-  group_by(part_age) %>%
+  group_by(resp_age) %>%
   summarise(n = sum(weight, na.rm = TRUE))
 ```
 
 Then, we used `expand.grid` to create a dataframe containing the ages to include in our matrix for both the participants and contacts: 
 ```R
-nd = expand.grid(part_age = c(0:max(combined_df$part_age)),
-                 cnt_age = c(0:max(combined_df$part_age)))
+nd = expand.grid(resp_age = c(0:max(merged_df$resp_age)),
+                 cont_age = c(0:max(merged_df$resp_age)))
 
 predict.m = as.data.frame(nd)
 ```
@@ -102,10 +96,10 @@ Then, we estimate the weighted sum of contacts by the respondent-contact age gro
 ```R
 # obtain the weighted sum of contacts per respondent-contact group
   age_matrix = combined_df %>%
-    filter(!is.na(!!sym("cnt_age"))) %>%
-    arrange(!!sym("cnt_age")) %>%
-    group_by(!!sym("cnt_age"), !!sym("part_age")) %>%
-    summarise(weighted_sum = sum(weight*!!sym("cnt_home"), na.rm = T))
+    filter(!is.na(!!sym("cont_age"))) %>%
+    arrange(!!sym("cont_age")) %>%
+    group_by(!!sym("cont_age"), !!sym("resp_age")) %>%
+    summarise(weighted_sum = sum(weight*!!sym("hh_col"), na.rm = T))
   
   # combine weighted sum with the data for predictions
   age_matrix = left_join(predict.m, age_matrix)
@@ -152,7 +146,7 @@ To visualize the age-specific household contact matrix, we plot the predicted av
 
 ```R
 age_plot = ggplot(age_matrix) +
-    geom_raster(aes(x = part_age, y = cnt_age, fill = pred), interpolate = TRUE) +
+    geom_raster(aes(x = resp_age, y = cont_age, fill = pred), interpolate = TRUE) +
     ggtitle("Setting: Household") + # Main title
     xlab("Respondent Age") + # X-axis title
     ylab("Contact Age") + # Y-axis title
@@ -181,59 +175,23 @@ Many times, you will opt for creating contact matrices using age groups rather t
 To do this, we need to specify the age groups for both the respondents and their contacts.
 ```R
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120))
+age.vars.names = c("_by5_80")
 
+sum.res3 = create.age.groups(sum.res3, input.var = "resp_age", # resp age
+                             break.list = age.vars.breaks,
+                             suff.list = age.vars.names)
+merged.df = create.age.groups(merged.df, input.var = "cont_age", # contact age
+                              break.list = age.vars.breaks,
+                              suff.list = age.vars.names)
 
-for(i in 1:length(age.breaks)){
-  resp_imp[, paste0("part_age", names(age.breaks)[i])] = cut(resp_imp$part_age, 
-                                                             breaks = age.breaks[[i]],
-                                                             right = F)
-  
-  cont_imp[, paste0("cnt_age", names(age.breaks)[i])] = cut(cont_imp$cnt_age, 
-                                                            breaks = age.breaks[[i]],
-                                                            right = F)
-}
 ```
 Respondent specific weights, weighted sum of contacts between respondent-contact age groups, and estimating the average number of contacts between groups follows the same procedures shown previously. For this example, we will reference these average contacts by age groups as `age.matrix.by5`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to predict contacts as we do not need to smooth the estimates.  After `age.matrix.by5` is obtained, we will use the `pivot_wider` function to convert this into a matrix by respondent-contact age groups. 
 ```R
  matrix_age = age.matrix.by5 %>% 
-    select("part_age_by5_80", "cnt_age_by5_80", "ncont") %>% 
-    pivot_wider(names_from = "cnt_age_by5_80", values_from = "ncont")
+    select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
+    pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](../tutorials/3_Compartmental_modeling_with_contact_matrices.md) to demonstrate how contact matrices can be used in compartmental models. 
-
-### Using `socialmixr` to estimate 5-year age-specific contact matrices
-Alternatively, contact matrices can be estimated using the `contact_matrix` function in the `socialmixr` R package. Once you have loaded the data from Zenodo following the example in [Tutorial 1](../tutorials/1_Accessing_and_extracting_data.md), we can estimate the contact matrices following the syntax below:
-```R
-contacts = contact_matrix(epistorm_mix,  age.limits = seq(0, 80, by = 5))
-```
-This function produces a two-element list. The first element is the 5-year age-specific contact matrix: 
-```R
-contacts$matrix
-
-#               contact.age.group
-# age.group     [0,5)    [5,10)   [10,15)   [15,20)   [20,25)   [25,30)   [30,35)   [35,40)   [40,45)   [45,50)   [50,55)   [55,60)
-# [0,5)   
-# [5,10) 
-# [10,15) 
-# [15,20) 
-# [20,25)
-# [25,30) 
-...
-```
-The second element is a dataframe containing the frequency and proportion of participation by 5-year age group:
-```R
-contacts$participants
-
-#       age.group   participants  proportion
-#       <char>      <int>         <num>
-# 1:      [0,5)          
-# 2:     [5,10)         
-# 3:    [10,15)          
-# 4:    [15,20)          
-# 5:    [20,25)          
-# 6:    [25,30)          
-...      
-```
+The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 2](../tutorials/2_Compartmental_modeling_with_contact_matrices.md) to demonstrate how contact matrices can be used in compartmental models. 
 
 ### Full code
 You can check out the full code for this tutorial here: [tutorial_code.r](../code/contact_matrices/tutoral_code.r)
