@@ -1,12 +1,9 @@
 ## Define output directories - ADD
 csv.dir = paste0(output.dir, "csv/freq/")
-# output.dir = paste0(output.dir, "freq/")
 
 ### choose the age group to calculate the matrix 
 ra.var = "resp_age_by5_75"
 ca.var = "cont_age_by5_75"
-# merged.df$respag = merged.df$resp_age_by5_80
-# merged.df$contag = merged.df$cont_age_by5_80
 
 # ### in case single-year matrices are needed instead - uncomment the code below
 # #### Single Year by Setting ####
@@ -115,7 +112,6 @@ freq_m = lapply(1:length(f_ij), function(m){
   return(long_df)
   
 })
-# unc.m$Household[,-1]/rowSums(unc.m$Household[,-1])
 
 names(freq_m) = names(f_ij)
 matrix_plots <- lapply(seq_along(freq_m), function(setting) {
