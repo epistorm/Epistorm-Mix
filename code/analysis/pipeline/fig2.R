@@ -1,7 +1,3 @@
-## additional directory for assortativity values
-# assort.dir = "./Epistorm-survey/papers/US_POLYMOD/SUPPMAT/assortativity/"
-assort.dir = "./papers/US_POLYMOD/SUPPMAT/assortativity/"
-
 # levels
 ethn_cols <- c("White, Non-Hispanic", "Hispanic/Latino",
                "Black, Non-Hispanic",
@@ -134,7 +130,7 @@ assort.values <- lapply(names(race_matrix_ls), function(i) { #setting
 })
 names(assort.values) = names(race_matrix_ls)
 assort.val.df1 = do.call(rbind, assort.values)
-write.csv(assort.val.df1, paste0(assort.dir, "race-assort.csv"))
+write.csv(assort.val.df1, paste0(output.dir, "csv/race/race-assort.csv"))
 
 
 
