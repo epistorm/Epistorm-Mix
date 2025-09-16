@@ -1,5 +1,5 @@
 ## define dir
-ext.data.dir = "./external_data/mistry-data/"
+ext.data.dir = "./data/external_data/mistry-data/"
 
 ## define age groups
 age.vars.breaks = list(c(0,5,12,18,30,40,50,60,70,120),
