@@ -16,12 +16,8 @@ files_imp = list.files(path = imp.dir,
                        full.names = T)
 
 ## merge the contact data with respondent data
-
-#### PATCH ####
 sum.res2 = rename(sum.res2, resp_id = caseid)
 merged_result = left_join(merged.df, sum.res2, by = "resp_id")
-# merged_result = merged_result %>%
-#   mutate(weight = coalesce(weight.x, weight.y))  # Preserve 'weight' column
 
 # create age groups
 age.vars.breaks = list(c(seq(0,80, by = 5), 120)) # add more if needed
@@ -92,48 +88,6 @@ lapply(1:length(matrix_raw), function(m) {
                    "-raw-matrix.csv"),
             row.names = F)
 })
-
-#### Matrix Plots ####
-matrix_plots <- lapply(1:length(matrix_raw), function(m) {
-  
-  m_setting = matrix_raw[[m]]
-  
-  p = ggplot(m_setting) +
-    geom_tile(aes(x = !!sym(ra.var), y = !!sym(ca.var), fill = ncont)) +
-    ggtitle(paste0(names(matrix_raw)[m], ": Raw")) + # Main title
-    xlab("Respondent Age") + # X-axis title
-    ylab("Contact Age") + # Y-axis title
-    scale_fill_gradientn(colors = c(mycol[c(14, 8)], "lightblue")#,
-                         #values = c(0, 0.8, 1)
-    ) +
-    # scale_x_discrete(labels = age_by5_80) +
-    # scale_y_discrete(labels = age_by5_80) +
-    coord_fixed(ratio = 1) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          plot.title = element_text(hjust = 0.5, size = 16),
-          axis.title = element_text(size = 12),
-          axis.text = element_text(size = 10),
-          panel.grid.major.y = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.background = element_rect(fill = "transparent", color = "black"),
-          plot.background = element_rect(fill = "transparent", color = NA)#,
-          #panel.grid.major.x = element_line(linetype = "dashed", color = "grey")
-    )
-  
-  if (names(matrix_raw)[m] == "Total") {
-    num = "13_"
-  } else {
-    num = "14_"
-  }
-  
-  ggsave(filename = paste0(output.dir, num,"raw-", 
-                           names(matrix_raw)[m], "-", 
-                           gsub("resp_age_", "", ra.var), ".pdf"), 
-         plot = p)
-  
-  return(p)
-})
-matrix_plots
 
 #### Load Imputed Matrices ####
 
