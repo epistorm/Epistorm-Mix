@@ -2,18 +2,18 @@ rm(list = ls())
 
 #### Folders and Directories ####
 
-my.folder = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code"
+my.folder = "/your-path/Epistorm-Mix/code"
 setwd(my.folder)
 
-data.dir = "./raw_data"
-output.dir = "./imputed_data"
+data.dir = "../data/raw_data"
+output.dir = "../data/imputed_data"
 
 #### Functions #### 
 ## If the global directory for the code is set, use it for sourcing functions
 if(length(global.dir) > 0){
   func.dir = paste0(global.dir, "func_imp.R")
 }else{
-  func.dir = "./code/func_imp.R"
+  func.dir = "./imputations/func_imp.R"
 }
 source(func.dir)
 
