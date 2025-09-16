@@ -7,7 +7,7 @@ This folder contains the pipeline script that will conduct the full analyses for
 Download the analysis folder. Open the `_pipeline_analysis.R` script and change the working directory.
 
 ``` r
-my.folder = "/insert-your-folder-path/analysis"
+my.folder = "/insert-your-folder-path/code"
 setwd(my.folder)
 ```
 
