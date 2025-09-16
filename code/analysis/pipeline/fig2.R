@@ -51,9 +51,7 @@ age_matrix_ls = lapply(setting_names, function(setting) {
                 family = nb(),
                 data = age_matrix)
   }
-  summary(model)
-  print(AIC(model))
-  #gam.check(model)
+
   # predictions
   age_matrix$pred = predict(model, newdata = age_matrix, type = "response")
   
@@ -89,8 +87,7 @@ age_matrix_plots = lapply(titles, function(setting) {
           panel.grid.major.y = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_rect(fill = "transparent", color = "black"),
-          plot.background = element_rect(fill = "transparent", color = NA)#,
-          #panel.grid.major.x = element_line(linetype = "dashed", color = "grey")
+          plot.background = element_rect(fill = "transparent", color = NA)
     )
   
   ggsave(paste0(output.dir, "2_age_", setting,".pdf"),
