@@ -3,7 +3,6 @@ rm(list = ls())
 #### Folders and Directories ####
 
 my.folder = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code"
-# my.folder = "/Users/shsinc/Desktop/Epistorm-survey"
 setwd(my.folder)
 
 data.dir = "./raw_data"
@@ -37,16 +36,6 @@ lapply(ps, function(x) load.myps(x))
 
 merged.df = read.csv(paste0(data.dir, "/raw_contact.csv"))
 sum.res2 = read.csv(paste0(data.dir, "/raw_resp.csv"))
-
-#### PATCHES
-
-# merged.df$cont_setting[which(!merged.df$cont_setting %in%
-#                                c("Household", "Other", "School", "Work"))] = NA
-# merged.df$cont_setting = droplevels(merged.df$cont_setting)
-
-if("weight" %in% intersect(colnames(sum.res2), colnames(merged.df))){
-  merged.df = merged.df[, setdiff(colnames(merged.df), "weight")]
-}
 
 ## save variable names from the raw datasets
 
@@ -383,12 +372,6 @@ for (i in seq_along(idx.match)) {
 colnames(matching.table) = c("resp_id", "cont_id", "old.idx", "new.idx")
 matching.table = as.data.frame(matching.table)
 
-# View(cbind(completed.data[matching.table$old.idx,c("resp_age","cont_age", "resp_workstatus",oth.contvars)],
-#   data.frame(imputed.s = completed.data[matching.table$old.idx,"cont_setting"],
-#                 imputed.r = completed.data[matching.table$old.idx,"cont_relationship"],
-#            input.s = temp.compl[matching.table$new.idx,"cont_setting"],
-#            input.r = temp.compl[matching.table$new.idx,"cont_relationship"])))
-
 completed.data$cont_setting = droplevels(completed.data$cont_setting)
 print(summary(completed.data$cont_setting))
 
@@ -502,7 +485,6 @@ tmp = left_join(merged.df[, - match(vars.ex, colnames(merged.df))],
                 completed.data[,c("resp_id", "cont_id", vars.ex,
                                   "imputed.conts", "imputed.details")],
                 by = c("resp_id", "cont_id"))
-# View(tmp)
 
 # write.csv(tmp, paste0(output.dir, "/imputed_contacts_df.csv"))
 
@@ -535,7 +517,6 @@ imputed.summary$Miss.vars = sapply(tmp, function(x) if(length(x) > 0){
 imputed.summary$Miss.degree = round(imputed.summary$Miss.vars/length(testing), 3)
 
 imputed.summary = imputed.summary[order(imputed.summary$Freq, decreasing = T),]
-# #View(imputed.summary)
 # write.csv(imputed.summary, paste0(output.dir, "/imputed_conts_summary.csv"),
 #           row.names = F)
 
@@ -547,7 +528,6 @@ imputed.summary1 = as.data.frame(table(sum.details1))
 imputed.summary1$Perc = round(100*imputed.summary1$Freq/nrow(merged.df[!is.na(merged.df$cont_identifier),]),2)
 tmp = strsplit(as.character(imputed.summary1[,1]), ", ")
 imputed.summary1 = imputed.summary1[order(imputed.summary1$Freq, decreasing = T),]
-# View(imputed.summary1)
 # write.csv(imputed.summary1, paste0(output.dir, "/imputed_conts_1paper.csv"),
 #           row.names = F)
 
@@ -559,7 +539,6 @@ imputed.summary.indep = imputed.summary.indep[order(imputed.summary.indep$Perc, 
 # write.csv(imputed.summary.indep, paste0(output.dir, "/imputed_conts_indep_summary.csv"),
 #           row.names = F)
 
-# View(imputed.summary.indep)
 
 merged.df.tmp = merged.df
 # merged.df = merged.df.tmp
