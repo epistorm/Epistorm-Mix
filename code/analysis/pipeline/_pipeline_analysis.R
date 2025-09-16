@@ -9,9 +9,8 @@ my.folder = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/
 setwd(my.folder)
 
 ## Set global directory for sourcing the code
-## (This code is insurance in case you run any code files that change working directory)
 e = new.env()
-e$global.dir = paste0(getwd(), "/code/")
+e$global.dir = paste0(getwd(), "/pipeline/")
 attach(e, name = 'global.dir')
 
 ## Output directory
