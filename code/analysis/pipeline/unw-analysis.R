@@ -148,11 +148,6 @@ weighted_plots = lapply(names(matrix_w), function(setting) {
 dev.off()
 
 #### Comparison Matrices Plots ####
-# fix age labels
-# age_by5_80 = c("0-4", "5-9", "10-14","15-19","20-24","25-29","30-34",
-#                "35-39", "40-44", "45-49", "50-54", "55-59","60-64","65-69",
-#                "70-74","75-79", "80+")
-
 matrix_plots <- lapply(names(matrix_w), function(setting) {
   
   weightedm = matrix_w[[setting]]
@@ -172,8 +167,6 @@ matrix_plots <- lapply(names(matrix_w), function(setting) {
     scale_fill_gradientn(colors = c(mycol[c(14, 8)], "lightblue")#,
                          #values = c(0, 0.8, 1)
     ) +
-    # scale_x_discrete(labels = age_by5_80) +
-    # scale_y_discrete(labels = age_by5_80) +
     coord_fixed(ratio = 1) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           plot.title = element_text(hjust = 0.5, size = 16),
@@ -198,8 +191,6 @@ matrix_plots <- lapply(names(matrix_w), function(setting) {
     scale_fill_gradientn(colors = c(mycol[c(14, 8)], "lightblue")#,
                          #values = c(0, 0.8, 1)
     ) +
-    # scale_x_discrete(labels = age_by5_80) +
-    # scale_y_discrete(labels = age_by5_80) +
     coord_fixed(ratio = 1) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           plot.title = element_text(hjust = 0.5, size = 16),
@@ -208,8 +199,7 @@ matrix_plots <- lapply(names(matrix_w), function(setting) {
           panel.grid.major.y = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_rect(fill = "transparent", color = "black"),
-          plot.background = element_rect(fill = "transparent", color = NA)#,
-          #panel.grid.major.x = element_line(linetype = "dashed", color = "grey")
+          plot.background = element_rect(fill = "transparent", color = NA)
     )
   
   ggsave(filename = paste0(output.dir, num, "unweighted-", setting, "-",
