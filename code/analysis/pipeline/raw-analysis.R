@@ -1,5 +1,4 @@
 ## define directories
-# raw.dir = "./US-contact-patterns/shared-data-code/raw_data/" # raw data
 raw.dir = "./raw_data/" # raw data
 imp.dir = paste0(output.dir, "csv/by5") # imputed data
 
