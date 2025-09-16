@@ -1,7 +1,7 @@
 # imputations pipeline
 
 e = new.env() 
-e$global.dir = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code/code/"
+e$global.dir = "/your-path/Epistorm-Mix/code/imputations"
 attach(e, name = 'global.dir') 
 
 ### perform imputations based on raw cleaned data
