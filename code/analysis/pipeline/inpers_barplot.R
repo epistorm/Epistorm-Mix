@@ -4,9 +4,6 @@
 ra.var = "resp_age_by5_65"
 ca.var = "cont_age_by5_65"
 
-# define folders to save results
-# output.dir = paste0(output.dir, "inpers/")
-
 ## predictions for the ages ##
 nd = expand.grid(levels(merged.df[[ra.var]]),
                  levels(merged.df[[ca.var]]))
