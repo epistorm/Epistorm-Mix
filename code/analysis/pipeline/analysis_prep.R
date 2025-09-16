@@ -1,4 +1,3 @@
-
 #### Data preparations + Main Figures & Tables ####
 
 ## Data Directory
@@ -384,30 +383,6 @@ sum.res3$wave = factor(as.character(sum.res3$wave),
                        levels = c("wave1", "wave2"),
                        labels = c("Wave 1", "Wave 2"))
 
-
-# ## Alternative students & employed splits/aggregations:
-# 
-# sum.res3$ppwork2_agg = factor(sum.res3$ppwork2)
-# sum.res3$ppwork2_agg[which(sum.res3$ppwork2_agg == "self-employed")] = "employed"
-# sum.res3$ppwork2_agg = droplevels(sum.res3$ppwork2_agg)
-# 
-# ## create macro aggregated variable for students/workers/other
-# agesplit = 25
-# sum.res3$ppwork2_split = sum.res3$ppwork2_agg
-# idx.st = which(sum.res3$ppwork2_split == "student & (self-)employed" & sum.res3$resp_age < agesplit)
-# sum.res3$ppwork2_split[idx.st] = "student"
-# idx.w = which(sum.res3$ppwork2_split == "student & (self-)employed" & sum.res3$resp_age >= agesplit)
-# sum.res3$ppwork2_split[idx.w] = "employed"
-# sum.res3$ppwork2_split = droplevels(sum.res3$ppwork2_split)
-# 
-# ## Occupied grouping
-# sum.res3$occupied = NA
-# sum.res3$occupied[which(sum.res3$ppwork2_split %in% c("student", "employed"))] = "Occupied"
-# sum.res3$occupied[which(sum.res3$ppwork2_split %in% c("other"))] = "Not occupied"
-# sum.res3$occupied = factor(sum.res3$occupied, levels = c("Occupied", "Not occupied"))
-
-## Select variables to table
-
 # new data
 merged.df = left_join(merged.df, sum.res3, by = "resp_id")
 
@@ -425,11 +400,6 @@ tmp = merged.df %>%
             cont_setting_hh_n = sum(cont_setting == "Household", na.rm = T),
             .groups = "drop")
 sum.res3 = left_join(sum.res3, tmp, by = "resp_id")
-# sum.res3$total.contacts2 = rowSums(sum.res3[,grep("cont_setting_", colnames(sum.res3))[2:5]])
-# sum.res3 = sum.res3 %>%
-#   mutate(cont_setting_nothh_n2 = total.contacts2 - cont_setting_hh_n)
-# View(sum.res3[,c("total.contacts", "total.contacts2", "cont_setting_nothh_n",
-#                  "cont_setting_nothh_n2")])
 
 ## the dummies identifying if respondents had contact (in a particular setting) ##
 # total
@@ -445,9 +415,3 @@ merged.df$other_col = ifelse(merged.df$cont_setting == "Other", 1, 0)
 
 # for analyses
 setting_names = c("binary_col", "hh_col", "school_col", "work_col", "other_col")
-
-# check how many contacts are left on average in numerous after correction for misclassification
-# (mean number of add_mult2_n > 0 in resp_age_by5_80)
-# print(merged.df %>%
-#   group_by(resp_age_by5_80) %>%
-#   summarise(cont_mean_numer = mean(pmin(add_mult_n, 30), na.rm = T)))
