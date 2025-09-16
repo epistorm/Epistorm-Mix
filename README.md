@@ -12,7 +12,7 @@ The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a
 
 
 ## Quick Start
-Once downloaded, you can start using the **contact patterns data** and the **contact matrices**. Below is an example to get started. 
+Once downloaded, you can start using the **contact patterns data** and the **contact matrices**. Below is an example to get started using RStudio. 
 
 
 ### Example: 
