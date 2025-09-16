@@ -23,9 +23,8 @@ INSERT CODE FOR EXAMPLE
 
 ### Tutorials
 We provide a series of totorials to help you get started with the Observatory of US Contact Patterns. 
-- [Tutorial 1](/tutorials/1_Accessing_and_extracting_data.md): Accessing/extracting data 
-- [Tutorial 2](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
-- [Tutorial 3](/tutorials/3_Compartmental_modeling_with_contact_matrices.md): Modeling with contact matrices (compartmental formulation)
+- [Tutorial 1](/tutorials/1_Constructing_contact_matrices.md): Constructing contact matrices
+- [Tutorial 2](/tutorials/2_Compartmental_modeling_with_contact_matrices.md): Modeling with contact matrices (compartmental formulation)
 
 
 
