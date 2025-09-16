@@ -8,7 +8,7 @@ data.dir = "../../data/imputed_data/"
 if(length(global.dir) > 0){
   func.dir = paste0(global.dir, "func_analysis.R")
 }else{
-  func.dir = "./code/func_analysis.R"
+  func.dir = "./func_analysis.R"
 }
 source(func.dir)
 
