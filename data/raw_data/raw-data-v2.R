@@ -8,7 +8,7 @@ data.dir = "./raw_data/"
 output.dir = "./raw_data/" 
 
 #### Functions #### 
-source("./code/func.R")
+source("./code/func_analysis.R")
 
 #### Packages and Libraries ####
 ps = c("tidyverse","dplyr", "tools","zipcodeR")
