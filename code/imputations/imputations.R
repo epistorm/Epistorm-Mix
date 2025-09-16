@@ -19,14 +19,6 @@ source(func.dir)
 
 #### Packages and Libraries ####
 
-# ps = c("tidyverse","readxl","survey","ggplot2","dplyr","hrbrthemes","gtsummary",
-#        "sjstats", "fitdistrplus", "remotes", "MASS", "RColorBrewer", "pacman",
-#        "corrr", "broom", "openxlsx", "interactions", "sjPlot", "effects",
-#        "boot", "glue", "writexl", "gridExtra", "haven", "purrr", "rlang", 
-#        "gtsummary", "gt", "gto", "emmeans", "multcomp", "missForest",
-#        "foreach", "doParallel", "pdftools", "randomForest", "doRNG"
-# )
-
 ps = c("tidyverse", "ggplot2", "dplyr", "randomForest", "doRNG", "foreach", 
        "doParallel")
 
