@@ -8,7 +8,7 @@ Download the imputations folder. Open the `_pipeline_imputations.R` script and c
 
 ``` r
 e = new.env() 
-e$global.dir = "your-path/code/imputations/"
+e$global.dir = "your-path/Epistorm-Mix/code/imputations/"
 attach(e, name = 'global.dir') 
 ```
 
