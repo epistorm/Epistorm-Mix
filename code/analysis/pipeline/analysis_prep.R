@@ -146,15 +146,6 @@ for(i in 1:nrow(holidays)){
 
 ## Define weeks
 
-sum.res3$wave = NA
-idx.002 = grep("002$", sum.res3$resp_id)
-if(length(idx.002) > 0){
-  sum.res3$wave[idx.002] = "wave2"
-  sum.res3$wave[-idx.002] = "wave1"
-}else{
-  stop("No Wave 2 data")
-}
-
 sum.res3$date.start = as.Date(sum.res3$time_start)
 
 w1.start = min(sum.res3$date.start[which(sum.res3$wave == "wave1")])
