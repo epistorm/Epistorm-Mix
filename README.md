@@ -18,7 +18,11 @@ Once downloaded, you can start using the **contact patterns data** and the **con
 ### Example: 
 
 ```
-INSERT CODE FOR EXAMPLE
+# Use the contact matrices in the matrices folder.
+# The analyses scripts in the code folder can alternatively be used to create these matrices
+hh.matrix = read.csv("./your-path/matrices/Household-by5_80-matrix.csv")
+
+
 ```
 
 ### Tutorials
