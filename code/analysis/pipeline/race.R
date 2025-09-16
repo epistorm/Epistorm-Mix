@@ -1,14 +1,3 @@
-## rerun analysis.R, fig3.R and output.dir
-
-# levels
-# ethn_cols <- c("White, Non-Hispanic", 
-#                "Hispanic/Latino",
-#                "Black, Non-Hispanic",
-#                "Asian, Non-Hispanic",
-#                "Other, Non-Hispanic")
-# merged.df$resp_ethn = factor(merged.df$resp_ethn, ethn_cols)
-# merged.df$cont_ethn = factor(merged.df$cont_ethn, ethn_cols)
-
 ## predictions for the racial/ethnic groups ##
 nd = expand.grid(resp_ethn = levels(merged.df$resp_ethn),
                  cont_ethn = levels(merged.df$resp_ethn))
@@ -91,10 +80,6 @@ sum_ethn$Ethn = race_matrix_ls$Total$cont_ethn[1:5]
 sum_ethn_df = sum_ethn %>% 
   pivot_longer(cols = c("Household", "Work", "School", "Other"),
                names_to = "Setting", values_to = "Average")
-# sum_ethn_df$Ethn = factor(sum_ethn_df$Ethn,
-#                           levels = c("White, Non-Hispanic", "Hispanic/Latino",
-#                                      "Black, Non-Hispanic", "Asian, Non-Hispanic",
-#                                      "Other, Non-Hispanic"))
 sum_ethn_df$Setting = factor(sum_ethn_df$Setting,
                              levels = c("Household", "School", "Work",
                                         "Other"))
