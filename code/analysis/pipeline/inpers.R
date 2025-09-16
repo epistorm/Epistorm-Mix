@@ -3,7 +3,6 @@ ra.var = c("resp_age_by5_80", "resp_age_by5_75")
 ca.var = c("cont_age_by5_80", "cont_age_by5_75")
 
 # define folders to save results
-# output.dir = paste0(output.dir, "inpers/")
 csv.dir = paste0(output.dir, "csv/inpers/")
 
 ## transform the mode of attendance into three-level variable
@@ -102,6 +101,7 @@ for (age in 1:length(ra.var)) {
   
   #### save the matrices as csv ####
   matrix_inpers = lapply(names(age_inperson_matrix_ls)[1:2], function(mat){
+    # uncomment below to save the matrix as dataframe
     # write.csv(age_inperson_matrix_ls[[mat]],
     #           paste0("csv/inpers/", mat, "-Cond.csv"),
     #           row.names = F)
@@ -117,9 +117,6 @@ for (age in 1:length(ra.var)) {
     
     return(matrix_inpers)
     
-  }) 
-  # names(matrix_inpers) = names(age_inperson_matrix_ls)[1:2]
-  # matrix_inpers$`In Person`[,-1] - matrix_inpers$`Not In Person`[,-1]
-  
+  })   
 }
 
