@@ -10,7 +10,6 @@ output.dir = "./imputed_data/"
 source("./code/func_analysis.R")
 
 #### Load The Data ####
-# source("/Users/shsinc/Desktop/Epistorm-survey/code/4_analysis_polymod_20250507.R")
 load("./imputed_dataall-waves.Rdata")
 
 #### Age Groups ####
