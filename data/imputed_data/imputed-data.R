@@ -10,7 +10,7 @@ output.dir = "./imputed_data/"
 source("./code/func_analysis.R")
 
 #### Load The Data ####
-load("./imputed_dataall-waves.Rdata")
+load("../imputed_dataall-waves.Rdata")
 
 #### Age Groups ####
 
