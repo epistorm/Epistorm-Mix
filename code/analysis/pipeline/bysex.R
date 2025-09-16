@@ -1,12 +1,3 @@
-# # remove other
-# idx.other_r = which(merged.df$resp_sex == "Other")
-# idx.other_c = which(merged.df$cont_sex == "Other")
-# idx.other = union(idx.other_c,idx.other_r)
-# 
-# if (length(idx.other) > 0) {
-#   merged.df = merged.df[-idx.other,]
-# }
-
 merged.df$resp_sex = as.factor(merged.df$resp_sex)
 merged.df$resp_sex = droplevels(merged.df$resp_sex)
 
@@ -241,7 +232,6 @@ matrix_plots_by = lapply(seq_along(g_ls3), function(setting) {
       tag_levels = 'A' # automatically labels panels 'A', 'B', 'C', etc.
     ) & theme(plot.tag = element_text(face = 'bold'))
 
-  #### STOPPED: add numbers to the age by sex figs (21-25)
   num = 20
   for (i in 1:setting) {
     num = num + 1
