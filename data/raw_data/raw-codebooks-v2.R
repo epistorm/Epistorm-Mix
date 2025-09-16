@@ -2,7 +2,7 @@
 rm(list = ls())
 
 #### Environment ####
-my.folder = "/Users/shsinc/Desktop/Epistorm-survey"
+my.folder = "/your-path/Epistorm-Mix"
 setwd(my.folder)
 data.dir = "./raw_data/"
 output.dir = "./raw_data/" 
