@@ -1,0 +1,7 @@
+"variable","description","response_options","original_name"
+"resp_id","ID of respondent","Numeric","CaseID"
+"cont_setting","Where did the contact occur?","Household; School; Work; Other; Not Household","Created"
+"cont_relationship","What is the relationship of the contact to respondent?","Person [my Child Lives/i Live] with; Classmate/Teacher; Other Schoolmate; Relative; Friend/Acquaintance; Work Colleague; Customer; Student; Other; Refused","RELATIONSHIP"
+"cont_age","What is the age of respondent's contact?","Numeric","C_AGE"
+"cont_ethn","What is the race/ethnicity of respondent's contact?","White, Non-Hispanic; Hispanic/Latino; Black, Non-Hispanic; Asian, Non-Hispanic; Other, Non-Hispanic; Refused","C_RACE_ETHNIC"
+"cont_gender3","What is the gender of respondent's contact?","Female; Male; Other; Refused","C_GENDER"
