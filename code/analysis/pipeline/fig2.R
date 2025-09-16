@@ -1,75 +1,86 @@
-# levels
-ethn_cols <- c("White, Non-Hispanic", "Hispanic/Latino",
-               "Black, Non-Hispanic",
-               "Asian, Non-Hispanic",
-               "Other, Non-Hispanic")
+## adjust the data for plotting matrices ##
+merged.df$cont_age_plot = merged.df$cont_age
+merged.df$resp_age_plot = merged.df$resp_age
 
-## Unconditional
-## weighted number of respondents ##
-combined_df$resp_ethn = factor(combined_df$resp_ethn, ethn_cols)
-combined_df$cont_ethn = factor(combined_df$cont_ethn, ethn_cols)
+merged.df$cont_age_plot[which(merged.df$cont_age_plot >= 80 &
+                             merged.df$cont_age_plot < 85)] = 81
+merged.df$resp_age_plot[which(merged.df$resp_age_plot >= 80 &
+                             merged.df$resp_age_plot < 85)] = 81
+merged.df$cont_age_plot[which(merged.df$cont_age_plot >= 85 &
+                             merged.df$cont_age_plot < 90)] = 82
+merged.df$resp_age_plot[which(merged.df$resp_age_plot >= 85 &
+                             merged.df$resp_age_plot < 90)] = 82
+merged.df$cont_age_plot[which(merged.df$cont_age_plot > 90)] = 83
+merged.df$resp_age_plot[which(merged.df$resp_age_plot > 90)] = 83
 
-age_matrix_n = combined_df %>%
-  group_by(resp_ethn, resp_id) %>%
+# weighted number of respondents ##
+age_matrix_n = merged.df %>%
+  group_by(resp_age_plot, resp_id) %>%
   summarise(weight = mean(weight, na.rm = TRUE)) %>%
-  group_by(resp_ethn) %>%
+  group_by(resp_age_plot) %>%
   summarise(n = sum(weight, na.rm = TRUE))
 
-## predictions for the racial/ethnic groups ##
-nd = expand.grid(resp_ethn = levels(combined_df$resp_ethn),
-                 cont_ethn = levels(combined_df$resp_ethn))
+## predictions for the ages ##
+nd = expand.grid(resp_age_plot = c(0:max(merged.df$resp_age_plot)),
+                 cont_age_plot = c(0:max(merged.df$resp_age_plot)))
+
 predict.m = as.data.frame(nd)
 
-## Race/Ethnicity
-race_matrix_ls = lapply(setting_names, function(setting) {
+## Smoothed matrices
+age_matrix_ls = lapply(setting_names, function(setting) {
   
-  if(setting == "binary_col"){
-    df = combined_df
+  age_matrix = calc.m.num(mydata = merged.df,
+                          myattr = c("resp_age_plot", "cont_age_plot"), # vector of the names of the two attributes
+                          setting = setting,
+                          predict.m = predict.m,
+                          denumer.n = age_matrix_n)
+  
+  age_matrix$age_diff = as.numeric(age_matrix$resp_age_plot) - as.numeric(age_matrix$cont_age_plot)
+  
+  # GAM
+  if(setting == "work_col"){
+    model = gam(ncont ~ te(as.numeric(resp_age_plot), as.numeric(cont_age_plot),
+                           k = c(4,4), bs = c("tp","tp"), m = c(0,0)) #+ s(age_diff)
+                ,
+                family = nb(),
+                data = age_matrix)
   }else{
-    df = combined_df %>% filter(!!sym(setting) == 1)
+    model = gam(ncont ~ te(as.numeric(resp_age_plot), as.numeric(cont_age_plot),
+                           k = c(10,10), bs = c("cc","cc"), m = c(0,0)) #+ s(age_diff)
+                ,
+                family = nb(),
+                data = age_matrix)
   }
+  summary(model)
+  print(AIC(model))
+  #gam.check(model)
+  # predictions
+  age_matrix$pred = predict(model, newdata = age_matrix, type = "response")
   
-  ethn_matrix = calc.m.num(mydata = df,
-                           myattr = c("resp_ethn", "cont_ethn"), # vector of the names of the two attributes
-                           setting = setting,
-                           predict.m = predict.m,
-                           denumer.n = age_matrix_n)
-  
-  return(ethn_matrix)
-})
-
-## plotting the matrices ##
-titles = c("Total", "Household", "School", "Work", "Other")
-names(race_matrix_ls) = titles
-
-race_matrix = lapply(1:length(race_matrix_ls), function(setting){
-  
-  matrix_r = race_matrix_ls[[setting]] %>% 
-    select("resp_ethn", "cont_ethn", "ncont") %>% 
-    pivot_wider(names_from = "cont_ethn", values_from = "ncont")
-  
-  write.csv(matrix_r, 
-            paste0(output.dir, "csv/race/", names(race_matrix_ls)[setting], 
-                   "-race-matrix.csv"),
-            row.names = F)
-  
-  return(matrix_r)
+  # return(AIC(model))
+  return(age_matrix)
   
 })
-names(race_matrix) =  c("Total", "Household", "School", "Work", "Other")
 
-## Race
-race_matrix_plots = lapply(titles, function(setting) {
-  df = race_matrix_ls[[setting]]
+## Plots
+titles = c("total", "household", "school", "work", "other")
+names(age_matrix_ls) = titles
+color.thresh = c(0.4,0.4,0.4,0.4,0.6)
+names(color.thresh) = titles
+age_matrix_plots = lapply(titles, function(setting) {
   
-  r_plot = ggplot(df) +
-    geom_tile(aes(x = resp_ethn, y = cont_ethn, fill = ncont)) +
-    ggtitle(paste("Setting:", setting)) + # Main title
-    xlab("Respondent") + # X-axis title
-    ylab("Contact") + # Y-axis title
-    scale_fill_gradientn(colors = c(mycol[c(14, 8)], "white")#,
-                         #values = c(0, 0.8, 1)
+  age_plot = ggplot(age_matrix_ls[[setting]]) +
+    geom_raster(aes(x = resp_age_plot, y = cont_age_plot, fill = pred), interpolate = TRUE) +
+    ggtitle(paste("Setting:", to_sentence_case(setting))) + # Main title
+    xlab("Respondent Age") + # X-axis title
+    ylab("Contact Age") + # Y-axis title
+    scale_fill_gradientn(
+      colors = c(mycol[c(14, 8)], "white"),
+      values = c(0, color.thresh[setting], 1),
+      name = "" # Legend title
     ) +
+    scale_y_continuous(breaks = c(0,20,40,60,80)) +
+    scale_x_continuous(breaks = c(0,20,40,60,80)) +
     coord_fixed(ratio = 1) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           plot.title = element_text(hjust = 0.5, size = 16),
@@ -82,57 +93,96 @@ race_matrix_plots = lapply(titles, function(setting) {
           #panel.grid.major.x = element_line(linetype = "dashed", color = "grey")
     )
   
-  ggsave(paste0(output.dir, "fig2/","unc-reth-", setting,".pdf"),
-         r_plot)
+  ggsave(paste0(output.dir, "2_age_", setting,".pdf"),
+         age_plot)
   
-  return(r_plot)
+  return(age_plot)
   
 })
-race_matrix_plots
+age_matrix_plots
 
-## bar plot
-sum_ethn = sapply(1:length(race_matrix), function(setting){
-  sum.e = rowSums(race_matrix[[setting]][,2:6])
+## Summary plot
+# define the age grouping variables
+ra.var = "resp_age_by5_80"
+ca.var = "cont_age_by5_80"
+
+## weighted # of resp ##
+age_matrix_n = merged.df %>%
+  group_by(!!sym(ra.var), resp_id) %>%
+  summarise(weight = mean(weight, na.rm = TRUE)) %>%
+  group_by(!!sym(ra.var)) %>%
+  summarise(n = sum(weight, na.rm = TRUE))
+
+## predictions for the age groups ##
+nd = expand.grid(levels(merged.df[[ra.var]]),
+                 levels(merged.df[[ca.var]]))
+nd = setNames(nd, c(ra.var, ca.var))
+predict.m = as.data.frame(nd)
+
+## matrices 
+
+unc_by5_ls <- lapply(setting_names, function(setting) {
+  
+  if(setting == "binary_col"){
+    df = merged.df
+  }else{
+    df = merged.df %>% filter(!!sym(setting) == 1)
+  }
+  
+  by5_matrix = calc.m.num(mydata = df,
+                          myattr = c(ra.var, ca.var), # vector of the names of the two attributes
+                          setting = setting,
+                          predict.m = predict.m,
+                          denumer.n = age_matrix_n)
+  
+  by5_matrix$setting = setting
+  
+  return(by5_matrix)
 })
-sum_ethn = as.data.frame(sum_ethn)
-colnames(sum_ethn) = names(race_matrix)
-sum_ethn$Ethn = race_matrix$Total$resp_ethn
+names(unc_by5_ls) = c("Total", "Household", "School", "Work", "Other")
 
-sum_ethn_df = sum_ethn %>% 
-  pivot_longer(cols = c("Total", "Household", "Work", "School", "Other"),
+unc.m = lapply(1:length(unc_by5_ls), function(setting){
+  
+  write.csv(unc_by5_ls[[setting]], 
+            paste0(output.dir, "csv/by5/",names(unc_by5_ls)[setting],"-by5_80-df.csv"),
+            row.names = F)
+  
+  matrix_age = unc_by5_ls[[setting]] %>% 
+    dplyr::select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% ## conflicting packages
+    pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
+  
+  write.csv(matrix_age, 
+            paste0(output.dir, "csv/by5/",names(unc_by5_ls)[setting],"-by5_80-matrix.csv"),
+            row.names = F)
+  
+  return(matrix_age)
+  
+})
+names(unc.m) =  c("Total", "Household", "School", "Work", "Other")
+
+sum_setting = sapply(1:length(unc.m), function(setting){
+  sum.setting = rowSums(unc.m[[setting]][,2:18])
+})
+sum_setting = as.data.frame(sum_setting)
+colnames(sum_setting) = names(unc.m)
+sum_setting$Age = unc.m$Total$resp_age_by5_80
+
+sum_setting_df = sum_setting %>% 
+  pivot_longer(cols = c("Total", "Household", "Other", "School", "Work"),
                names_to = "Setting", values_to = "Average")
-sum_ethn_df$Ethn = factor(sum_ethn_df$Ethn, levels = ethn_cols)
-sum_ethn_df$Setting = factor(sum_ethn_df$Setting, 
-                             levels = c("Total", "Household", 
-                                        "School", "Work", "Other"))
+sum_setting_df$Setting = factor(sum_setting_df$Setting,
+                                levels = c("Total", "Household", "School", "Work",
+                                           "Other"))
 
-sum_ethn_p = ggplot(data = sum_ethn_df,
-                    aes(x = Ethn, y = Average, 
-                        fill = Setting)) +
-  geom_bar(stat = "identity", position = "dodge") +
+sum_setting_p = ggplot(data = sum_setting_df,
+                       aes(x = Age, y = Average, 
+                           color = Setting, group = Setting)) +
+  geom_line(linetype = "solid") +
+  scale_y_continuous(breaks = c(0,2,4,6,8,10)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
-sum_ethn_p
+sum_setting_p
 
-ggsave(filename = paste0(output.dir, "fig2/","Summary-Ethn-Matrix.pdf"),
-       plot = sum_ethn_p)
-
-## Assortativity ##
-assort.values <- lapply(names(race_matrix_ls), function(i) { #setting
-  
-  race_matrix = race_matrix_ls[[i]] %>% 
-    select("resp_ethn", "cont_ethn", "ncont") %>% 
-    pivot_wider(names_from = "cont_ethn", values_from = "ncont")
-  
-  x1 = assortativity.calc(race_matrix[,-1])
-  return(x1)
-  
-})
-names(assort.values) = names(race_matrix_ls)
-assort.val.df1 = do.call(rbind, assort.values)
-write.csv(assort.val.df1, paste0(output.dir, "csv/race/race-assort.csv"))
-
-
-
-
+ggsave(filename = paste0(output.dir, "2_age_summary.pdf"),
+       plot = sum_setting_p)
 
