@@ -1,7 +1,7 @@
 #### Data preparations + Main Figures & Tables ####
 
 ## Data Directory
-data.dir = "./imputed_data/"
+data.dir = "../../data/imputed_data/"
 
 #### Functions #### 
 ## If the global directory for the code is set, use it for sourcing functions
