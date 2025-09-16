@@ -2,14 +2,13 @@
 rm(list = ls())
 
 #### Environment ####
-my.folder = "/Users/shsinc/Desktop/Epistorm-survey"
+my.folder = "/your-path/Epistorm-Mix"
 setwd(my.folder)
-data.dir = "./combined/data/cleaned/"
+data.dir = "./raw_data/"
 output.dir = "./raw_data/" 
 
 #### Functions #### 
 source("./code/func.R")
-# source("./code/func_dist.R")
 
 #### Packages and Libraries ####
 ps = c("tidyverse","dplyr", "tools","zipcodeR")
