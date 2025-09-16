@@ -20,8 +20,39 @@ Once downloaded, you can start using the **contact patterns data** and the **con
 ```
 # Use the contact matrices in the matrices folder.
 # The analyses scripts in the code folder can alternatively be used to create these matrices
-hh.matrix = read.csv("./your-path/matrices/Household-by5_80-matrix.csv")
+hh.df = read.csv("./your-path/matrices/hh_example.csv")
 
+# to transform into matrix format
+hh.matrix <- hh.df %>%
+  pivot_wider(
+    names_from = cont_age_by5_80,   # Values from 'cont_age_by5_80' become column names
+    values_from = ncont,            # Values from 'ncont' fill the cells
+    id_cols = resp_age_by5_80       # 'resp_age_by5_80' values become the row identifiers
+  )
+
+# to sort age groups in the right order
+hh.df$resp_age_by5_80 = factor(hh.df$resp_age_by5_80,
+                                  levels = unique(hh.df$resp_age_by5_80))
+hh.df$cont_age_by5_80 = factor(hh.df$cont_age_by5_80,
+                                  levels = unique(hh.df$cont_age_by5_80))
+
+# to create a plot
+ggplot(hh.df) +
+      geom_tile(aes(x = resp_age_by5_80, y = cont_age_by5_80, fill = ncont)) +
+      ggtitle("Household") + # Main title
+      xlab("Respondent Age") + # X-axis title
+      ylab("Contact Age") + # Y-axis title
+      scale_fill_gradientn(colors = c( "#005f87", "#87afd7", "lightblue")) +
+      coord_fixed(ratio = 1) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            plot.title = element_text(hjust = 0.5, size = 16),
+            axis.title = element_text(size = 12),
+            axis.text = element_text(size = 10),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_rect(fill = "transparent", color = "black"),
+            plot.background = element_rect(fill = "transparent", color = NA)
+      )
 
 ```
 
