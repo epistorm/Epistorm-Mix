@@ -18,19 +18,6 @@ resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/m
 resp_imp = read.csv(resp.url)
 
 
-## Extracting data from Zenodo
-if(!require("socialmixr")){
-  install.packages("socialmixr")
-}
-library(socialmixr)
-
-epistorm_survey <- get_survey("https://doi.org/XXXXXXX/zenodo.XXXXXXX")
-
-
-saveRDS(epistorm_survey, "epistorm.rds")
-
-epistorm_survey <- readRDS("epistorm.rds")
-
 
 
 
