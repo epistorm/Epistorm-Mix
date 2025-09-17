@@ -75,5 +75,5 @@ python batch_run.py
 # Tutorials
 
 For a complete tutorial on how to build an age-structured compartmental model using 
-contact matrices, please check [tutorials/2_Compartmental_modeling_with_contact_matrices.md]()
+contact matrices, please check [/tutorials/2_Compartmental_modeling_with_contact_matrices.md](/tutorials/2_Compartmental_modeling_with_contact_matrices.md)
 
