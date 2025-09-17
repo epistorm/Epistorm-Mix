@@ -1,3 +1,5 @@
 
 # # MACOS: Ignore folder view configuration files
 .DS_Store
+
+code/compartmental_epimodel/outputs/*
