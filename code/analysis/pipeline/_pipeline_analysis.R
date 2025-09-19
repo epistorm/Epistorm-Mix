@@ -71,5 +71,7 @@ source(paste0(global.dir, "bysex.R"))
 ### additional matrices analysis: comparison to pre-pandemic US estimates and 
 ## estimates from other European and Chinese countries
 source(paste0(global.dir, "more-mat.R")) 
+source(paste0(global.dir, "matrix-comp.R"))
+
 
 
