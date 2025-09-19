@@ -18,7 +18,7 @@ Once downloaded, you can start using the **contact patterns data** and the **con
 ### Example: 
 
 ```
-# Use the contact matrices in the matrices folder.
+# Use an example contact matrix in the matrix folder.
 # The analyses scripts in the code folder along with the data in the data folder can alternatively be used to
 # create matrices.
 hh.df = read.csv("./your-path/matrices/hh_example.csv")
