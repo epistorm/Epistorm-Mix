@@ -177,7 +177,7 @@ To do this, we need to specify the age groups for both the respondents and their
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120))
 age.vars.names = c("_by5_80")
 
-sum.res3 = create.age.groups(sum.res3, input.var = "resp_age", # resp age
+merged.df = create.age.groups(sum.res3, input.var = "resp_age", # resp age
                              break.list = age.vars.breaks,
                              suff.list = age.vars.names)
 merged.df = create.age.groups(merged.df, input.var = "cont_age", # contact age
