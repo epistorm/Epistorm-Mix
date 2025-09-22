@@ -2,67 +2,38 @@
 
 [**Documentation**]() | [**Website**]() | [**Tutorials**](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/tutorials) 
 
-The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a sample of the US that is nationally representative by age, sex, and race/ethnicity as well as the respective estimated contact matrices, allowing users to simulate the spread of respiratory infectious diseases through different population groups using current US social mixing patterns.
+The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a sample of the US that is nationally representative by age, sex, race/ethnicity, household income, census region, and language. Additionally included are estimated contact matrices stratified by age, sex, and race/ethnicity, allowing users to simulate the spread of respiratory infectious diseases through different population groups using current US social mixing patterns.
 
 
-## Downloads
-[Contact patterns data](/data)<br/>
-[Contact matrices](/matrices)<br/>
-[Code](/code)
+## Getting Started
 
+### Contact Patterns Data
 
-## Quick Start
-Once downloaded, you can start using the **contact patterns data** and the **contact matrices**. Below is an example to get started using RStudio. 
+- Raw Data: respondent-level and contact-level data
+- Imputed Data: respondent-level and contact-level data
 
+The analyses in this repository are conducted using the imputed data. The raw data is provided for the sensitivity analysis. Additionally, codebooks for both the respondent-level and contact-level data are provided with the raw and imputed data. For more details, check the data folder: [Contact patterns data](/data)<br/>
 
-### Example: 
+### Contact Matrices
 
-```
-# Use an example contact matrix in the matrix folder.
-# The analyses scripts in the code folder along with the data in the data folder can alternatively be used to
-# create matrices.
-hh.df = read.csv("./your-path/matrices/hh_example.csv")
+- M_matrix: total and setting-specific contact matrices by age, sex, and race/ethnicity
+- F_matrix: frequency-based, setting-specific contact matrices by age 
+- M_reciprocal: reciprocal setting-specific contact matrices by age
+- M_conditional: setting-specific contact matrices by age, sex, and race/ethnicity conditional on in-person presence of an individual in a specific setting
+- M_misc: sensitivity analysis for raw and imputed data, sensitivity analysis for weighted and unweighted data, and scenarios on in-person learning and work
 
-# to transform into matrix format
-hh.matrix <- hh.df %>%
-  pivot_wider(
-    names_from = cont_age_by5_80,   # Values from 'cont_age_by5_80' become column names
-    values_from = ncont,            # Values from 'ncont' fill the cells
-    id_cols = resp_age_by5_80       # 'resp_age_by5_80' values become the row identifiers
-  )
+For more details, check the matrix folder: [Contact matrices](/matrices)<br/>
 
-# to sort age groups in the right order
-hh.df$resp_age_by5_80 = factor(hh.df$resp_age_by5_80,
-                                  levels = unique(hh.df$resp_age_by5_80))
-hh.df$cont_age_by5_80 = factor(hh.df$cont_age_by5_80,
-                                  levels = unique(hh.df$cont_age_by5_80))
+### Code
 
-# to create a plot
-ggplot(hh.df) +
-      geom_tile(aes(x = resp_age_by5_80, y = cont_age_by5_80, fill = ncont)) +
-      ggtitle("Household") + # Main title
-      xlab("Respondent Age") + # X-axis title
-      ylab("Contact Age") + # Y-axis title
-      scale_fill_gradientn(colors = c( "#005f87", "#87afd7", "lightblue")) +
-      coord_fixed(ratio = 1) +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            plot.title = element_text(hjust = 0.5, size = 16),
-            axis.title = element_text(size = 12),
-            axis.text = element_text(size = 10),
-            panel.grid.major.y = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.background = element_rect(fill = "transparent", color = "black"),
-            plot.background = element_rect(fill = "transparent", color = NA)
-      )
-
-```
+Code is provided for imputations and analyses. For more details, check the code folder: [Code](/code)
 
 ### Tutorials
 We provide a series of totorials to help you get started with the Observatory of US Contact Patterns. 
-- [Tutorial 1](/tutorials/1_Constructing_contact_matrices.md): Constructing contact matrices
-- [Tutorial 2](/tutorials/2_Compartmental_modeling_with_contact_matrices.md): Modeling with contact matrices (compartmental formulation)
-
-
+- [Tutorial 1](/tutorials/1_Accessing_and_extracting_data.md): Accessing and extracting data
+- [Tutorial 2](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
+- [Tutorial 3](/tutorials/3_Visualizing_contact_matrices.md): Visualizing contact matrices
+- [Tutorial 4](/tutorials/4_Compartmental_modeling_with_contact_matrices.md): Compartmental modeling with contact matrices 
 
 ## Citation
 The preprint describing the data collection and estimation of the contact matrices is available [here](). To reference our work, please use the following citation: 
