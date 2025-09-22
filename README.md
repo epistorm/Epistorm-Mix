@@ -28,7 +28,7 @@ For more details, check the matrix folder: [Contact matrices](/matrices)<br/>
 Code is provided for imputations and analyses. For more details, check the code folder: [Code](/code)
 
 ### Tutorials
-We provide a series of totorials to help you get started with the Observatory of US Contact Patterns. 
+We provide a series of totorials to help you get started with Epistorm-Mix. 
 - [Tutorial 1](/tutorials/1_Accessing_and_extracting_data.md): Accessing and extracting data
 - [Tutorial 2](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
 - [Tutorial 3](/tutorials/3_Visualizing_contact_matrices.md): Visualizing contact matrices
