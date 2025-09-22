@@ -2,15 +2,14 @@
 
 [**Documentation**]() | [**Website**]() | [**Tutorials**](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/tutorials) 
 
-The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a sample of the US that is nationally representative by age, sex, race/ethnicity, household income, census region, and language. Additionally included are estimated contact matrices stratified by age, sex, and race/ethnicity, allowing users to simulate the spread of respiratory infectious diseases through different population groups using current US social mixing patterns.
-
+The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a sample of the US that is nationally representative by age, sex, race/ethnicity, household income, census region, and language. Respondents reported all person-to-person contacts in the preceding day, including the contact's age and setting (household, school, workplace, community). Using the survey data, we constructed contact matrices stratified by age, sex, and race/ethnicity. Contact matrices can be used to simulate the spread of respiratory infectious diseases through compartmental modeling. This repository serves as an open-access resource for modeling and public health planning. 
 
 ## Getting Started
 
 ### Contact Patterns Data
 
-- Raw Data: respondent-level and contact-level data
-- Imputed Data: respondent-level and contact-level data
+- Raw data: respondent-level and contact-level data
+- Imputed data: respondent-level and contact-level data
 
 The analyses in this repository are conducted using the imputed data. The raw data is provided for the sensitivity analysis. Additionally, codebooks for both the respondent-level and contact-level data are provided with the raw and imputed data. For more details, check the data folder: [Contact patterns data](/data)<br/>
 
