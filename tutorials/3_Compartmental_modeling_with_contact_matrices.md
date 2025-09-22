@@ -1,4 +1,4 @@
-# Using contact matrices for Compartmental Epidemiological Modeling
+# Using contact matrices for compartmental epidemiological modeling
 
 In this tutorial, we will explore how to use the age-specific contact matrices estimated using contact patterns data ([Tutorial 1](../tutorials/1_Constructing_contact_matrices.md)) to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
 
