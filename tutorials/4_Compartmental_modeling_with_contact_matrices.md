@@ -314,4 +314,4 @@ fig.show()
 
 ## Full code
 
-You can check the full code for this tutorial here: [comparmental_modeling_contact_matrices.py](./compartmental_epimodel/comparmental_modeling_contact_matrices.py) 
+You can check the full code for this tutorial here: [compartmental_modeling_contact_matrices.py](./compartmental_epimodel/compartmental_modeling_contact_matrices.py) 
