@@ -13,8 +13,8 @@ head(resp_imp)
 # 344409        3      Female            No   0.4348620
 
 
-## Extracting data from github directly (PATCH: CHANGE LINK)
-resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/main/tutorial/data/imputed_reform.csv?token=GHSAT0AAAAAADF2WTHCJL7GXM2KUORRZH5C2DNHBBA"
+## Extracting data from github directly 
+resp.url = "https://github.com/allisandrak/Epistorm-Mix/blob/84593df870d9a5b9b8b0710ca7b02189a3c03298/tutorials/data/imputed_resp.csv"
 resp_imp = read.csv(resp.url)
 
 
