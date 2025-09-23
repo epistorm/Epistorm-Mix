@@ -8,7 +8,6 @@ In the code examples, we directly use the following R packages:
 - [`dplyr`](https://cran.r-project.org/web/packages/dplyr/) for efficient operations with dataframes.
 - [`tidyr`](https://cran.r-project.org/web/packages/tidyr/) for converting between long and wide dataframes.
 - [`mgcv`](https://cran.r-project.org/web/packages/mgcv/) for working with generalized additive models.
-- [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for visualizing results.
 
 The code was tested in Rstudio version 4.5.1. In a `.r` R code file, you can install these packages and load the libraries using:
 ```R
