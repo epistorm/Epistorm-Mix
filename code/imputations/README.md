@@ -12,3 +12,8 @@ e$global.dir = "your-path/Epistorm-Mix/code/imputations/"
 attach(e, name = 'global.dir') 
 ```
 
+The imputations used in this code is computationally heavy and requires parallel processing. Ensure the following packages are loaded into your library:
+- `randomForest`
+- `doRNG`
+- `foreach`
+- `doParallel` 
