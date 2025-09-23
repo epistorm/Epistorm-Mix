@@ -1,10 +1,10 @@
 
 # Loading data downloaded from github
-resp_imp = read.csv("imputed_part_reform.csv")
+resp_imp = read.csv("imputed_resp.csv")
 head(resp_imp)
 
 
-# part_id part_age part_gender part_educator    weight
+# resp_id resp_age resp_gender resp_educator    weight
 # 163925       67      Female            No   1.2019131
 # 210129       64        Male            No   0.7475523
 # 218353       52      Female            No   1.0751714
@@ -14,7 +14,7 @@ head(resp_imp)
 
 
 ## Extracting data from github directly (PATCH: CHANGE LINK)
-resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/main/code/contact_matrices/data/imputed_part_reform.csv?token=GHSAT0AAAAAADF2WTHCJL7GXM2KUORRZH5C2DNHBBA"
+resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/main/tutorial/data/imputed_reform.csv?token=GHSAT0AAAAAADF2WTHCJL7GXM2KUORRZH5C2DNHBBA"
 resp_imp = read.csv(resp.url)
 
 
