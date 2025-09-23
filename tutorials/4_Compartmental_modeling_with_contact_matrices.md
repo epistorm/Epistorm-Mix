@@ -60,7 +60,7 @@ Where we use the `age` colum for indexing rows of the data frame, and the `n_ind
 ### Loading a contact matrix
 
 A contact matrix between age groups can be stored as a csv file and look like this 
-(full example [here](./compartmental_epimodel/data/survey_epistorm/ageby5_80-matrix.csv)):
+(full example [here](./compartmental_epimodel/data/survey_epistorm/ageby5_80.csv)):
 
 ```csv
 "respondent","[0,5)","[5,10)","[10,15)","[15,20)","[20,25)","[25,30)","[30,35)","[35,40)","[40,45)","[45,50)","[50,55)","[55,60)","[60,65)","[65,70)","[70,75)","[75,80)","[80,120)"
