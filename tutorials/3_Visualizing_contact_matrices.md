@@ -6,9 +6,7 @@ In this tutorial, we will explore how to visualize contact matrices using contac
 
 This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages.
 
-In the code examples, we directly use the following R packages: 
-- [`dplyr`](https://cran.r-project.org/web/packages/dplyr/) for efficient operations with dataframes.
-- [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for visualizing results.
+In the code examples, we directly use the following R packages: [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for visualizing results.
 
 The example in this tutorial uses data from the previous tutorial. It is recommended to complete tutorial 2 on constructing contact matrices prior to starting this tutorial.
 
