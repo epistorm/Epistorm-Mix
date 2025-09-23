@@ -27,7 +27,7 @@ In this tutorial, we will import our data from `.csv` files stored in the workin
 
 and can be loaded by: 
 ```R
-resp_imp = read.csv("imputed-resp2.csv")
+resp_imp = read.csv("imputed_resp.csv")
 ```
 
 The contact-level patterns data should be formatted as: 
@@ -36,7 +36,7 @@ The contact-level patterns data should be formatted as:
 
 and can be loaded into the program by:
 ```R
-cont_imp = read.csv("imputed-contacts2.csv")
+cont_imp = read.csv("imputed_cont.csv")
 ```
 Documentation describing the variables of both contact patterns datasets are available [here]().
 
