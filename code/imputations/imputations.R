@@ -2,15 +2,19 @@ rm(list = ls())
 
 #### Folders and Directories ####
 
-data.dir = "../../data/raw_data"
-output.dir = "../../data/imputed_data"
+my.folder = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code"
+# my.folder = "/Users/shsinc/Desktop/Epistorm-survey"
+setwd(my.folder)
+
+data.dir = "./raw_data"
+output.dir = "./imputed_data"
 
 #### Functions #### 
 ## If the global directory for the code is set, use it for sourcing functions
 if(length(global.dir) > 0){
   func.dir = paste0(global.dir, "func_imp.R")
 }else{
-  func.dir = "./func_imp.R"
+  func.dir = "./code/func_imp.R"
 }
 source(func.dir)
 
@@ -25,6 +29,16 @@ lapply(ps, function(x) load.myps(x))
 
 merged.df = read.csv(paste0(data.dir, "/raw_contact.csv"))
 sum.res2 = read.csv(paste0(data.dir, "/raw_resp.csv"))
+
+#### PATCHES
+
+# merged.df$cont_setting[which(!merged.df$cont_setting %in%
+#                                c("Household", "Other", "School", "Work"))] = NA
+# merged.df$cont_setting = droplevels(merged.df$cont_setting)
+
+if("weight" %in% intersect(colnames(sum.res2), colnames(merged.df))){
+  merged.df = merged.df[, setdiff(colnames(merged.df), "weight")]
+}
 
 ## save variable names from the raw datasets
 
@@ -361,6 +375,12 @@ for (i in seq_along(idx.match)) {
 colnames(matching.table) = c("resp_id", "cont_id", "old.idx", "new.idx")
 matching.table = as.data.frame(matching.table)
 
+# View(cbind(completed.data[matching.table$old.idx,c("resp_age","cont_age", "resp_workstatus",oth.contvars)],
+#   data.frame(imputed.s = completed.data[matching.table$old.idx,"cont_setting"],
+#                 imputed.r = completed.data[matching.table$old.idx,"cont_relationship"],
+#            input.s = temp.compl[matching.table$new.idx,"cont_setting"],
+#            input.r = temp.compl[matching.table$new.idx,"cont_relationship"])))
+
 completed.data$cont_setting = droplevels(completed.data$cont_setting)
 print(summary(completed.data$cont_setting))
 
@@ -474,6 +494,7 @@ tmp = left_join(merged.df[, - match(vars.ex, colnames(merged.df))],
                 completed.data[,c("resp_id", "cont_id", vars.ex,
                                   "imputed.conts", "imputed.details")],
                 by = c("resp_id", "cont_id"))
+# View(tmp)
 
 # write.csv(tmp, paste0(output.dir, "/imputed_contacts_df.csv"))
 
@@ -506,6 +527,7 @@ imputed.summary$Miss.vars = sapply(tmp, function(x) if(length(x) > 0){
 imputed.summary$Miss.degree = round(imputed.summary$Miss.vars/length(testing), 3)
 
 imputed.summary = imputed.summary[order(imputed.summary$Freq, decreasing = T),]
+# #View(imputed.summary)
 # write.csv(imputed.summary, paste0(output.dir, "/imputed_conts_summary.csv"),
 #           row.names = F)
 
@@ -517,6 +539,7 @@ imputed.summary1 = as.data.frame(table(sum.details1))
 imputed.summary1$Perc = round(100*imputed.summary1$Freq/nrow(merged.df[!is.na(merged.df$cont_identifier),]),2)
 tmp = strsplit(as.character(imputed.summary1[,1]), ", ")
 imputed.summary1 = imputed.summary1[order(imputed.summary1$Freq, decreasing = T),]
+# View(imputed.summary1)
 # write.csv(imputed.summary1, paste0(output.dir, "/imputed_conts_1paper.csv"),
 #           row.names = F)
 
@@ -528,6 +551,7 @@ imputed.summary.indep = imputed.summary.indep[order(imputed.summary.indep$Perc, 
 # write.csv(imputed.summary.indep, paste0(output.dir, "/imputed_conts_indep_summary.csv"),
 #           row.names = F)
 
+# View(imputed.summary.indep)
 
 merged.df.tmp = merged.df
 # merged.df = merged.df.tmp
@@ -1012,6 +1036,19 @@ View(table(merged.df$cont_age, merged.df$cont_identifier, useNA = "ifany"))
 table(merged.df$cont_ethn, merged.df$cont_identifier, useNA = "ifany")
 table(merged.df$cont_gender, merged.df$cont_identifier, useNA = "ifany")
 
+## age groups
+age.vars.breaks = list(c(seq(0,80, by = 5), 120),
+                       c(0,5,10,18,seq(30,60, by=10),120))
+
+age.vars.names = c(paste0("_",c("by5_80","insightnet")))
+
+sum.res3 = create.age.groups(sum.res3, input.var = "resp_age", # resp age
+                             break.list = age.vars.breaks,
+                             suff.list = age.vars.names)
+merged.df = create.age.groups(merged.df, input.var = "cont_age", # contact age
+                              break.list = age.vars.breaks,
+                              suff.list = age.vars.names)
+
 write.csv(merged.df[, varset.cont], paste0(output.dir,"/imputed-contacts2.csv"))
 
 ######## NUMBER OF CONTACTS ########
@@ -1069,6 +1106,17 @@ sum.res3 = left_join(as.data.frame(tmp),
 sum.res3 = sum.res3 %>%
   mutate(cont_setting_nothh_n = total.contacts - cont_setting_Household_n)
 
+# create wave
+sum.res3$wave = NA
+idx.002 = grep("002$", sum.res3$resp_id)
+if(length(idx.002) > 0){
+  sum.res3$wave[idx.002] = "wave2"
+  sum.res3$wave[-idx.002] = "wave1"
+}else{
+  stop("No Wave 2 data")
+}
+sum.res3$wave = as.factor(sum.res3$wave)
+
 write.csv(sum.res3[,c(varset.resp, multn.vars,
                       "total.contacts",
                       "cont_setting_nothh_n")], 
@@ -1084,23 +1132,23 @@ write.csv(sum.res3[,c(varset.resp, multn.vars,
 save(merged.df, # cleaned, merged, imputed contact-level data (obs. unit = contact)
      sum.res2, # respondent-level data before imputations
      sum.res3, # respondent-level data after imputations/calculated number of contacts
-     file = paste0(output.dir, "all-waves.Rdata"))
+     file = paste0(output.dir, "-all-waves.Rdata"))
 
 ## check preliminary number of contacts
-
-nconts.total = merged.df %>%
-  group_by(resp_id, weight) %>%
-  summarise(n = sum(as.numeric(!is.na(.data[["cont_identifier"]]))*weight), .groups = "drop") %>%
-  mutate(across(everything(), ~ replace_na(.x, 0))) %>%
-  summarise(n.pp = sum(weight),mean.n = mean(n))
-print(nconts.total)
-
-nconts.df = merged.df %>%
-  group_by(resp_id, ppwork, weight) %>%
-  summarise(n = sum(as.numeric(!is.na(.data[["cont_identifier"]]))*weight), .groups = "drop") %>%
-  mutate(across(everything(), ~ replace_na(.x, 0))) %>%
-  group_by(ppwork) %>%
-  summarise(n.pp = sum(weight),mean.n = mean(n))
-
-print(nconts.df)
+# 
+# nconts.total = merged.df %>%
+#   group_by(resp_id, weight) %>%
+#   summarise(n = sum(as.numeric(!is.na(.data[["cont_identifier"]]))*weight), .groups = "drop") %>%
+#   mutate(across(everything(), ~ replace_na(.x, 0))) %>%
+#   summarise(n.pp = sum(weight),mean.n = mean(n))
+# print(nconts.total)
+# 
+# nconts.df = merged.df %>%
+#   group_by(resp_id, ppwork, weight) %>%
+#   summarise(n = sum(as.numeric(!is.na(.data[["cont_identifier"]]))*weight), .groups = "drop") %>%
+#   mutate(across(everything(), ~ replace_na(.x, 0))) %>%
+#   group_by(ppwork) %>%
+#   summarise(n.pp = sum(weight),mean.n = mean(n))
+# 
+# print(nconts.df)
 
