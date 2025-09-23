@@ -11,7 +11,7 @@ age_structure_fpath = "data/age_distributions/singleyr-age-dist.csv"
 age_distribution_df = pd.read_csv(age_structure_fpath, index_col="age")
 
 # --- Contact matrix in age groups
-contact_matrix_fpath = "data/survey_epistorm/ageby5_80-matrix.csv"
+contact_matrix_fpath = "data/survey_epistorm/ageby5_80.csv"
 contact_matrix_df = pd.read_csv(
         contact_matrix_fpath,
         header=0, index_col=0,
