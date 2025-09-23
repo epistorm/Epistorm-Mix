@@ -19,7 +19,7 @@ The analyses in this repository are conducted using the imputed data. The raw da
 - F_matrix: frequency-based, setting-specific contact matrices by age 
 - M_reciprocal: reciprocal setting-specific contact matrices by age
 - M_conditional: setting-specific contact matrices by age, sex, and race/ethnicity conditional on in-person presence of an individual in a specific setting
-- M_misc: sensitivity analysis for raw and imputed data, sensitivity analysis for weighted and unweighted data, and scenarios on in-person learning and work
+- M_misc: sensitivity analysis for raw and unweighted data, along with scenarios on in-person learning and work
 
 For more details, check the matrix folder: [Contact matrices](/matrices)<br/>
 
