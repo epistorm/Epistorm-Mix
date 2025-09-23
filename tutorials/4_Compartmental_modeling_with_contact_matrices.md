@@ -35,7 +35,7 @@ For simple transmission models, we need at least two data elements: a population
 Here, we will assume that we have a distribution with one-year resolution, 
 meaning that we know the number of individuals with 0 years old, 1 years old, 2 years old, and so on until the last age considered, for example, 99+ years or older. 
 Such population distribution can be represented as a csv file like this 
-(full example [here](../code/compartmental_epimodel/data/age_distributions/singleyr-age-dist.csv)):
+(full example [here](./compartmental_epimodel/data/age_distributions/singleyr-age-dist.csv)):
 
 ```csv
 "age","n_indiv"
@@ -60,7 +60,7 @@ Where we use the `age` colum for indexing rows of the data frame, and the `n_ind
 ### Loading a contact matrix
 
 A contact matrix between age groups can be stored as a csv file and look like this 
-(full example [here](../code/compartmental_epimodel/data/survey_epistorm/ageby5_80-matrix.csv)):
+(full example [here](./compartmental_epimodel/data/survey_epistorm/ageby5_80-matrix.csv)):
 
 ```csv
 "respondent","[0,5)","[5,10)","[10,15)","[15,20)","[20,25)","[25,30)","[30,35)","[35,40)","[40,45)","[45,50)","[50,55)","[55,60)","[60,65)","[65,70)","[70,75)","[75,80)","[80,120)"
@@ -108,7 +108,7 @@ Then, we aggregate the age distribution by:
 1. Assigning an age group label to each age in the distribution data frame.
 2. Adding together all ages that belong to the same age group
 
-Below is a code snippet to perform this, along other operations that will be helpful for the transmission model. You can also check and use the function `aggregate_age_distribution()` in the [utilities file](../code/compartmental_epimodel/project_utils.py) of the transmission model project.
+Below is a code snippet to perform this, along other operations that will be helpful for the transmission model. You can also check and use the function `aggregate_age_distribution()` in the [utilities file](./compartmental_epimodel/project_utils.py) of the transmission model project.
 
 ```python
 # Aggregate the population distribution from individual ages into age groups
@@ -314,4 +314,4 @@ fig.show()
 
 ## Full code
 
-You can check the full code for this tutorial here: [tutorial_code.py](../code/compartmental_epimodel/tutorial_code.py) 
+You can check the full code for this tutorial here: [comparmental_modeling_contact_matrices.py](./compartmental_epimodel/comparmental_modeling_contact_matrices.py) 
