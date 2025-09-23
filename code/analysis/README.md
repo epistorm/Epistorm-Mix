@@ -28,8 +28,3 @@ The main text analysis includes the following scripts included in the code folde
 
 The supplementary text analysis includes the following scripts included in the code folder in this analysis folder: `tbl1_sm.R`, `tbl2_sm.R`, `by5_80.R`, `freq-m.R`, `sym-mat.R`,`inpers.R`, `inpers_barplot.R`, `unw-analysis.R`, `raw-analysis.R`, `race.R`, `race_assort.R`, `bysex.R`, `more-mat.R`, and `rel-diff.R`.
 
-## Output
-
-All the output will be in the `main` and `supmat` folders in `output` within this directory.
-
-To access the contact matrices directly, go to the `csv` folders in `main` and `supmat`. The matrices will be in `.csv` format and can be read as respondent group as the row and contact group as the column. Each observation is the average number of contacts for a respondent in one group with contact in one group.
