@@ -11,7 +11,7 @@ The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a
 - Raw data: respondent-level and contact-level data
 - Imputed data: respondent-level and contact-level data
 
-The analyses in this repository are conducted using the imputed data. The raw data is provided for the sensitivity analysis. Additionally, codebooks for both the respondent-level and contact-level data are provided with the raw and imputed data. For more details, check the data folder: [Contact patterns data](/data)<br/>
+The analyses in this repository are conducted using the imputed data. The raw data is provided for the sensitivity analysis. Additionally, codebooks for both the respondent-level and contact-level data are provided with the raw and imputed data. For the data, check the data folder: [Contact patterns data](/data)<br/>
 
 ### Contact Matrices
 
@@ -21,11 +21,11 @@ The analyses in this repository are conducted using the imputed data. The raw da
 - M_conditional: setting-specific contact matrices by age, sex, and race/ethnicity conditional on in-person presence of an individual in a specific setting
 - M_misc: sensitivity analysis for raw and unweighted data, along with scenarios on in-person learning and work
 
-For more details, check the matrix folder: [Contact matrices](/matrices)<br/>
+For the matrices, check the matrix folder: [Contact matrices](/matrices)<br/>
 
 ### Code
 
-Code is provided for imputations and analyses. For more details, check the code folder: [Code](/code)
+Code is provided for imputations and analyses. For the code, check the code folder: [Code](/code)
 
 ### Tutorials
 We provide a series of totorials to help you get started with Epistorm-Mix. 
