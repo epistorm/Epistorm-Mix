@@ -1,5 +1,0 @@
-matplotlib
-pandas
-plotly
-PyYAML
-scipy
