@@ -12,9 +12,9 @@ The example in this tutorial is based on the information from the previous tutor
 
 ## Plot
 
-There were two age-specific contact matrices calculated for individual age and by age groups.
+There were two age-specific contact matrices calculated in the previous tutorial. 
 
-The plot for individual ages can be created using the code below:
+The plot for the contact matrix on individual ages can be created using the code below:
 
 ```         
 ggplot(age_matrix_ls[[1]]) +
@@ -43,7 +43,7 @@ ggplot(age_matrix_ls[[1]]) +
 
 ![Age Plot 1](./figures/2_age_total.png)
 
-The plot for age groups can be visualized using the code below:
+The plot for the contact matrix on age groups (by 5 up to 80 years old) can be visualized using the code below:
 
 ```         
 ggplot(by5_matrix) +
