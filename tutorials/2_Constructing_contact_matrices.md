@@ -143,7 +143,7 @@ Respondent specific weights, weighted sum of contacts between respondent-contact
     select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3] to visualize contact matrices and in [Tutorial 4](../tutorials/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices can be used in compartmental models. 
+The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](../tutorials/3_Visualizing_contact_matrices.md) to visualize contact matrices and in [Tutorial 4](../tutorials/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices can be used in compartmental models. 
 
 ### Full code
 You can check out the full code for this tutorial here: [constructing_contact_matrices.R](./code/constructing_contact_matrices.R)
