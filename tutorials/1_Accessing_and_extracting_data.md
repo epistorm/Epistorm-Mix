@@ -39,9 +39,9 @@ To extract the data from `github` directly, you will need to retrieve the url of
 
 Copy the url for the Raw data file. Note that the url should start with `https://raw.githubusercontent.com/...`, and if this is not the case then reading the data into R directly will not work. To load the data into your R program, simply use the `read.csv` function using the url instead of a file path: 
 ```R
-resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/main/code/contact_matrices/data/imputed_part_reform.csv"
+resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/main/tutorials/data/imputed_part_reform.csv"
 resp_imp = read.csv(resp.url)
 ```
 
 ## Full code
-You can check out the full code for this tutorial here: [tutorial_code.r](../code/accessing_data/tutorial_code.R)
+You can check out the full code for this tutorial here: [tutorial_code.r](../tutorials/data/accessing_and_extracting_data.R)
