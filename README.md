@@ -10,6 +10,7 @@ The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a
 
 - Raw data: respondent-level and contact-level data
 - Imputed data: respondent-level and contact-level data
+- External data: additional contact patterns data from other studies
 
 The analyses in this repository are conducted using the imputed data. The raw data is provided for the sensitivity analysis. Additionally, codebooks for both the respondent-level and contact-level data are provided with the raw and imputed data. For the data, check the data folder: [Contact patterns data](/data)<br/>
 
