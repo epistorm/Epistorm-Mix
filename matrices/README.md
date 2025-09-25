@@ -2,7 +2,7 @@
 
 ## Matrix
 
-Contact matrices (M~ij~) are estimated where each cell represents the weighted 
+Contact matrices ($M_{ij}$) are estimated where each cell represents the weighted 
 mean number of contacts of a participant in group *i* 
 (e.g., age, race/ethnicity, and sex) reported with individuals in group *j*.
 
