@@ -75,5 +75,5 @@ Contact matrices estimated for the sensitivity analysis for the raw and imputed 
 
 For creating scenarios of in person or remote by age group, the contact matrix procedure was modified using the methods for the conditional matrix ($\theta_{ij}^k$). We re-calculated weights to aggregate respondents who were in person for their main activity with not working or studying and vice versa for respondents who were remote. We calculated two matrices assuming the entire population was working/studying in person for the first and assuming the entire population was working/studying remotely for the second. 
 
-
+Matrices used in the analysis are available: [M_misc](./M_misc)
 
