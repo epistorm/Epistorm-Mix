@@ -9,6 +9,7 @@
 - [matrices-Wang.xlsx](./matrices-Wang.xlsx)
   - Wang, M. et al. Social contacts patterns relevant to the transmission of infectious diseases in Suzhou, China following the COVID-19 epidemic. J. Health Popul. Nutr. 43, 58 (2024).
 - [matrices-Mistry.csv](./matrices-Mistry.csv)
+- [mistry-data](./mistry-data)
   - Mistry, Dina, et al. "Inferring high-resolution human mixing patterns for disease modeling." Nature communications 12.1 (2021): 323.
 - [matrices-Prem.xlsx](./matrices-Prem.xlsx)
   - Prem, Kiesha, Alex R. Cook, and Mark Jit. "Projecting social contact matrices in 152 countries using contact surveys and demographic data." PLoS computational biology 13.9 (2017): e1005697.
