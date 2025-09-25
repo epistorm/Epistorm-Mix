@@ -8,7 +8,7 @@ This tutorial is presented with code examples in [R](https://www.r-project.org/)
 
 In the code examples, we directly use the following R packages: [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for visualizing results.
 
-The example in this tutorial uses data from the previous tutorial. It is recommended to complete tutorial 2 on constructing contact matrices prior to starting this tutorial.
+The example in this tutorial is based on the information from the previous tutorial. It is recommended to complete tutorial 2 on constructing contact matrices prior to starting this tutorial.
 
 ## Plot
 
