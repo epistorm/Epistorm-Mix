@@ -1,6 +1,6 @@
 # Using contact matrices for compartmental epidemiological modeling
 
-In this tutorial, we will explore how to use the age-specific contact matrices estimated using contact patterns data ([Tutorial 2](../tutorials/2_Constructing_contact_matrices.md)) to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
+In this tutorial, we will explore how to use the age-specific contact matrices estimated using contact patterns data to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
 
 
 ## Requirements
@@ -35,7 +35,7 @@ For simple transmission models, we need at least two data elements: a population
 Here, we will assume that we have a distribution with one-year resolution, 
 meaning that we know the number of individuals with 0 years old, 1 years old, 2 years old, and so on until the last age considered, for example, 99+ years or older. 
 Such population distribution can be represented as a csv file like this 
-(full example [here](./compartmental_epimodel/data/age_distributions/singleyr-age-dist.csv)):
+(full example [here](./data/example_age_structure.csv)):
 
 ```csv
 "age","n_indiv"
@@ -50,7 +50,7 @@ Such population distribution can be represented as a csv file like this
 This file can be loaded in python as a pandas dataframe:
 
 ```python
-age_structure_fpath = "example_age_structure.csv"
+age_structure_fpath = "data/example_age_structure.csv"
 age_distribution_df = pd.read_csv(age_structure_fpath, index_col="age")
 ```
 
@@ -60,7 +60,7 @@ Where we use the `age` colum for indexing rows of the data frame, and the `n_ind
 ### Loading a contact matrix
 
 A contact matrix between age groups can be stored as a csv file and look like this 
-(full example [here](./compartmental_epimodel/data/survey_epistorm/ageby5_80.csv)):
+(full example [here](./data/example_contact_matrix.csv)):
 
 ```csv
 "respondent","[0,5)","[5,10)","[10,15)","[15,20)","[20,25)","[25,30)","[30,35)","[35,40)","[40,45)","[45,50)","[50,55)","[55,60)","[60,65)","[65,70)","[70,75)","[75,80)","[80,120)"
@@ -73,7 +73,7 @@ A contact matrix between age groups can be stored as a csv file and look like th
 This file can be loaded as a square-shaped pandas data frame:
 
 ```python
-contact_matrix_fpath = "example_contact_matrix.csv"
+contact_matrix_fpath = "data/example_contact_matrix.csv"
 contact_matrix_df = pd.read_csv(
         contact_matrix_fpath,
         header=0, index_col=0,
@@ -152,7 +152,7 @@ Before anything, let's define some model and simulation parameters, along with s
 ```python
 # Parameters
 dt = 1.0  # Length of the time step, in days
-beta = 0.090  # Per-contact transmission risk
+beta = 0.050  # Per-contact transmission risk
 gamma = 0.333  # Rate of removal from the infectious compartment
 n_steps = 800  # Number of steps of the model
 initial_infec_fraction = 1.E-5  # Fraction to start as infectious
@@ -283,7 +283,7 @@ attack_rate_array = R[-1] / n_indiv_array  # Infected fraction by age. We can us
 avg_attack_rate = R[-1].sum() / total_pop  # Fraction of the entire population that was infected at some point.
 ```
 
-We can use a `matpltlib` plot to visualize the incidence over time, normalized by the total population:
+We can use a `matplotlib` plot to visualize the incidence over time, normalized by the total population:
 
 ```python
 fig, ax = plt.subplots()
@@ -294,11 +294,12 @@ ax.set_xlabel("Time (days)")
 ax.set_ylabel("Normalized Infection Incidence")
 
 fig.show()
+plt.show()
 ```
 
 ![](figures/fig_compartmental_incidence.png)
 
-We can also plot the attack rate by for each age:
+We can also plot the attack rate for each age:
 
 ```python
 fig, ax = plt.subplots()
@@ -308,10 +309,15 @@ ax.set_xlabel("Age")
 ax.set_ylabel("Attack rate")
 
 fig.show()
+plt.show()
 ```
 
 ![](figures/fig_compartmental_atk_rate.png)
 
 ## Full code
 
-You can check the full code for this tutorial here: [compartmental_modeling_contact_matrices.py](./compartmental_epimodel/compartmental_modeling_contact_matrices.py) 
+You can check the full code for this tutorial here: [code/mathematical_modeling.py](./code/mathematical_modeling.py). If you have a configured python environment, you can run it from a terminal opened in the same directory of this file (`mathematical-modeling/`) by running:
+
+```bash
+python code/mathematical_modeling.py
+```
