@@ -1,3 +1,12 @@
+# # remove other
+# idx.other_r = which(merged.df$resp_sex == "Other")
+# idx.other_c = which(merged.df$cont_sex == "Other")
+# idx.other = union(idx.other_c,idx.other_r)
+# 
+# if (length(idx.other) > 0) {
+#   merged.df = merged.df[-idx.other,]
+# }
+
 merged.df$resp_sex = as.factor(merged.df$resp_sex)
 merged.df$resp_sex = droplevels(merged.df$resp_sex)
 
@@ -72,6 +81,20 @@ matrix_plots <- lapply(seq_along(g_ls), function(setting) {
   return(p)
 })
 
+## save
+lapply(1:length(g_ls), function(m) {
+  
+  matrix_sex = g_ls[[m]] %>% 
+    dplyr::select("resp_sex", "cont_sex", "ncont") %>% 
+    pivot_wider(names_from = "cont_sex", values_from = "ncont")
+  
+  write.csv(matrix_sex,
+            paste0(output.dir, "/csv/sex/", 
+                   names(g_ls)[m], "-", 
+                   "sex-matrix-cond.csv"),
+            row.names = F)
+})
+
 #### Unconditional ####
 
 ## weighted # of resp ##
@@ -100,6 +123,20 @@ g_ls2 <- lapply(setting_names, function(setting) {
   return(g_matrix)
 })
 names(g_ls2) = c("Total", "Household", "School", "Work", "Other")
+
+## save
+lapply(1:length(g_ls2), function(m) {
+  
+  matrix_sex = g_ls2[[m]] %>% 
+    dplyr::select("resp_sex", "cont_sex", "ncont") %>% 
+    pivot_wider(names_from = "cont_sex", values_from = "ncont")
+  
+  write.csv(matrix_sex,
+            paste0(output.dir, "/csv/sex/", 
+                   names(g_ls)[m], "-", 
+                   "sex-matrix.csv"),
+            row.names = F)
+})
 
 matrix_plots <- lapply(seq_along(g_ls2), function(setting) {
   
@@ -186,6 +223,14 @@ matrix_plots_by = lapply(seq_along(g_ls3), function(setting) {
       
       # print(paste0(setting, ": ", gend1,", ", gend2))
       
+      lim_max = c()
+      for (i in 1:length(g_ls3[[setting]])) {
+        for (j in 1:length(g_ls3[[setting]][[i]])) {
+          lim_max = c(lim_max, max(g_ls3[[setting]][[i]][[j]]$ncont, na.rm = T))
+        }
+      }
+      lim_max = max(lim_max)
+      
       df = g_ls3[[setting]][[gend1]][[gend2]]
       df = df %>% 
         rename_with(~ case_when(
@@ -194,8 +239,19 @@ matrix_plots_by = lapply(seq_along(g_ls3), function(setting) {
           TRUE ~ .
         ))
       
+      bysex_byage = df %>% 
+        dplyr::select("resp", "cont", "ncont") %>% 
+        pivot_wider(names_from = "cont", values_from = "ncont")
+      
       level1 = names(g_ls3[[setting]])[gend1]
       level2 = names(g_ls3[[setting]][[gend1]])[gend2]
+      
+      write.csv(bysex_byage,
+                paste0(output.dir, "csv/sex/", 
+                       names(g_ls3)[setting], "-",
+                       level1, "-", level2,
+                       "-bysex-byage.csv"),
+                row.names = F)
       
       p = ggplot(df) +
         geom_tile(aes(x = resp, y = cont, fill = ncont)) +
@@ -203,8 +259,10 @@ matrix_plots_by = lapply(seq_along(g_ls3), function(setting) {
                        level1, " with ", level2)) + # Main title
         xlab("Respondent Age") + # X-axis title
         ylab("Contact Age") + # Y-axis title
-        scale_fill_gradientn(colors = c(mycol[c(14, 8)], "lightblue"),
-                             name = "N of contacts") +
+        scale_fill_gradientn(colors = c(mycol[c(14, 8)], "lightblue", "#D1E5F4","#E5F3FD"),
+                             values = c(0, 0.3, 0.7, 0.9, 1),
+                             name = "N of contacts",
+                             limits = c(0, lim_max)) +
         coord_fixed(ratio = 1) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               plot.title = element_text(hjust = 0.5, size = 16),
