@@ -18,8 +18,6 @@
   - XXX
 - [population-Italy.csv](./population-Italy.csv)
   - “Popolazione Residente.” Istat.it, 2025
-- [Italy-sample-size.csv](./Italy-sample-size.csv)
-  - XXX
-- [Lucchini_bootstrap_age_group_total.zip](./Lucchini_bootstrap_age_group_total.zip)
-  - XXX
+- [Lucchini_bootstrap_age_group_total.zip](./Lucchini_bootstrap_age_group_total.zip), [Italy-sample-size.csv](./Italy-sample-size.csv)
+  - Lucchini, Lorenzo, et al. “Post-Pandemic Social Contacts in Italy: Implications for Social Distancing Measures on In-Person School and Work Attendance.” ArXiv.org. (2024).
  
