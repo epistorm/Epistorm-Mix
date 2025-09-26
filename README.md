@@ -18,9 +18,6 @@ The analyses in this repository are conducted using the imputed data. The raw da
 
 - M_matrix: total and setting-specific contact matrices by age, sex, and race/ethnicity
 - F_matrix: frequency-based, setting-specific contact matrices by age 
-- M_reciprocal: reciprocal setting-specific contact matrices by age
-- M_conditional: setting-specific contact matrices by age, sex, and race/ethnicity conditional on in-person presence of an individual in a specific setting
-- M_misc: sensitivity analysis for raw and unweighted data, along with scenarios on in-person learning and work
 
 For the matrices, check the matrix folder: [Contact matrices](/matrices)<br/>
 
@@ -40,7 +37,7 @@ The preprint describing the data collection and estimation of the contact matric
 
 ```bibtex 
 @article{XXX,
-        author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani,                            Alessandro and Ajelli, Marco},    
+        author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani, Alessandro and Ajelli, Marco},    
         title = {The Post-Pandemic Contact Landscape in the United States: Implications for Respiratory Pathogen Transmission},<br/>
         elocation-id = {},
         year = {2025},
