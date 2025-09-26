@@ -14,8 +14,8 @@ model_initial_infec_fraction: 1.E-5
 model_initial_infec_age: 45  # Just a single age in which first infectious are initialized
 
 # -()- Epistorm matrix
-age_structure_fpath: "data/age_distributions/population-by-age-The_Netherlands.csv"
-contact_matrix_fpath: "data/countries_matrices/contact-M-The-Netherlands.csv"
+age_structure_fpath: "../../data/math-model_data/age_distributions/population-by-age-The_Netherlands.csv"
+contact_matrix_fpath: "../../data/math-model_data/countries_matrices/contact-M-The-Netherlands.csv"
 contact_matrix_age_groups: [0, 5, 12, 18, 30, 40, 50, 60, 70]
 cm_has_header: True
 cm_has_index: True

@@ -15,8 +15,8 @@ model_initial_infec_fraction: 1.E-5
 model_initial_infec_age: 45  # Just a single age in which first infectious are initialized
 
 # -()- Mistry Matrices – First test
-age_structure_fpath: "data/age_distributions/singleyr-age-dist_100.csv"
-contact_matrix_fpath: "data/mistry-2021/contact_matrices/United_States_country_level_M_overall_contact_matrix_18.csv"
+age_structure_fpath: "../../data/math-model_data/age_distributions/singleyr-age-dist_100.csv"
+contact_matrix_fpath: "../../data/math-model_data/mistry-2021/contact_matrices/United_States_country_level_M_overall_contact_matrix_18.csv"
 contact_matrix_age_groups: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
 cm_transpose: False
 
