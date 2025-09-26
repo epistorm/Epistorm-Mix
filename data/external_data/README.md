@@ -12,10 +12,8 @@
   - Mistry, Dina, et al. "Inferring high-resolution human mixing patterns for disease modeling." Nature communications 12.1 (2021): 323.
 - [matrices-Prem.xlsx](./matrices-Prem.xlsx)
   - Prem, Kiesha, Alex R. Cook, and Mark Jit. "Projecting social contact matrices in 152 countries using contact surveys and demographic data." PLoS computational biology 13.9 (2017): e1005697.
-- [federal-state-holidays.csv](./federal-state-holidays.csv)
-  - XXX
-- [student_agestr.csv](./student_agestr.csv)
-  - XXX
+- [federal-state-holidays.csv](./federal-state-holidays.csv), [student_agestr.csv](./student_agestr.csv)
+  - Bureau, U. C. American Community Survey (ACS). Census.gov (2025). 
 - [population-Italy.csv](./population-Italy.csv)
   - “Popolazione Residente.” Istat.it, 2025
 - [Lucchini_bootstrap_age_group_total.zip](./Lucchini_bootstrap_age_group_total.zip), [Italy-sample-size.csv](./Italy-sample-size.csv)
