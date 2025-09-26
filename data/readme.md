@@ -3,9 +3,7 @@
 ## Raw Data and Imputed Data 
 
 Included for the raw data and imputed data are the respondent-level and contact-level data. Additionally,
-a codebook for both respondent-level and contact-level data are included.
-
-In the codebook, there is a description of the variable, response options of each variable, and the variable name as it is listed in the survey questionnaire. 
+a codebook for both respondent-level and contact-level data are included. In the codebook, there is a description of the variable, response options of each variable, and the variable name as it is listed in the survey questionnaire. 
 
 ## External Data
 
