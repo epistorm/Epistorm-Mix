@@ -37,6 +37,7 @@ if (!dir.exists("./output/supmat")){
   dir.create("./output/supmat/csv/unw") # used in unw-analysis.R
   dir.create("./output/supmat/csv/raw") # used in raw-analysis.R
   dir.create("./output/supmat/csv/race") # used in race.R
+  dir.create("./output/supmat/csv/sex") # used in bysex.R
 }
 
 ## set these directories to save resulting figures and tables
