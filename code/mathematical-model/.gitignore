@@ -186,3 +186,7 @@ outputs
 tmp_figures/*
 tmp_figures.zip
 !tmp_figures/readme.md
+
+# Ignore folders that will be moved
+data
+outputs
