@@ -1,6 +1,6 @@
 
 # Loading data downloaded from github
-resp_imp = read.csv("imputed_resp.csv")
+resp_imp = read.csv("Epistorm-Mix/tutorials/data-analysis/imputed_resp.csv")
 head(resp_imp)
 
 
@@ -14,7 +14,7 @@ head(resp_imp)
 
 
 ## Extracting data from github directly 
-resp.url = "https://github.com/allisandrak/Epistorm-Mix/blob/84593df870d9a5b9b8b0710ca7b02189a3c03298/tutorials/data/imputed_resp.csv"
+resp.url = "https://github.com/allisandrak/Epistorm-Mix/blob/872878fab849276a46ca4dc839ccd1c568d4f0bd/tutorials/data-analysis/data/imputed_resp.csv"
 resp_imp = read.csv(resp.url)
 
 
