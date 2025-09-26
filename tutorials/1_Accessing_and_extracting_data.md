@@ -44,4 +44,4 @@ resp_imp = read.csv(resp.url)
 ```
 
 ## Full code
-You can check out the full code for this tutorial here: [tutorial_code.r](../tutorials/code/accessing_and_extracting_data.R)
+You can check out the full code for this tutorial here: [accessing_and_extracting_data.r](../tutorials/code/accessing_and_extracting_data.R)
