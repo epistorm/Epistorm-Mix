@@ -1,0 +1,10 @@
+Contact matrices from Mistry et al 2021
+
+Paper:
+https://www.nature.com/articles/s41467-020-20544-y
+
+GitHub repo:
+https://github.com/mobs-lab/mixing-patterns
+
+License:
+Apache-2.0
