@@ -11,13 +11,6 @@ my.folder = "/your-path/Epistorm-Mix/code/analysis"
 setwd(my.folder)
 ```
 
-Create an output folder with folders for main text analyses (`main`) and supplementary text analyses (`supplementary`). Your folder names should match the output directory code in `_pipeline_analysis.R`. Within the scripts in the pipelines, additional folders will need to be created for more specific outputs (ex., `.csv` files).
-
-``` r
-output.dir = "./output/main/"
-sm.dir = "./output/supmat/" 
-```
-
 ## Analysis Pipeline
 
 ### Main Text Analysis
