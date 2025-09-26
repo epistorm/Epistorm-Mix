@@ -44,7 +44,7 @@ lapply(ps, function(x){
 })
 
 ## READ IMPUTED RESPONDENT- AND CONTACT-LEVEL DATA 
-# Located in the data folder in tutorials 
+# Located in the data folder in tutorials/data-analysis 
 resp_imp = read.csv("imputed_part_reform.csv")
 cont_imp = read.csv("imputed_part_reform.csv")
 
