@@ -1,6 +1,6 @@
 
 # Loading data downloaded from github
-resp_imp = read.csv("imputed_resp.csv")
+resp_imp = read.csv("Epistorm-Mix/tutorials/data-analysis/imputed_resp.csv")
 head(resp_imp)
 
 
