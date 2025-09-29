@@ -5,8 +5,8 @@ rm(list = ls())
 #### Folders and Directories ####
 
 ## Working directory
-my.folder = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code"
-# my.folder = "/Users/shsinc/Desktop/phd/Epistorm-survey/shared-data-code"
+my.folder = "[your preferred working directory name here]"
+
 setwd(my.folder)
 
 ## Set global directory for sourcing the code
