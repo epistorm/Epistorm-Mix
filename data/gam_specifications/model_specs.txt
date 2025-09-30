@@ -1,0 +1,20 @@
+Best Fit Specifications
+
+aic 
+total.contacts ~ s(resp_age, k = 21) + ppwork_nothome + resp_ethn +      resp_sex + resp_resp_sick + hhsize2 + hh_income 
+rsq 
+total.contacts ~ resp_age_insightnet + ppwork_nothome + resp_ethn +      resp_sex + hhsize2 + hh_income 
+dev 
+total.contacts ~ resp_age_by5_80 + ppwork_nothome + resp_ethn +      resp_sex + resp_resp_sick + resp_hhm_sick + hhsize2 +      hh_income + hh_loc_reg4 + is_weekend2 + weeks 
+actvty 
+total.contacts ~ resp_age_by5_80 + ppwork2 + resp_ethn + resp_sex +      resp_resp_sick + resp_hhm_sick + hhsize2 + hh_income + hh_loc_reg4 +      is_weekend2 + weeks 
+aic 
+cont_setting_nothh_n ~ s(resp_age, k = 21) + ppwork_nothome +      resp_ethn + resp_sex + resp_resp_sick + hh_income 
+rsq 
+cont_setting_nothh_n ~ ppwork_nothome + resp_ethn + resp_sex +      resp_resp_sick + hhsize2 + hh_income 
+dev 
+cont_setting_nothh_n ~ resp_age_by5_80 + ppwork_nothome + resp_ethn +      resp_sex + resp_resp_sick + hhsize2 + hh_income + hh_loc_reg4 +      is_weekend2 + weeks 
+actvty 
+cont_setting_nothh_n ~ resp_age_by5_80 + ppwork2 + resp_ethn +      resp_sex + resp_resp_sick + hhsize2 + hh_income + hh_loc_reg4 +      is_weekend2 + weeks 
+resp_age_insightnet 
+cont_setting_nothh_n ~ resp_age_insightnet + ppwork_nothome +      resp_ethn + resp_sex + resp_resp_sick + hhsize2 + hh_income +      hh_loc_reg4 + is_weekend2 + weeks 
