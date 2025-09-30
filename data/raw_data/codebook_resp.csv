@@ -34,3 +34,5 @@ tm_start_cdt,What is respondent's starting time of the survey? (Chicago Time),Nu
 tm_end_cdt,What is respondent's finishing time of the survey? (Chicago Time),Numeric,Created
 wave,Which wave did respondent participate in?,Numeric,Provided by Ipsos
 weight,Respondent weight,Numeric,Provided by Ipsos
+tm_start_lt,What is respondent's starting time of the survey?,Numeric,Created
+tm_end_lt,What is respondent's finishing time of the survey?,Numeric,Created

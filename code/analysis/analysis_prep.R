@@ -1,7 +1,7 @@
 #### Data preparations + Main Figures & Tables ####
 
 ## Data Directory
-data.dir = "../../data/imputed_data/"
+data.dir = "./data/imputed_data/"
 
 #### Functions #### 
 ## If the global directory for the code is set, use it for sourcing functions
@@ -29,9 +29,8 @@ mycol= c("#800080", "#5f875f", "#d75f87", "#d7afff", "#af5f5f", "#af87d7",
 
 #### Read Clean Data ####
 
-merged.df = read.csv(paste0(data.dir, "/imputed-contacts2.csv"))
-sum.res3 = read.csv(paste0(data.dir, "/imputed-resp2.csv"))
-
+merged.df = read.csv(paste0(data.dir, "imputed-contacts2.csv"))
+sum.res3 = read.csv(paste0(data.dir, "imputed-resp2.csv"))
 
 #### Create Age Groups ####
 
