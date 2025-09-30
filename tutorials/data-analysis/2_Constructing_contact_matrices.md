@@ -1,5 +1,5 @@
 # Estimating age-specific contact matrices 
-In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. Contact matrices can then be plotted, as described in [Tutorial 3](../tutorials/3_Visualizing_contact_matrices.md). These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 4](../tutorials/4_Compartmental_modeling_contact_matrices.md).  
+In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. Contact matrices can then be plotted, as described in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md). These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_contact_matrices.md).  
 
 ## Requirements
 This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages. 
@@ -143,7 +143,7 @@ Respondent specific weights, weighted sum of contacts between respondent-contact
     select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](../tutorials/3_Visualizing_contact_matrices.md) to visualize contact matrices and in [Tutorial 4](../tutorials/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices can be used in compartmental models. 
+The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md) to visualize contact matrices and in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices can be used in compartmental models. 
 
 ### Full code
-You can check out the full code for this tutorial here: [constructing_contact_matrices.R](./code/constructing_contact_matrices.R)
+You can check out the full code for this tutorial here: [constructing_contact_matrices.R](./data-analysis/code/constructing_contact_matrices.R)
