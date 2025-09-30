@@ -5,14 +5,14 @@ rm(list = ls())
 #### Folders and Directories ####
 
 ## Working directory
-my.folder = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code"
-# my.folder = "/Users/shsinc/Desktop/phd/Epistorm-survey/shared-data-code"
+my.folder = "[your preferred working directory name here]"
+
 setwd(my.folder)
 
 ## Set global directory for sourcing the code
 ## (This code is insurance in case you run any code files that change working directory)
 e = new.env()
-e$global.dir = paste0(getwd(), "/code/")
+e$global.dir = paste0(getwd(), "/code/analysis/")
 attach(e, name = 'global.dir')
 
 ## Output directory
@@ -37,6 +37,7 @@ if (!dir.exists("./output/supmat")){
   dir.create("./output/supmat/csv/unw") # used in unw-analysis.R
   dir.create("./output/supmat/csv/raw") # used in raw-analysis.R
   dir.create("./output/supmat/csv/race") # used in race.R
+  dir.create("./output/supmat/csv/sex") # used in bysex.R
 }
 
 ## set these directories to save resulting figures and tables

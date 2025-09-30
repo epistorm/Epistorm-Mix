@@ -18,9 +18,6 @@ The analyses in this repository are conducted using the imputed data. The raw da
 
 - M_matrix: total and setting-specific contact matrices by age, sex, and race/ethnicity
 - F_matrix: frequency-based, setting-specific contact matrices by age 
-- M_reciprocal: reciprocal setting-specific contact matrices by age
-- M_conditional: setting-specific contact matrices by age, sex, and race/ethnicity conditional on in-person presence of an individual in a specific setting
-- M_misc: sensitivity analysis for raw and unweighted data, along with scenarios on in-person learning and work
 
 For the matrices, check the matrix folder: [Contact matrices](/matrices)<br/>
 
@@ -30,17 +27,17 @@ Code is provided for imputations and analyses. For the code, check the code fold
 
 ### Tutorials
 We provide a series of totorials to help you get started with Epistorm-Mix. 
-- [Tutorial 1](/tutorials/1_Accessing_and_extracting_data.md): Accessing and extracting data
-- [Tutorial 2](/tutorials/2_Constructing_contact_matrices.md): Constructing contact matrices
-- [Tutorial 3](/tutorials/3_Visualizing_contact_matrices.md): Visualizing contact matrices
-- [Tutorial 4](/tutorials/4_Compartmental_modeling_with_contact_matrices.md): Compartmental modeling with contact matrices 
+- [Tutorial 1](/tutorials/data-analysis/1_Accessing_and_extracting_data.md): Accessing and extracting data
+- [Tutorial 2](/tutorials/data-analysis/2_Constructing_contact_matrices.md): Constructing contact matrices
+- [Tutorial 3](/tutorials/data-analysis/3_Visualizing_contact_matrices.md): Visualizing contact matrices
+- [Tutorial 4](/tutorials/mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md): Compartmental modeling with contact matrices 
 
 ## Citation
 The preprint describing the data collection and estimation of the contact matrices is available [here](). To reference our work, please use the following citation: 
 
 ```bibtex 
 @article{XXX,
-        author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani,                            Alessandro and Ajelli, Marco},    
+        author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani, Alessandro and Ajelli, Marco},    
         title = {The Post-Pandemic Contact Landscape in the United States: Implications for Respiratory Pathogen Transmission},<br/>
         elocation-id = {},
         year = {2025},

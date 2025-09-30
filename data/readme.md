@@ -8,6 +8,6 @@ a codebook for both respondent-level and contact-level data are included. In the
 ## External Data
 
 The external data used in this analysis includes contact pattern data from 
-pre-pandemic US estimates as well as from other European countries and China. 
+pre-pandemic US estimates as well as from other countries. 
 For more information on where the data was taken, refer to the folder: 
 [external-data](./external_data)
