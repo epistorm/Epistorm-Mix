@@ -1,7 +1,7 @@
 #### Requires constructing_contact_matrices.R ####
 
 ggplot(age_matrix_ls[[1]]) +
-  geom_raster(aes(x = resp_age_plot, y = cont_age_plot, fill = pred), interpolate = TRUE) +
+  geom_raster(aes(x = resp_age, y = cont_age, fill = pred), interpolate = TRUE) +
   ggtitle("Title") + # Main title
   xlab("Respondent Age") + # X-axis title
   ylab("Contact Age") + # Y-axis title

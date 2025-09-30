@@ -1,4 +1,5 @@
-rm(list = ls())
+## Requires accessing_and_extracting_data.R
+cont_imp = read.csv("./tutorials/data-analysis/data/imputed_cont.csv")
 
 ## Function for estimating average contacts by respondent-contact age groups
 calc.m.num = function(mydata, 
@@ -31,6 +32,40 @@ calc.m.num = function(mydata,
   return(age_matrix)
 }
 
+#### create age group ####
+## helper function
+mycut = function(var, breaks){
+  maxv = breaks[length(breaks)]
+  if(maxv > max(var, na.rm = T)){
+    mylabels = c(paste(breaks[1:(length(breaks)-2)], 
+                       breaks[2:(length(breaks)-1)]-1, sep = "-"),
+                 paste0(breaks[length(breaks)-1],"+"))
+  }else{
+    mylabels = paste(breaks[1:(length(breaks)-1)], 
+                     breaks[2:length(breaks)]-1, sep = "-")
+  }
+  var = cut(var,
+            breaks = breaks,
+            labels = mylabels,
+            right = F)
+}
+## main function
+create.age.groups = function(mydata,
+                             input.var = "resp_age",
+                             break.list = list(seq(0,120, by = 5),
+                                               c(seq(0,75, by = 5), 120),
+                                               c(seq(0,80, by = 5), 120),
+                                               seq(0,120, by = 15),
+                                               age.groups),
+                             suff.list = paste0("_",c("by5", "by5_75","by5_80","by15","g"))){
+  
+  tmp.vars = lapply(break.list, function(x) mycut(mydata[,input.var],x))
+  tmp.names = paste0(input.var, suff.list)
+  names(tmp.vars) = tmp.names
+  mydata[,tmp.names] = as.data.frame(tmp.vars)
+  return(mydata)
+}
+
 ## LIBRARIES
 ps = c("dplyr", "mgcv", "ggplot2", "tidyr", "fastDummies", "Hmisc")
 
@@ -43,14 +78,9 @@ lapply(ps, function(x){
   x
 })
 
-## READ IMPUTED RESPONDENT- AND CONTACT-LEVEL DATA 
-# Located in the data folder in tutorials/data-analysis 
-resp_imp = read.csv("imputed_part_reform.csv")
-cont_imp = read.csv("imputed_part_reform.csv")
-
 ## ESTIMATING AGE-SPECIFIC CONTACT MATRICES
 ## Merge datasets
-merged_df = left_join(resp_imp, cont_imp, by = "resp_id")
+merged.df = left_join(resp_imp, cont_imp, by = "resp_id")
 
 ## Binary variable to denote whether respondent reported contacts
 cont_cols = grep("^cont_", colnames(merged.df), value = TRUE)
@@ -77,14 +107,14 @@ setting_names = c("binary_col") ## more can be added (household, school, work, o
 ## Smoothed matrices
 age_matrix_ls = lapply(setting_names, function(setting) {
   
-  age_matrix = calc.m.num(mydata = combined_df,
+  age_matrix = calc.m.num(mydata = merged.df,
                           myattr = c("resp_age", "cont_age"), # vector of the names of the two attributes
                           setting = setting,
                           predict.m = predict.m,
                           denumer.n = age_matrix_n)
   
   # GAM
-  model = gam(ncont ~ te(as.numeric(part_age), as.numeric(cnt_age),
+  model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
                          k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
               family = nb(),
               data = age_matrix)
@@ -102,10 +132,10 @@ age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120))
 age.vars.names = c("_by5_80")
 
 merged.df = create.age.groups(merged.df, input.var = "resp_age", # resp age
-                              break.list = age.vars.breaks,
+                              break.list = age.breaks,
                               suff.list = age.vars.names)
 merged.df = create.age.groups(merged.df, input.var = "cont_age", # contact age
-                              break.list = age.vars.breaks,
+                              break.list = age.breaks,
                               suff.list = age.vars.names)
 
 
@@ -122,29 +152,18 @@ nd = expand.grid(resp_age_by5_80 = levels(merged.df$resp_age_by5_80),
 predict.m = as.data.frame(nd)
 
 ## matrices 
-# age group labels
-age_by5_80  = c(paste0(seq(0, 75, by = 5), "-", seq(4, 79, by = 5)), "80+")
-
 by5_matrix = calc.m.num(mydata = merged.df,
                           myattr = c("resp_age_by5_80", "cont_age_by5_80"), # vector of the names of the two attributes
                           setting = "binary_col",
                           predict.m = predict.m,
                           denumer.n = age_matrix_n)
-  
-by5_matrix$setting = setting
-  
-# fix age labels
-levels(by5_matrix$resp_age_by5_80) = age_by5_80
-levels(by5_matrix$cont_age_by5_80) = age_by5_80
 
-names(by5_matrix) = "Total"
-
-matrix_age = age.matrix.by5 %>% 
-  select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
+matrix_age = by5_matrix %>% 
+  dplyr::select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
   pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 
 write.csv(matrix_age, 
-          paste0("./-by5_80.csv"),
+          paste0("./matrices/by5_80.csv"),
           row.names = F)
 
 
