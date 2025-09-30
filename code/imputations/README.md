@@ -4,12 +4,12 @@ This folder contains the pipeline script that will conduct the full imputations 
 
 ## Requirements
 
-Download the imputations folder. Open the `_pipeline_imputations.R` script and change the global directory.
+Download the imputations folder. Open the `_pipeline_imputations.R` script and change the working directory.
 
 ``` r
-e = new.env() 
-e$global.dir = "[your preferred working directory name here]"
-attach(e, name = 'global.dir') 
+## Working directory
+my.folder = "[your preferred working directory name here]"
+setwd(my.folder)
 ```
 
 The imputations used in this code is computationally heavy and requires parallel processing. Ensure the following packages are loaded into your library:
