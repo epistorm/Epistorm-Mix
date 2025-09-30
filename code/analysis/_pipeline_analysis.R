@@ -6,7 +6,6 @@ rm(list = ls())
 
 ## Working directory
 my.folder = "[your preferred working directory name here]"
-
 setwd(my.folder)
 
 ## Set global directory for sourcing the code
@@ -38,6 +37,7 @@ if (!dir.exists("./output/supmat")){
   dir.create("./output/supmat/csv/raw") # used in raw-analysis.R
   dir.create("./output/supmat/csv/race") # used in race.R
   dir.create("./output/supmat/csv/sex") # used in bysex.R
+  dir.create("./output/supmat/gam") # used in multiple scripts
 }
 
 ## set these directories to save resulting figures and tables
@@ -104,11 +104,19 @@ output.dir = sm.dir
 source(paste0(global.dir, "tbl1_sm.R"))
 
 ### Creates tables for univariable regressions
-
+##    Requires the following folders in working directory: "output/supmat"
+##    Saves output in the following folders:
+##        indep-glm.csv, factor_corr.csv, and agediff_by_levels.csv in "supmat" folder
+##        resp_age_insightnet_by_X.pdf in "supmat" folder
 source(paste0(global.dir, "univar-regressions.R"))
 
 ### Creates figure S1: marginal effects of age for total contacts
-##    Sources the data preparartion code from "gam_data_prep.R" in global.dir
+##    Sources the data preparation code from "gam_data_prep.R" in global.dir
+##    Requires the following folders in working directory: "output/supmat/gam", "data/gam_specifications"
+##    Requires the following data:
+##        model_specs.txt in "gam_specifications" folder
+##    Saves output in the following folders:
+##        age_me_total.pdf in "supmat/gam" folder
 source(paste0(global.dir, "gam_sm1.R"))
 
 ### Create Table S11: distribution of respondent characteristics for all contact settings
@@ -120,6 +128,11 @@ source(paste0(global.dir, "tbl2_sm.R"))
 
 ### Create figure S2: relative ratios + marginal effects of age for non-household contacts
 ##    Sources the data preparartion code from "gam_data_prep.R" in global.dir
+##    Requires the following folders in working directory: "output/supmat/gam", "data/gam_specifications"
+##    Requires the following data:
+##        model_specs.txt in "gam_specifications" folder
+##    Saves output in the following folders:
+##        effects_figure_nonhh.pdf, age_me_nonhh.pdf, and combined_gam_figure_nonhh.pdf in "supmat/gam" folder
 source(paste0(global.dir, "gam_sm2.R"))
 
 ### Creates age-specific contact matrices and plots for age groups and an assortativity plot

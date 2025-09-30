@@ -1,9 +1,16 @@
 # imputations pipeline
+## Clean the environment
+rm(list = ls())
 
-e = new.env() 
-# e$global.dir = "/Users/malitv/MOBS Dropbox/Maria Litvinova/Research/Grant Projects/Epistorm/US-contact-patterns/shared-data-code/code/"
-e$global.dir = "/Users/shsinc/Desktop/Epistorm-survey/code/"
-attach(e, name = 'global.dir') 
+## Working directory
+my.folder = "[your preferred working directory name here]"
+setwd(my.folder)
+
+## Set global directory for sourcing the code
+## (This code is insurance in case you run any code files that change working directory)
+e = new.env()
+e$global.dir = paste0(getwd(), "/code/imputations/")
+attach(e, name = 'global.dir')
 
 ### perform multiple imputations based on raw cleaned data on missing contact data
 ##    Installs the following packages: "tidyverse", "ggplot2", "dplyr", "randomForest", "doRNG", "foreach", "doParallel"
