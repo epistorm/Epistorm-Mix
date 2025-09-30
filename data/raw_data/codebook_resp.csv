@@ -1,37 +1,36 @@
-"variable","description","response_options","original_name"
-"caseid","ID of respondent","Numeric","CaseID"
-"sample_g","Sample group. Identifies whether respondent is an adult or child (identified as parent)","Adult sample; Parent sample","Xepistorm"
-"resp_resp_sick","Whether respondent was sick yesterday","Yes; No; Refused","Sick1"
-"resp_hhm_sick","Whether a member of respondent's household was sick yesterday","Yes; No; Refused","Sick2"
-"resp_mc_job","Whether respondent worked in a job with multiple contacts","Yes; No","MC1"
-"mc_ncont","If your job (non-educator) requires you to interact with more than 30 people, list how many","Numeric","MC1"
-"resp_educator","Whether respondent works as an educator","Yes; No","EDU"
-"resp_educator_mc","Whether respondent is an educator with multiple contacts","Yes; No","EDU_MC"
-"resp_edun_02","How many student contacts aged 0-2 do educators with multiple contacts have?","Numeric","EDU_Ncont1"
-"resp_edun_34","How many student contacts aged 3-4 do educators with multiple contacts have?","Numeric","EDU_Ncont2"
-"resp_edun_59","How many student contacts aged 5-9 do educators with multiple contacts have?","Numeric","EDU_Ncont3"
-"resp_edun_1014","How many student contacts aged 10-14 do educators with multiple contacts have?","Numeric","EDU_Ncont4"
-"resp_edun_1517","How many student contacts aged 15-17 do educators with multiple contacts have?","Numeric","EDU_Ncont5"
-"resp_edun_18","How many student contacts aged 18+ do educators with multiple contacts have?","Numeric","EDU_Ncont6"
-"resp_gender3","Gender of respondent","Female; Male; Other","ppgender"
-"resp_age","Age of respondent","Numeric","ppage"
-"resp_ethn","Race and ethnicity of respondent","White, Non-Hispanic; Hispanic/Latino; Black, Non-Hispanic; Asian, Non-Hispanic; Other, Non-Hispanic","ppethm"
-"pphhsize","Household size of respondent","Numeric","pphhsize"
-"hh_income","Household income of respondent","Less than $10,000; $10,000 to $24,999; $25,000 to $49,999; $50,000 to $74,999; $75,000 to $99,999; $100,000 to $149,999; $150,000 or more","ppinc7"
-"ppworka_1","Is respondent a student?","Yes; No; Refused","PPWORKA"
-"ppworka_2","Is respondent employed?","Yes; No; Refused","PPWORKA"
-"ppworka_3","Is respondent self-employed?","Yes; No; Refused","PPWORKA"
-"ppschoola","For children 0-8, what is the school status of respondent?","Enrolled in day care; Enrolled in school; Home schooled; Other","PPSCHOOLA"
-"ppschoolb","For children 9-17 and adults, what is the school status of respondent?","Enrolled in school; Home schooled; Other","PPSCHOOLB"
-"uds1","For children 0-8, did respondent attend in person or online?","Yes, in person; Yes, online; No","UDS1"
-"uds2_1","For students 9-17 and adults, did respondent attend school in person?","Yes; No; Refused","UDS2"
-"uds2_2","For students 9-17 and adults, did respondent attend school online?","Yes; No; Refused","UDS2"
-"udw_1","For employed and/or self-employed, did respondent attend work in person?","Yes; No; Refused","UDW"
-"udw_2","For employed and/or self-employed, did respondent attend work online?","Yes; No; Refused","UDW"
-"hh_loc_reg4","What is the geographic region of respondent? 4 categories","Midwest; Northeast; South; West","ppreg4"
-"hh_loc_reg9","What is the geographic region of respondent? 9 categories","East-North Central; East-South Central; Mid-Atlantic; Mountain; New England; Pacific; South Atlantic; West-North Central; West-South Central","ppreg9"
-"tm_start_cdt","What is respondent's starting time of the survey? (Chicago Time)","Numeric","Created"
-"tm_end_cdt","What is respondent's finishing time of the survey? (Chicago Time)","Numeric","Created"
-"timezone","What is respondent's time zone?","America/Anchorage; America/Boise; America/Indiana/Indianapolis; America/Indiana/Petersburg; America/Indiana/Winamac; America/Kentucky/Monticello; America/North_Dakota/New_Salem; America/Phoenix; Pacific/Honolulu; US/Central; US/Eastern; US/Mountain; US/Pacific","Created"
-"wave","Which wave did respondent participate in?","Wave 1; Wave 2","Provided by Ipsos"
-"weight","Respondent weight","Numeric","Provided by Ipsos"
+variable,description,response_options,original_name
+resp_id,ID of respondent,Numeric,CaseID
+sample_g,Sample group. Identifies whether respondent is an adult or child (identified as parent),Numeric,Xepistorm
+resp_resp_sick,Was respondent was sick yesterday?,Numeric,Sick1
+resp_hhm_sick,Was a member of respondent's household was sick yesterday?,Numeric,Sick2
+resp_mc_job,Does respondent work in a job with multiple contacts?,Numeric,MC1
+mc_ncont,"If your job (non-educator) requires you to interact with more than 30 people, list how many",Numeric,MC1
+resp_educator,Is respondent in a job that requires in-person interactions with children/students?,Numeric,EDU
+resp_educator_mc,If respondent had in-person conversation of at least 5 words or had physical contact with more than 10 students or children at work,Numeric,EDU_MC
+resp_edun_02,How many children/student contacts aged 0-2 did respondent with multiple contacts have?,Numeric,EDU_Ncont1
+resp_edun_34,How many children/student contacts aged 3-4 did respondent with multiple contacts have?,Numeric,EDU_Ncont2
+resp_edun_59,How many children/student contacts aged 5-9 did respondent with multiple contacts have?,Numeric,EDU_Ncont3
+resp_edun_1014,How many children/student contacts aged 10-14 did respondent with multiple contacts have?,Numeric,EDU_Ncont4
+resp_edun_1517,How many children/student contacts aged 15-17 did respondent with multiple contacts have?,Numeric,EDU_Ncont5
+resp_edun_18,How many children/student contacts aged 18+ did respondent with multiple contacts have?,Numeric,EDU_Ncont6
+resp_sex,Sex of respondent,Numeric,ppgender
+resp_age,Age of respondent,Numeric,ppage
+resp_ethn,Race and ethnicity of respondent,Numeric,ppethm
+hh_size,Household size of respondent,Numeric,pphhsize
+hh_income,Household income of respondent,Numeric,ppinc7
+ppworka_1,Is respondent a student?,Numeric,PPWORKA
+ppworka_2,Is respondent employed?,Numeric,PPWORKA
+ppworka_3,Is respondent self-employed?,Numeric,PPWORKA
+ppschoola,"For children 0-8, what is the school status of respondent?",Numeric,PPSCHOOLA
+ppschoolb,"For children 9-17 and adults, what is the school status of respondent?",Numeric,PPSCHOOLB
+uds1,"For children 0-8, did respondent attend in person or online?",Numeric,UDS1
+uds2_1,"For students 9-17 and adults, did respondent attend school in person?",Numeric,UDS2
+uds2_2,"For students 9-17 and adults, did respondent attend school online?",Numeric,UDS2
+udw_1,"For employed and/or self-employed, did respondent attend work in person?",Numeric,UDW
+udw_2,"For employed and/or self-employed, did respondent attend work online?",Numeric,UDW
+hh_loc_reg4,What is the geographic region of respondent? 4 categories,Numeric,ppreg4
+hh_loc_reg9,What is the geographic region of respondent? 9 categories,Numeric,ppreg9
+tm_start_cdt,What is respondent's starting time of the survey? (Chicago Time),Numeric,Created
+tm_end_cdt,What is respondent's finishing time of the survey? (Chicago Time),Numeric,Created
+wave,Which wave did respondent participate in?,Numeric,Provided by Ipsos
+weight,Respondent weight,Numeric,Provided by Ipsos
