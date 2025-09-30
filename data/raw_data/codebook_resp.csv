@@ -6,7 +6,7 @@ resp_hhm_sick,Was a member of respondent's household sick yesterday?,Numeric,Sic
 resp_mc_job,Does respondent work in a job with multiple contacts?,Numeric,MC1
 mc_ncont,"If your job (non-educator) requires you to interact with more than 30 people, list how many",Numeric,MC1
 resp_educator,Is respondent in a job that requires in-person interactions with children/students?,Numeric,EDU
-resp_educator_mc,If respondent had in-person conversation of at least 5 words or had physical contact with more than 10 students or children at work,Numeric,EDU_MC
+resp_educator_mc,Did respondent have in-person conversation of at least 5 words or physical contact with more than 10 students or children at work?,Numeric,EDU_MC
 resp_edun_02,How many children/student contacts aged 0-2 did respondent with multiple contacts have?,Numeric,EDU_Ncont1
 resp_edun_34,How many children/student contacts aged 3-4 did respondent with multiple contacts have?,Numeric,EDU_Ncont2
 resp_edun_59,How many children/student contacts aged 5-9 did respondent with multiple contacts have?,Numeric,EDU_Ncont3
