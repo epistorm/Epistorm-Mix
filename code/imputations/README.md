@@ -7,7 +7,6 @@ This folder contains the pipeline script that will conduct the full imputations 
 Download the imputations folder. Open the `_pipeline_imputations.R` script and change the working directory.
 
 ``` r
-## Working directory
 my.folder = "[your preferred working directory name here]"
 setwd(my.folder)
 ```
