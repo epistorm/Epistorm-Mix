@@ -64,14 +64,19 @@ source(paste0(global.dir, "analysis_prep.R")) ### [Required for all the code aft
 source(paste0(global.dir, "tbl1_main.R"))
 
 ### Perform GAM analysis (also creates tables S10 ans S12 for SM)
+##    Requires the following folders in working directory: "output/supmat"
 ##    Sources the data preparation code from "gam_data_prep.R" in global.dir
 ##    Saves best specifications in file "model_specs.txt" in sm.dir
+##    Saves tables in the following folders:
+##        multivariate_gam_bf.docx in "supmat" folder
 # source(paste0(global.dir, "gam.R")) [no need to run if file "model_specs.txt" exists and fits the purpose]
 
 ### Create figure 1 for main text 
-##    Uses best fit specification of the gam model (from "sm.dir/model_specs.txt") 
+##    Uses best fit specification of the gam model (from "./data/gam_specifications/model_specs.txt") 
 ##      to plot relative ratios for total contacts
 ##    Sources the data preparation code from "gam_data_prep.R"
+##    Saves figure in the following folder:
+##         1_effects_figure_total.pdf in "main" folder
 source(paste0(global.dir, "gam_fig1.R"))
 
 ### Create age-specific contact matrices (figure 2 of main text)

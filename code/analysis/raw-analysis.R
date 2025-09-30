@@ -16,7 +16,6 @@ files_imp = list.files(path = imp.dir,
                        full.names = T)
 
 ## merge the contact data with respondent data
-sum.res2 = rename(sum.res2, resp_id = caseid)
 merged_result = left_join(merged.df, sum.res2, by = "resp_id")
 
 # create age groups
