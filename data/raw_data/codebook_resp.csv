@@ -1,8 +1,8 @@
 variable,description,response_options,original_name
 resp_id,ID of respondent,Numeric,CaseID
 sample_g,Sample group. Identifies whether respondent is an adult or child (identified as parent),Numeric,Xepistorm
-resp_resp_sick,Was respondent was sick yesterday?,Numeric,Sick1
-resp_hhm_sick,Was a member of respondent's household was sick yesterday?,Numeric,Sick2
+resp_resp_sick,Was respondent sick yesterday?,Numeric,Sick1
+resp_hhm_sick,Was a member of respondent's household sick yesterday?,Numeric,Sick2
 resp_mc_job,Does respondent work in a job with multiple contacts?,Numeric,MC1
 mc_ncont,"If your job (non-educator) requires you to interact with more than 30 people, list how many",Numeric,MC1
 resp_educator,Is respondent in a job that requires in-person interactions with children/students?,Numeric,EDU
@@ -13,10 +13,10 @@ resp_edun_59,How many children/student contacts aged 5-9 did respondent with mul
 resp_edun_1014,How many children/student contacts aged 10-14 did respondent with multiple contacts have?,Numeric,EDU_Ncont4
 resp_edun_1517,How many children/student contacts aged 15-17 did respondent with multiple contacts have?,Numeric,EDU_Ncont5
 resp_edun_18,How many children/student contacts aged 18+ did respondent with multiple contacts have?,Numeric,EDU_Ncont6
-resp_sex,Sex of respondent,Numeric,ppgender
+resp_gender,Gender of respondent,Numeric,ppgender
 resp_age,Age of respondent,Numeric,ppage
 resp_ethn,Race and ethnicity of respondent,Numeric,ppethm
-hh_size,Household size of respondent,Numeric,pphhsize
+hhsize,Household size of respondent,Numeric,pphhsize
 hh_income,Household income of respondent,Numeric,ppinc7
 ppworka_1,Is respondent a student?,Numeric,PPWORKA
 ppworka_2,Is respondent employed?,Numeric,PPWORKA
