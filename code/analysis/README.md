@@ -7,7 +7,7 @@ This folder contains the pipeline script that will conduct the full analyses for
 Download the analysis folder. Open the `_pipeline_analysis.R` script and change the working directory.
 
 ``` r
-my.folder = "/your-path/Epistorm-Mix"
+my.folder = "[your preferred working directory name here]"
 setwd(my.folder)
 ```
 
@@ -19,5 +19,5 @@ The main text analysis includes the following scripts included in the code folde
 
 ### Supplementary Analysis
 
-The supplementary text analysis includes the following scripts included in the code folder in this analysis folder: `tbl1_sm.R`, `tbl2_sm.R`, `by5_80.R`, `freq-m.R`, `sym-mat.R`,`inpers.R`, `inpers_barplot.R`, `unw-analysis.R`, `raw-analysis.R`, `race.R`, `race_assort.R`, `bysex.R`, `more-mat.R`, and `rel-diff.R`.
+The supplementary text analysis includes the following scripts included in the code folder in this analysis folder: `tbl1_sm.R`, `tbl2_sm.R`, `gam_sm1.R`, `gam_sm2.R`, `univar_regression.R`,`by5_80.R`, `freq-m.R`, `sym-mat.R`,`inpers.R`, `inpers_barplot.R`, `unw-analysis.R`, `raw-analysis.R`, `race.R`, `race_assort.R`, `bysex.R`, `more-mat.R`, and `rel-diff.R`.
 
