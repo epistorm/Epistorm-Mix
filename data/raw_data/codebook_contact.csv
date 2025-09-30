@@ -1,0 +1,7 @@
+"variable","description","response_options","original_name"
+"resp_id","ID of respondent","Numeric","CaseID"
+"cont_setting","Where did the contact occur?","Numeric","Created"
+"cont_relationship","What is the relationship of the contact to respondent?","Numeric","RELATIONSHIP"
+"cont_age","What is the age of respondent's contact?","Numeric","C_AGE"
+"cont_ethn","What is the race/ethnicity of respondent's contact?","Numeric","C_RACE_ETHNIC"
+"cont_sex","What is the sex of respondent's contact?","Numeric","C_GENDER"
