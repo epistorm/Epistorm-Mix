@@ -23,7 +23,7 @@ ppworka_2,Is respondent employed?,Numeric,PPWORKA
 ppworka_3,Is respondent self-employed?,Numeric,PPWORKA
 ppschoola,"For children 0-8, what is the school status of respondent?",Numeric,PPSCHOOLA
 ppschoolb,"For children 9-17 and adults, what is the school status of respondent?",Numeric,PPSCHOOLB
-uds1,"For children 0-8, did respondent attend in person or online?",Numeric,UDS1
+uds1,"For children 0-8, did respondent attend school in person or online?",Numeric,UDS1
 uds2_1,"For students 9-17 and adults, did respondent attend school in person?",Numeric,UDS2
 uds2_2,"For students 9-17 and adults, did respondent attend school online?",Numeric,UDS2
 udw_1,"For employed and/or self-employed, did respondent attend work in person?",Numeric,UDW
