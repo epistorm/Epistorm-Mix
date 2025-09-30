@@ -163,7 +163,7 @@ matrix_age = by5_matrix %>%
   pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 
 write.csv(matrix_age, 
-          paste0("./matrices/by5_80.csv"),
+          paste0("./matrices/-by5_80.csv"),
           row.names = F)
 
 
