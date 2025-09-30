@@ -42,8 +42,8 @@ hh_loc_reg4,What is the geographic region of respondent? 4 categories,South; Wes
 hh_loc_reg9,What is the geographic region of respondent? 9 categories,South Atlantic; Pacific; East North Central; Middle Atlantic; West South Central; West North Central; Mountain; East South Central; New England,ppreg9
 tm_start_cdt,What is respondent's starting time of the survey? (CDT),Numeric,Created
 tm_end_cdt,What is respondent's finishing time of the survey? (CDT),Numeric,Created
-tm_start_lt,What is respondent's starting time of the survey?,Numeric,Created
-tm_end_lt,What is respondent's finishing time of the survey?,Numeric,Created
+tm_start_lt,What is respondent's starting time of the survey? (Local time),Numeric,Created
+tm_end_lt,What is respondent's finishing time of the survey? (Local time),Numeric,Created
 wave,Which wave did respondent participate in?,Wave1; Wave2,Created
 weight,Respondent weight,Numeric,weight
 total.contacts,Total contacts for respondent,Numeric,Created
