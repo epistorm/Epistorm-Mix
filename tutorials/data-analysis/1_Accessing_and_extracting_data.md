@@ -17,7 +17,7 @@ This will automatically save the data file into the downloads folder on your com
 ### Loading the downloaded file in R
 Once you have downloaded the data and saved it into your project folder, you can load the data into your R program:
 ```R
-resp_imp = read.csv("imputed_part_reform.csv")
+resp_imp = read.csv("imputed_resp.csv")
 head(resp_imp)
 
 # part_id part_age part_gender part_educator    weight
@@ -39,7 +39,7 @@ To extract the data from `github` directly, you will need to retrieve the url of
 
 Copy the url for the Raw data file. Note that the url should start with `https://raw.githubusercontent.com/...`, and if this is not the case then reading the data into R directly will not work. To load the data into your R program, simply use the `read.csv` function using the url instead of a file path: 
 ```R
-resp.url = "https://raw.githubusercontent.com/username/Epistorm-Mix/refs/heads/main/tutorials/data/imputed_part_reform.csv"
+resp.url = "https://raw.githubusercontent.com/allisandrak/Epistorm-Mix/refs/heads/main/tutorials/data-analysis/data/imputed_resp.csv?token=GHSAT0AAAAAADJQZFA53RC5T5BAEGBH7FGK2G375TA"
 resp_imp = read.csv(resp.url)
 ```
 

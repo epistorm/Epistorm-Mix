@@ -104,6 +104,7 @@ output.dir = sm.dir
 source(paste0(global.dir, "tbl1_sm.R"))
 
 ### Creates tables for univariable regressions
+
 source(paste0(global.dir, "univar-regressions.R"))
 
 ### Creates figure S1: marginal effects of age for total contacts
