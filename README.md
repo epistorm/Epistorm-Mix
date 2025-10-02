@@ -23,7 +23,8 @@ For the matrices, check the matrix folder: [Contact matrices](/matrices)<br/>
 
 ### Code
 
-Code is provided for imputations and analyses. For the code, check the code folder: [Code](/code)
+Code is provided for imputations and analyses in R and for the modeling in Python. 
+For the code, check the code folder: [Code](/code)
 
 ### Tutorials
 We provide a series of totorials to help you get started with Epistorm-Mix. 
