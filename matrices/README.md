@@ -16,7 +16,7 @@ $$
 - $C_{ij}^r$ is the number of contacts reported by respondent *r* in group *i* with a contact in group *j*
 - ${N_i}$ is the number of respondents in group *i*
 
-Matrices used in the analysis are available: [M_matrix](./M_matrix)
+Matrices based on age used in the analysis are available: [M_matrix](./M_matrix)
 
 ## Frequency-based matrix
 
