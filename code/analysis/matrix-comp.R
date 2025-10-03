@@ -1,72 +1,11 @@
-rm(list = ls())
-
-## Libraries
-library(readxl)
-library(data.table)
-library(dplyr)
-library(tidyr)
-library(psych)
-library(Hmisc)
-
-## Alterable parameters in code
-PDF = F # if T, then visualizations are saved to a .pdf file
-CSV = T # if T, then matrices are saved to a .csv file in the same format
 par(mfrow = c(1,1))
 
-## Correlation comparison plot function
-my.corr.comp = function(x, y, x_label, y_label){
-  
-  plot(x, y, xlab = x_label, ylab = y_label, axes = F, pch = 19)
-  axis(2, las = 2)
-  axis(1, las = 1)
-  box()
-  
-  ## Fit linear regression line to plot
-  fit = lm(y ~ x)
-  abline(fit, col = "red", lwd = 2.5)
-  
-  
-  ## Get p-values from regression
-  fit.pvalue = summary(fit)$coefficients[2, 4]
-  if(fit.pvalue < 0.001){
-    fit.pvalue = "< 0.001"
-  } else{
-    fit.pvalue = round(fit.pvalue, digits = 3)
-  }
-  
-  ## Check pearson correlation coefficient and p-values
-  pears.cor = corr.test(x, y, method = "pearson")
-  if(pears.cor$p < 0.001){
-    pears.pvalue = "< 0.001"
-  } else{
-    pears.pvalue = round(pears.cor$p, digits = 3)
-  }
-  
-  ## Check spearman correlation coefficient and p-values
-  spear.cor = corr.test(x, y, method = "spearman")
-  if(spear.cor$p < 0.001){
-    spear.pvalue = "< 0.001"
-  } else{
-    spear.pvalue = round(spear.cor$p, digits = 3)
-  }
-  
-  ## Add legend with p-values and coefficients
-  
-  legend("bottomright", 
-         legend = c(paste0("Pearson's r = ", round(pears.cor$r, digits = 3),
-                           ", p-value = ", pears.pvalue),
-                    paste0("Spearman's rs = ", round(spear.cor$r, digits = 3),
-                           ", p-value = ", spear.pvalue),
-                    paste0("R-squared = ", round(summary(fit)$r.squared, digits = 3), 
-                           ", p-value = ", fit.pvalue)),
-         bty = "n") 
-}
-
-
-
+## Alterable parameters in code
+PDF = T # if T, then visualizations are saved to a .pdf file
+CSV = F # if T, then matrices are saved to a .csv file in the same format
 
 ## Read in Pre-pandemic matrix data for total contacts
-### First author surnames 
+### First author surnames, countries, and excel sheets (if applicable) 
 mat.files = data.frame(author = c(rep("Jarvis", times = 4), "Wang", "Mistry", 
                                   "Prem", "Liang"),
                        sheet = c("UK", "BE", "NL", "CH", 
@@ -78,6 +17,7 @@ mat.files = data.frame(author = c(rep("Jarvis", times = 4), "Wang", "Mistry",
 
 mat.files$file.type = ifelse(is.na(mat.files$sheet), ".csv", ".xlsx")
 
+## Read files into program
 contact.mat = lapply(1:nrow(mat.files), function(x){
   ## read file 
   if(mat.files$file.type[x] == ".xlsx"){
@@ -87,13 +27,13 @@ contact.mat = lapply(1:nrow(mat.files), function(x){
       head.T = T
     }
     
-    tmp = read_xlsx(paste0("matrices/matrices-", mat.files$author[x], 
+    tmp = read_xlsx(paste0("./data/external_data/matrices-", mat.files$author[x], 
                            mat.files$file.type[x]), 
                     sheet = mat.files$sheet[x],
                     col_names = head.T)
     
   } else if(mat.files$file.type[x] == ".csv"){
-    tmp = read.csv(paste0("matrices/matrices-", mat.files$author[x], 
+    tmp = read.csv(paste0("./data/external_data/matrices-", mat.files$author[x], 
                           mat.files$file.type[x]))
   } else{
     print("ERROR: FILE TYPE IS NEITHER A CSV OR XLSX.")
@@ -105,18 +45,16 @@ contact.mat = lapply(1:nrow(mat.files), function(x){
 
 names(contact.mat) = mat.files$labels
 
-
-
-## Label columns and rows for age groups
+#### Label columns and rows for age groups
 ### Mistry
-colnames(contact.mat$US_Mistry) = paste0("[", seq(0, 80, by = 5), ",",
-                                         c(seq(5, 80, by = 5), 120), ")")
+colnames(contact.mat$US_Mistry) = c(paste0(seq(0, 75, by = 5), "-",
+                                         c(seq(4, 79, by = 5))), "80+")
 
 contact.mat$US_Mistry$resp_age = colnames(contact.mat$US_Mistry)
 
 ### Prem
-colnames(contact.mat$US_Prem) = paste0("[", seq(0, 75, by = 5), ",",
-                                       c(seq(5, 75, by = 5), 120), ")")
+colnames(contact.mat$US_Prem) = c(paste0(seq(0, 70, by = 5), "-",
+                                       c(seq(4, 74, by = 5))), "75+")
 
 contact.mat$US_Prem$resp_age = colnames(contact.mat$US_Prem)
 
@@ -125,33 +63,48 @@ colnames(contact.mat$`HunanProvince,China`)[which(colnames(contact.mat$`HunanPro
   "resp_age"
 
 colnames(contact.mat$`HunanProvince,China`)[-1] = 
-  c("[0,3)", "[3,7)", "[7,10)", "[10,15)",  "[15,20)",  "[20,25)",  "[25,30)", 
-    "[30,35)", "[35,40)",  "[40,45)", "[45,50)", "[50,55)", "[55,60)", "[60,65)",  
-    "[65,70)", "[70,75)", "[75,120)")
+  c("0-2", "3-6", "7-9", paste0(seq(10,70,by=5), "-", seq(14,74, by=5)), "75+")
 
 contact.mat$`HunanProvince,China`$resp_age = colnames(contact.mat$`HunanProvince,China`)[-1]
 
+#### Fix Age Labels ####
 
+for (k in 1:length(contact.mat)){
+  wrong.frmt = grepl(",", contact.mat[[k]]$resp_age)[1]
+  if (wrong.frmt){
+    breaks = contact.mat[[k]]$resp_age
+    maxv = breaks[length(breaks)]
+    for (i in breaks){
+      idx.label = which(contact.mat[[k]]$resp_age == i)
+      if(i == maxv){
+        contact.mat[[k]]$resp_age[idx.label] = paste0(str_extract_all(i, "\\d+\\.?\\d*")[[1]][1],"+")
+      }else{
+        contact.mat[[k]]$resp_age[idx.label] = paste(str_extract_all(i, "\\d+\\.?\\d*")[[1]][1], 
+                                                     as.numeric(str_extract_all(i, "\\d+\\.?\\d*")[[1]][2]) - 1, 
+                                                     sep = "-")
+      } 
+    }
+    colnames(contact.mat[[k]]) = c("resp_age", contact.mat[[k]]$resp_age)
+  }
+}
 
-## Process Italy matrices - unsymmeterize matrices
+#### Process Italy matrices - unsymmeterize matrices
 ### age groups for matrix
-italy.ages = paste0("[", seq(0, 70, by = 5), ",",
-                    c(seq(5, 70, by = 5), 120), ")")
+italy.ages = c(paste0(seq(0, 65, by = 5), "-",
+                    c(seq(4, 69, by = 5))), "70+")
 
 age.breaks = c(seq(0, 70, by = 5), 120)
 
 ### Read population size and estimate distribution - group 100+
-italy.pop = read.csv("/your-path/Epistorm-Mix/data/external_data/population-Italy.csv")
-
+italy.pop = read.csv("./data/external_data/population-Italy.csv")
 tot.pop.Italy = italy.pop$Total[which(italy.pop$Age == "Total")]
 
 italy.pop = italy.pop[which(italy.pop$Age != "Total"), ]
-
 italy.pop$Age = as.numeric(ifelse(italy.pop$Age == "100 and over", 100, 
                                   italy.pop$Age))
 
 ### Read sample population distribution and normalize
-italy.samp = read.csv("/your-path/Epistorm-Mix/data/external_data/Italy-sample-size.csv")
+italy.samp = read.csv("./data/external_data/Italy-sample-size.csv")
 colnames(italy.samp) = c("age", "dist.sample")
 
 italy.samp$age = round(italy.samp$age)
@@ -163,6 +116,20 @@ italy.samp$age.group = italy.ages
 italy.pop$age.group = cut(italy.pop$Age, breaks = age.breaks,
                           right = F)
 
+italy.pop$age.group = as.character(italy.pop$age.group)
+for (i in unique(italy.pop$age.group)){
+  idx.lbls = which(italy.pop$age.group == i)
+  if (i == "[70,120)"){
+    italy.pop$age.group[idx.lbls] = paste0(str_extract_all(i, "\\d+\\.?\\d*")[[1]][1],"+")
+  }else {
+    italy.pop$age.group[idx.lbls] = paste(str_extract_all(i, "\\d+\\.?\\d*")[[1]][1], 
+                                          as.numeric(str_extract_all(i, "\\d+\\.?\\d*")[[1]][2]) - 1, 
+                                          sep = "-")  
+  }
+}
+italy.pop$age.group = factor(italy.pop$age.group,
+                             levels = unique(italy.pop$age.group))
+
 ### Aggregate population by age group, factor, and assign levels in order
 italy.pop.str = italy.pop %>%
   group_by(age.group) %>%
@@ -170,7 +137,6 @@ italy.pop.str = italy.pop %>%
 
 ### Estimate the distribution of the population
 italy.pop.str$dist = round(italy.pop.str$n / sum(italy.pop.str$n), digits = 3)
-
 
 ### Combine actual sample distribution by age group with distribution of the population
 italy.pop.str = full_join(italy.pop.str, 
@@ -204,8 +170,9 @@ barplot(italy.pop.str$sample.rev ~ italy.pop.str$age.group,
 
 
 # Read Italy contact matrices and  unsymmeterize them
+# unzip folder Lucchini_bootstrap_age_group_total
 italy = lapply(0:999, function(x){
-  tmp0 = read.csv(paste0("matrices/Lucchini_bootstrap_age_group_total/contact_matrix_age_group_bootstrap_", 
+  tmp0 = read.csv(paste0("./data/external_data/Lucchini_bootstrap_age_group_total/contact_matrix_age_group_bootstrap_", 
                          x, ".csv"))
   
   tmp = as.data.frame(tmp0)
@@ -250,15 +217,16 @@ italy.mean$xlab = paste(italy.mean$resp_age, italy.mean$cont_age, sep = "--")
 italy.mean$resp_age = as.factor(italy.mean$resp_age)
 italy.mean$cont_age = as.factor(italy.mean$cont_age)
 
-
-
-## Read Epistorm contact matrices by different age groupings
+#### Read Epistorm contact matrices by different age groupings
 filenames = c("by5_70", "by10_70", "by5_75", "school-groups", 
-              "by5_80-matrix", "by3_10-by5_75", 
-              "inperson75", "remote75", "inperson80", "remote80")
+              "by5_80", "by3_10-by5_75", 
+              "In-Person-by5_75-cond-matrix", 
+              "Not-In-Person-by5_75-cond-matrix", 
+              "In-Person-by5_80-cond-matrix", 
+              "Not-In-Person-by5_80-cond-matrix")
 
 epistorm.mat = lapply(filenames, function(x){
-  tmp = read.csv(paste0("matrices/Epistorm-matrices/", x, ".csv"))
+  tmp = read.csv(paste0(output.dir, "csv/compare/", x, ".csv"))
   
   colnames(tmp)[grep("resp", colnames(tmp))] = "resp_age"
   
@@ -275,9 +243,7 @@ epistorm.mat = lapply(filenames, function(x){
 
 names(epistorm.mat) = filenames
 
-
-
-## Convert dataframes to long from wide
+#### Convert dataframes to long from wide
 ### Prepandemic data
 contact.mat.long = lapply(contact.mat, function(x){
   tmp = melt(setDT(x), id.vars = c("resp_age"), variable.name = "cont_age")
@@ -301,33 +267,26 @@ epistorm.mat.long = lapply(epistorm.mat, function(x){
 })
 
 
-
-
-
-
-
-
-
-## Combine Epistorm-Mix age groupings estimates with other papers
+#### Combine Epistorm-Mix age groupings estimates with other papers
 ## and compare
 par(mar=c(5,4,4,2))
 
-log.scale = F
-
 if(PDF == T){
-  if(!dir.exists("visualizations")){
-    dir.create("visualizations")
-  }
-  
-  pdf("visualizations/comp-Epistorm-PrevLit-MaxAdjust.pdf")
+  # if(!dir.exists("visualizations")){
+  #   dir.create("visualizations")
+  # }
+  # 
+  pdf(paste0(output.dir, "visualizations/comp-Epistorm-PrevLit-MaxAdjust.pdf"))
 }
+
+## different age groups "[0,5)" and "0-4"
 matrix.plot.vals = lapply(1:length(contact.mat.long), function(x){
   
   for(i in 1:length(epistorm.mat.long)){
     if(length(levels(contact.mat.long[[x]]$resp_age)) == 
        length(levels(epistorm.mat.long[[i]]$resp_age)) &
-       levels(contact.mat.long[[x]]$resp_age)[1] == 
-       levels(epistorm.mat.long[[i]]$resp_age)[1]){
+       levels(contact.mat.long[[x]]$resp_age)[length(levels(contact.mat.long[[x]]$resp_age))] == 
+       levels(epistorm.mat.long[[i]]$resp_age)[length(levels(epistorm.mat.long[[i]]$resp_age))]){
       
       tmp = full_join(contact.mat.long[[x]], epistorm.mat.long[[i]], 
                 by = c("resp_age", "cont_age", "xlab"))
@@ -347,10 +306,10 @@ matrix.plot.vals = lapply(1:length(contact.mat.long), function(x){
     }
   }
   
-  # my.corr.comp(x = tmp$epi.contacts, 
-  #              y = tmp$contacts, 
-  #              x_label = "Epistorm contacts", 
-  #              y_label = paste("Contacts in", names(contact.mat.long)[x]))
+  my.corr.comp(x = tmp$epi.contacts,
+               y = tmp$contacts,
+               x_label = "Epistorm contacts",
+               y_label = paste("Contacts in", names(contact.mat.long)[x]))
   
   as.data.frame(tmp)
   tmp$country = names(contact.mat.long)[x]
@@ -362,38 +321,29 @@ if(PDF == T){
   dev.off()
 }
 
-
 names(matrix.plot.vals) = names(contact.mat.long)
 
-ids.rem = which(names(matrix.plot.vals) != "US_Mistry" & 
-                  names(matrix.plot.vals) != "US_Prem")
-
-
-
-par(mfrow = c(1, 1))
-
-
-## Comparison of in-person/remote work and school between Mistry and Prem with 
+#### Comparison of in-person/remote work and school between Mistry and Prem with 
 ## the Epistorm-Mix data
 
 ### In-person school/work attendance
 school.work = list()
-school.work$mistry.inpers.comp = full_join(epistorm.mat.long$inperson80, 
+school.work$mistry.inpers.comp = full_join(epistorm.mat.long$`In-Person-by5_80-cond-matrix`, 
                                            contact.mat.long$US_Mistry)
 school.work$mistry.inpers.comp$setting = "mistry_inperson"
 
-school.work$prem.inpers.comp = full_join(epistorm.mat.long$inperson75, 
+school.work$prem.inpers.comp = full_join(epistorm.mat.long$`In-Person-by5_75-cond-matrix`, 
                                          contact.mat.long$US_Prem)
 
 school.work$prem.inpers.comp$setting = "prem_inperson"
 
 
 ### Not at school/work 
-school.work$mistry.remote.comp = full_join(epistorm.mat.long$remote80, 
+school.work$mistry.remote.comp = full_join(epistorm.mat.long$`Not-In-Person-by5_80-cond-matrix`, 
                                            contact.mat.long$US_Mistry)
 school.work$mistry.remote.comp$setting = "mistry_remote"
 
-school.work$prem.remote.comp = full_join(epistorm.mat.long$remote75, 
+school.work$prem.remote.comp = full_join(epistorm.mat.long$`Not-In-Person-by5_75-cond-matrix`, 
                                          contact.mat.long$US_Prem)
 
 school.work$prem.remote.comp$setting = "prem_remote"
@@ -405,11 +355,11 @@ xlabels = c("Epistorm contacts for people at work/school in person",
             "Epistorm contacts for people remote/not at work/school",
             "Epistorm contacts for people remote/not at work/school")
 
-
-
 if(PDF == T){
-  pdf("visualizations/comp-Epistorm-inperson-remote-MaxAdjust.pdf")
+  pdf(paste0(output.dir, "visualizations/comp-Epistorm-inperson-remote-MaxAdjust.pdf"))
 }
+
+par(mfrow = c(1, 1))
 
 lapply(1:length(school.work), function(x){
   
@@ -423,37 +373,25 @@ if(PDF == T){
   dev.off()
 }
 
-
-
-
-cont.mat.wide = lapply(matrix.plot.vals, function(x){
-  tmp = as.data.frame(x[, -which(colnames(x) == "xlab" | colnames(x) == "epi.contacts")] %>%
-    spread(key = resp_age, value = contacts))
-  
-  tmp[, "cont_age"] = factor(tmp[, "cont_age"], levels = tmp[, "cont_age"])
-  
-  tmp = tmp[order(tmp[, "cont_age"], levels(tmp[, "cont_age"])), ]
-  
-  tmp
+#### Convert datasets from long to wide
+cont.mat.wide = lapply(1:length(matrix.plot.vals), function(x){
+  # for (x in 1:length(matrix.plot.vals)){
+    df = matrix.plot.vals[[x]]
+    tmp = as.data.frame(df[, -which(colnames(df) == "xlab" | colnames(df) == "epi.contacts" | 
+                                      colnames(df) == "country")] %>%
+                          spread(key = resp_age, value = contacts))
+    
+    tmp[, "cont_age"] = factor(tmp[, "cont_age"], levels = tmp[, "cont_age"])
+    
+    tmp = tmp[order(tmp[, "cont_age"], levels(tmp[, "cont_age"])), ]
+    
+    tmp
+  # }
 })
 
 names(cont.mat.wide) = names(contact.mat.long)
 
-
-
-# lapply(cont.mat.wide, function(x){
-#   apply(x[, -1], MARGIN = 2, sum)
-# })
-# 
-# par(mfrow = c(1,1))
-# lapply(1:length(cont.mat.wide), function(x){
-#   image(x = c(1:ncol(cont.mat.wide[[x]])), y = c(1:nrow(cont.mat.wide[[x]])), 
-#         z = as.matrix(t(cont.mat.wide[[x]][, -which(colnames(cont.mat.wide[[x]]) == "cont_age")])))
-#   title(names(cont.mat.wide)[x])
-# })
-
-
-## Estimate the difference between contact matrices
+#### Estimate the difference between Epistorm-Mix and all other contact matrices
 matrix.diff = lapply(matrix.plot.vals, function(x){
   x$cont.diff = x$contacts - x$epi.contacts
   
@@ -462,7 +400,7 @@ matrix.diff = lapply(matrix.plot.vals, function(x){
 
 names(matrix.diff) = names(cont.mat.wide)
 
-
+## Calculate difference
 school.work.diff = lapply(school.work, function(x){
   x$cont.diff = x$contacts - x$epi.contacts
   
@@ -475,8 +413,7 @@ matrix.diff$Mistry_remote = school.work.diff$mistry.remote.comp
 matrix.diff$Prem_inperson = school.work.diff$prem.inpers.comp
 matrix.diff$Prem_remote = school.work.diff$prem.remote.comp
 
-
-
+## Convert to wide datset and save
 diff.mat.wide = lapply(1:length(matrix.diff), function(x){
   tmp = matrix.diff[[x]] %>%
     spread(key = cont_age, value = cont.diff)
@@ -484,7 +421,7 @@ diff.mat.wide = lapply(1:length(matrix.diff), function(x){
   tmp = tmp[order(tmp[, "resp_age"], levels(tmp[, "resp_age"])), ]
   
   if(CSV == T){
-    write.csv(tmp, paste0("matrices/difference-matrices/", 
+    write.csv(tmp, paste0("./data/external_data/matrices/difference-matrices/", 
                           names(matrix.diff)[x], ".csv"))
   }
   
@@ -492,21 +429,15 @@ diff.mat.wide = lapply(1:length(matrix.diff), function(x){
 })
 
 
-
-
-
-
-## Read setting-specific contact matrices
-
+#### Read setting-specific contact matrices
 ### Mistry
 cnt_setting = c("household", "work", "school", "community")
-age.breaks =c("[0,5)", "[5,10)", "[10,15)", "[15,20)", "[20,25)", "[25,30)",
-              "[30,35)", "[35,40)", "[40,45)", "[45,50)", "[50,55)", "[55,60)",
-              "[60,65)", "[65,70)", "[70,75)", "[75,80)", "[80,85)", "85+")
+age.breaks = c(paste0(seq(0, 80, by = 5), "-",
+                      c(seq(4, 84, by = 5))), "85+")
+groups.age = c("75-79", "80-84", "85+")
 
-groups.age = c("[75,80)", "[80,85)", "85+")
-
-mistry.age.dist = read.csv("matrices/United_States_country_level_age_distribution_18.csv",
+## Read age distribution datasets
+mistry.age.dist = read.csv("./data/external_data/mistry-data/United_States_country_level_age_distribution_18.csv",
                            header = F)
 colnames(mistry.age.dist) = c("group", "n")
 mistry.age.dist$age.group = age.breaks
@@ -524,13 +455,9 @@ age.dist = mistry.age.dist %>%
   group_by(ages75) %>%
   summarise(weightedsum = sum(n) / total)
 
-
-
-
-
-
+## Read F matrices from Mistry and aggregate 75+ groups
 mistry_setting = lapply(cnt_setting, function(x){
-  tmp = read.csv(paste0("matrices/United_States_country_level_F_", x,
+  tmp = read.csv(paste0("./data/external_data/mistry-data/United_States_country_level_F_", x,
                   "_setting_18.csv"), header = F)
   
   colnames(tmp) = age.breaks
@@ -571,7 +498,6 @@ mistry_setting = lapply(cnt_setting, function(x){
 })
 names(mistry_setting) = cnt_setting
 
-
 lapply(1:length(mistry_setting), function(x){
   tmp = mistry_setting[[x]] %>%
   spread(key = cont_age, value = mistry)
@@ -587,12 +513,8 @@ lapply(1:length(mistry_setting), function(x){
 })
 
 
-
-
-
-
-### Epistorm
-f_matrix.folder = "matrices/Epistorm-matrices/F-matrices/"
+### Epistorm-Mix F-matrices
+f_matrix.folder = "./data/external_data/matrices/Epistorm-matrices/F-matrices/"
 
 cnt_sett_Epi = cnt_setting
 cnt_sett_Epi = gsub("community", "other", cnt_sett_Epi)
@@ -600,7 +522,7 @@ cnt_sett_Epi = gsub("community", "other", cnt_sett_Epi)
 epi.setting = lapply(capitalize(cnt_sett_Epi), function(x){
   tmp = read.csv(paste0(f_matrix.folder, x, "-F-matrix.csv"))
   
-  colnames(tmp) = levels(mistry_setting[[1]]$cont_age)
+  colnames(tmp) = c("resp_age", levels(mistry_setting[[1]]$cont_age))
   tmp$resp_age = levels(mistry_setting[[1]]$resp_age)
   
   tmp.long = melt(setDT(tmp), id.vars = c("resp_age"), 
@@ -615,8 +537,7 @@ epi.setting = lapply(capitalize(cnt_sett_Epi), function(x){
 
 names(epi.setting) = cnt_sett_Epi
 
-
-## merge datasets
+## merge Epistorm-Mix and Mistry datasets by setting
 mat.comp = lapply(1:length(epi.setting), function(x){
   tmp = full_join(mistry_setting[[x]], 
                   epi.setting[[x]])
@@ -631,10 +552,8 @@ mat.comp = lapply(1:length(epi.setting), function(x){
 })
 
 
-
-
 if(PDF == T){
-  pdf("visualizations/Setting-Mistry.pdf")
+  pdf("./output/supmat/visualizations/Setting-Mistry.pdf")
 }
 
 lapply(1:length(mat.comp), function(x){
@@ -650,84 +569,14 @@ if(PDF == T){
 }
 
 
-
-
-
-# 
-# my.corr.plot = function(x, y, log10.transform = FALSE, x.lab.interval = 5,
-#                         title.x = x, title.y = y, group.var, mycol){
-#   
-#   ## Convert to log10 scale if TRUE
-#   if(log.transform){
-#     # Plotted values
-#     plot.x = log10(1 + x)
-#     plot.y = log10(1 + y)
-#     
-#     # Axes labels
-#     x.labels = 0:round(max(x))
-#     x.at = log10(1 + x.labels)
-#     
-#     y.labels = 0:round(max(y))
-#     y.at = log10(1 + y.labels)
-#     
-#   } else{
-#     plot.x = x
-#     plot.y = y
-#     
-#     # Axes labels
-#     x.labels = round(seq(0, max(x), by = max(x) / x.lab.interval))
-#     x.at = x.labels
-#     
-#     y.labels = round(seq(0, max(x), by = max(y) / x.lab.interval))
-#     y.at = y.labels
-#   }
-#   
-#   
-#   par(mar = c(3, 3, 3, 8), mfrow = c(1,1), xpd = T)
-#   plot(plot.x,  plot.y, col= mycol[factor(group.var)],
-#        xlab = title.x, 
-#        ylab = title.y, 
-#        axes = F, pch = 19, type = "n")
-#   box()
-#   axis(2, las = 2, at = y.at, labels = y.labels)
-#   axis(1, las = 1, at = x.at, labels = x.labels)
-#   abline(lm(y ~ x), col = "black", xpd = F)
-#   legend("topright", inset = c(-0.5, 0.1),                   
-#          legend = c(levels(factor(group.var))),
-#          pch = 19, col = mycol)
-#   
-#   
-#   ## Estimate pearson correlation coefficient
-#   for(i in 1:length(group.var)){
-#     
-#   }
-#   
-#   pears.cor = corr.test(x, y, method = "pearson")
-#   if(pears.cor$p < 0.001){
-#     pears.pvalue = "***"
-#   } else if(pears.cor$p < 0.01){
-#     pears.pvalue = "**"
-#   }
-#   else if(pears.cor$p < 0.05){
-#     pears.pvalue = "*"
-#   }
-#   
-#   
-#   
-#   
-# }
-# 
-
-library(prettyGraphs)
-
-pdf("visualizations/log10-correlations.pdf")
+if(PDF == T){
+  pdf(paste0(output.dir, "visualizations/log10-correlations.pdf"))
+}
 
 #### LOG10 Visualization
 full.df = do.call("rbind", matrix.plot.vals)
 full.df$log10_cnt = log10(1 + full.df$contacts)
 full.df$log10_epistorm_cnt = log10(1 + full.df$epi.contacts)
-
-
 
 ## Estimate pearson correlation coefficient
 full.df$cor.vals = NA
@@ -752,139 +601,139 @@ for(i in 1:length(names(matrix.plot.vals))){
 }
 
 
+plot.groups = list(cou = c("Belgium", "HunanProvince,China",  "Italy", 
+                           "Suzhou,China", "Switzerland", "The-Netherlands", 
+                           "United-Kingdom"), 
+                   prepan = c("US_Mistry", "US_Prem"))
+
+mycol = list(cou = c( "plum",  "#00B6EB", "#F8766D", "#A58AFF", "#53B400", 
+                      "#00C094", "#C49A00"),
+             US = c("#00cdcd", "#FB61D7"))
 
 
-plot.df = full.df[which(full.df$country != "US_Mistry" & 
-                          full.df$country != "US_Prem"), ]
-
-cnt = seq(0, round(max(plot.df$contacts)), by = 2)
-log10_cnt = log10(1 + cnt)
-
-cnt.y = seq(0, round(max(plot.df$epi.contacts)), by = 1)
-log10_cnt.y = log10(1 + cnt.y)
-
-
-
-tmp1 = corr.test(plot.df$contacts, 
-          plot.df$epi.contacts, 
-          method = "pearson")
-
-tmp1$r
-tmp1$p
-
-
-
-
-
-# mycol= c( "#8fb2c7", "cyan4", "#5f875f", "#87af5f", "#af5f5f", "#af5f87", "#87afaf")
-
-mycol= c( "plum",  "#00B6EB", "#F8766D", "#A58AFF", "#53B400", "#00C094",  "#C49A00")
-
-US.col = c("#00cdcd", "#FB61D7") 
-# # 
-# "#d75f87", "#d7afff",
-# "#af87d7",  "#87afd7", "goldenrod",
-# "#635375",  "#5f5f87",  "#5f5fd7",  "#800080", "burlywood3")
-
-
-par(mar = c(5, 4, 4, 8), mfrow = c(1,1), xpd = T)
-plot(plot.df$log10_cnt,  plot.df$log10_epistorm_cnt, 
-     col= add.alpha(mycol[factor(plot.df$country)], alpha = 0.75),
-     xlab = "Number of Contacts in countries outside the US", 
-     ylab = "Number of Contacts estimated by Epistorm", 
-     axes = F, pch = 19, cex = 1.5)
-box()
-axis(2, las = 2, at = log10_cnt.y, labels = cnt.y)
-axis(1, las = 1, at = log10_cnt, labels = cnt)
-abline(lm(plot.df$log10_epistorm_cnt~plot.df$log10_cnt), col = "black", xpd = F)
-legend("bottomright", inset = c(-0.5, 0.1),                   
-       legend = c(levels(factor(plot.df$cor.vals))),
-       pch = 19, col = mycol)
-
-
-## Pre vs. post-pandemic contact patterns
-par(mfrow = c(1,1))
-us.df = full.df[which(full.df$country == "US_Mistry" | full.df$country == "US_Prem"), ]
-cnt = seq(0, round(max(us.df$contacts)), by = 2)
-log10_cnt = log10(1 + cnt)
-
-cnt.y = seq(0, round(max(us.df$epi.contacts)), by = 1)
-log10_cnt.y = log10(1 + cnt.y)
-
-
-tmp2 = corr.test(us.df$contacts, 
-                 us.df$epi.contacts, 
-                 method = "pearson")
-
-tmp2$r
-tmp2$p
-
-
-plot(us.df$log10_cnt,  us.df$log10_epistorm_cnt, 
-     col= add.alpha(US.col[factor(us.df$country)], alpha = 0.75),
-     xlab = "Number of Pre-pandemic contacts", 
-     ylab = "Number of Contacts estimated by Epistorm", 
-     axes = F, pch = 19, cex = 1.5)
-box()
-axis(2, las = 2, at = log10_cnt.y, labels = cnt.y)
-axis(1, las = 1, at = log10_cnt, labels = cnt)
-abline(lm(us.df$log10_epistorm_cnt~us.df$log10_cnt), col = "black", xpd = F)
-legend("bottomright", inset = c(-0.5, 0.1),                   
-       legend = c(levels(factor(us.df$cor.vals))),
-       pch = 19, col = add.alpha(US.col, alpha = 0.75))
+## Plot other countries and US pre-pandemic with Epistorm-Mix contacts
+lapply(1:length(plot.groups), function(x){
+  
+  ## Identify indexes to plot
+  idx = which(full.df$country %in% plot.groups[[x]])
+  
+  plot.df = full.df[idx, ]
+  
+  
+  ## Axes values and labels
+  cnt.x = seq(0, round(max(plot.df$contacts)), by = 2)
+  log10_cnt.x = log10(1 + cnt.x)
+  
+  cnt.y = seq(0, round(max(plot.df$epi.contacts)), by = 1)
+  log10_cnt.y = log10(1 + cnt.y)
+  
+  
+  ## Full plot
+  par(mar = c(5, 4, 4, 8), mfrow = c(1,1), xpd = T)
+  plot(plot.df$log10_cnt,  plot.df$log10_epistorm_cnt, 
+       xlab = "Number of contacts for age-to-age pairs", 
+       ylab = "Number of contacts for age-to-age pairs in Epistorm-Mix",
+       axes = F, type = "n")
+  box()
+  axis(2, las = 2, at = log10_cnt.y, labels = cnt.y)
+  axis(1, las = 1, at = log10_cnt.x, labels = cnt.x)
+  abline(lm(plot.df$log10_epistorm_cnt~plot.df$log10_cnt), col = "black", xpd = F)
+  
+  for(i in 1:length(plot.groups[[x]])){
+    points(plot.df$log10_cnt[which(plot.df$country == plot.groups[[x]][i])], 
+           plot.df$log10_epistorm_cnt[which(plot.df$country == plot.groups[[x]][i])],
+           col = add.alpha(mycol[[x]][i], alpha = 0.75),
+           pch = 19, cex = 1.5)
+  }
+  
+  legend("bottomright", inset = c(-0.2, 0.1),                   
+         legend = c(levels(factor(plot.df$cor.vals))),
+         pch = 19, col = mycol[[x]])
+  
+  ## Estimate overall correlation and add legend
+  tmp1 = corr.test(plot.df$contacts, 
+                   plot.df$epi.contacts, 
+                   method = "pearson")
+  
+  pears.pvalue = ifelse(tmp1$p < 0.001, "***",
+                        ifelse(tmp1$p < 0.01, "**",
+                               ifelse(tmp1$p < 0.05, "*", "")))
+  
+  legend("topleft", legend = paste0("Pearson's r = ", 
+                                     round(tmp1$r, 2), 
+                                     pears.pvalue))
+  
+  
+  ## Single plots
+  par(mar = c(5, 4, 4, 8), mfrow = c(1,1), xpd = T)
+  
+  for(i in 1:length(plot.groups[[x]])){
+    plot(plot.df$log10_cnt,  plot.df$log10_epistorm_cnt, 
+         xlab = "Number of contacts for age-to-age pairs", 
+         ylab = "Number of contacts for age-to-age pairs in Epistorm-Mix",
+         axes = F, type = "n")
+    box()
+    axis(2, las = 2, at = log10_cnt.y, labels = cnt.y)
+    axis(1, las = 1, at = log10_cnt.x, labels = cnt.x)
+    abline(lm(plot.df$log10_epistorm_cnt~plot.df$log10_cnt), col = "black", xpd = F)
+    points(plot.df$log10_cnt[which(plot.df$country == plot.groups[[x]][i])], 
+           plot.df$log10_epistorm_cnt[which(plot.df$country == plot.groups[[x]][i])],
+           col = add.alpha(mycol[[x]][i], alpha = 0.75),
+           pch = 19, cex = 1.5)
+    legend("bottomright", legend = plot.df$cor.vals[grep(plot.groups[[x]][i], plot.df$cor.vals)][1])
+  }
+})
 
 
+
+## Pre vs. post-pandemic by setting
+min.cutoff = min(sapply(1:4, function(i) quantile(c(setdiff(mat.comp[[i]]$mistry,0),
+                                         setdiff(mat.comp[[i]]$epistorm,0)),
+                                         p = 0.05)))
 par(mfrow = c(1,1), xpd = T)
 for(i in 1:length(mat.comp)){
-  mat.comp[[i]]$log10_cnt = log10(1 + mat.comp[[i]]$mistry)
-  mat.comp[[i]]$log10_epistorm_cnt = log10(1 + mat.comp[[i]]$epistorm)
+  mat.comp[[i]]$log10_cnt = log10(min.cutoff + mat.comp[[i]]$mistry)
+  mat.comp[[i]]$log10_epistorm_cnt = log10(min.cutoff + mat.comp[[i]]$epistorm)
   
   
   pears.cor = corr.test(mat.comp[[i]]$mistry, 
                         mat.comp[[i]]$epistorm, 
                         method = "pearson")
   
-  if(pears.cor$p < 0.001){
-    pears.pvalue = "***"
-  } else if(pears.cor$p < 0.01){
-    pears.pvalue = "**"
-  } else if(pears.cor$p < 0.05){
-    pears.pvalue = "*"
-  }
+  pears.pvalue = ifelse(pears.cor$p < 0.001, "***",
+                        ifelse(pears.cor$p < 0.01, "**",
+                               ifelse(pears.cor$p < 0.05, "*", "")))
   
-  if(unique(mat.comp[[i]]$setting) == "work"){
-    dist.val = 0.01
-  } else {
-    dist.val = 0.05
-  }
+  # dist.val = ifelse(unique(mat.comp[[i]]$setting) == "work",
+  #                   0.01, 0.05)
   
-  
-  cnt = round(seq(0, round(max(mat.comp[[i]]$mistry), 2), 
-                  by = dist.val), 2)
-  log10_cnt = log10(1 + cnt)
-  
-  cnt.y = round(seq(0, round(max(mat.comp[[i]]$epistorm), 2), 
-                    by = dist.val), 2)
-  log10_cnt.y = log10(1 + cnt.y)
-  
+  log10_cnt = seq(max(mat.comp[[i]]$log10_cnt), log10(min.cutoff),
+                        length.out = 4)
+  cnt = round(log10_cnt)
+
+  log10_cnt.y = seq(max(mat.comp[[i]]$log10_epistorm_cnt), log10(min.cutoff),  
+                          length.out = 4)
+  cnt.y = round(log10_cnt.y)
 
   plot(mat.comp[[i]]$log10_cnt,  mat.comp[[i]]$log10_epistorm_cnt, 
-       xlab = "Number of pre-pandemic contacts", 
-       ylab = "Number of contacts estimated by Epistorm", 
+       xlab = "Per capita probability of contact age-to-age pairs", 
+       ylab = "Per capita probability of contact age-to-age pairs in Epistorm", 
        main = unique(mat.comp[[i]]$setting),
-       col= add.alpha(US.col[1], alpha = 0.75), 
+       col= add.alpha(mycol$US[1], alpha = 0.75), 
        axes = F, pch = 19, cex = 1.5)
   box()
-  axis(2, las = 2, at = log10_cnt.y, labels = cnt.y)
-  axis(1, las = 1, at = log10_cnt, labels = cnt)
+  axis(2, las = 2, at = log10_cnt.y, labels = cnt.y
+       )
+  axis(1, las = 1, at = log10_cnt, labels = cnt
+       )
   
   abline(lm(mat.comp[[i]]$log10_epistorm_cnt~mat.comp[[i]]$log10_cnt), 
          col = "black", xpd = F)
   
-  legend("topright", legend = paste0(unique(mat.comp[[i]]$setting), 
+  legend("bottomright", legend = paste0(unique(mat.comp[[i]]$setting), 
                                         " - Pearson's r = ",
                                         round(pears.cor$r, 2), pears.pvalue),
-         inset = c(-0.5, 0.1), )
+         inset = c(0.1, 0))
 }
 
 
@@ -903,6 +752,7 @@ for(i in mode.work){
   m.idx = which(rem_inpers_df$setting == paste0(author[1], "_", i))
   p.idx = which(rem_inpers_df$setting == paste0(author[2], "_", i))
   
+  ## Correlation for entire plot
   full.cor = corr.test(rem_inpers_df$contacts[plot.idx], 
                        rem_inpers_df$epi.contacts[plot.idx], 
                        method = "pearson")
@@ -910,7 +760,7 @@ for(i in mode.work){
   full.p = ifelse(full.cor$p < 0.001, "***",
                   ifelse(full.cor$p < 0.01, "**",
                          ifelse(full.cor$p < 0.05, "*", "")))
-  
+  ## Mistry correlation
   m.cor = corr.test(rem_inpers_df$contacts[m.idx], 
                     rem_inpers_df$epi.contacts[m.idx], 
                     method = "pearson")
@@ -919,6 +769,7 @@ for(i in mode.work){
                ifelse(m.cor$p < 0.01, "**",
                       ifelse(m.cor$p < 0.05, "*", "")))
   
+  ## Prem correlation
   p.cor = corr.test(rem_inpers_df$contacts[p.idx], 
                     rem_inpers_df$epi.contacts[p.idx], 
                     method = "pearson")
@@ -927,7 +778,7 @@ for(i in mode.work){
                ifelse(p.cor$p < 0.01, "**",
                       ifelse(p.cor$p < 0.05, "*", "")))
   
-  #axes
+  #axes and titles
   cnt.x = seq(0, round(max(rem_inpers_df$contacts[plot.idx])), by = 2)
   log10_cnt.x = log10(1 + cnt.x)
   
@@ -941,10 +792,10 @@ for(i in mode.work){
   title.y = ifelse(i == "inperson", "Number of inferred contacts at work/school for age-to-age pairs in Epistorm-Mix",
                    "Number of inferred contacts not at work/school for age-to-age pairs in Epistorm-Mix")
   
-  #plot
+  # plot
   plot(rem_inpers_df$log10_cnt[plot.idx],  
        rem_inpers_df$log10_epistorm_cnt[plot.idx], 
-       col= add.alpha(US.col[factor(rem_inpers_df$setting[plot.idx])], alpha = 0.75),
+       col= add.alpha(mycol$US[factor(rem_inpers_df$setting[plot.idx])], alpha = 0.75),
        xlab = title.x, 
        ylab = title.y, 
        axes = F, pch = 19, cex = 1.5)
@@ -952,13 +803,15 @@ for(i in mode.work){
   axis(2, las = 2, at = log10_cnt.y, labels = cnt.y)
   axis(1, las = 1, at = log10_cnt.x, labels = cnt.x)
   abline(lm(rem_inpers_df$log10_epistorm_cnt~rem_inpers_df$log10_cnt), col = "black", xpd = F)
-  legend("bottomright", inset = c(-0.5, 0.1),                   
+  legend("bottomright",                   
          legend = c(paste0("Mistry et. al., 2018 Pearson's r = ", 
                            round(m.cor$r, 2), m.p), 
                     paste0("Prem et. al., 2017 Pearson's r = ", 
                            round(p.cor$r, 2), p.p),
                     paste0("Full Pearson's r = ", round(full.cor$r, 2), full.p)),
-         pch = 19, col = add.alpha(US.col, alpha = 0.75))
+         pch = 19, col = c(add.alpha(mycol$US, alpha = 0.75)), NA)
 }
 
-dev.off()
+if(PDF == T){
+  dev.off()
+}

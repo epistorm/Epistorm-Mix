@@ -18,7 +18,7 @@ assort_df$sample = "Conditional"
 rownames(assort_df) = NULL
 
 ## load in assortativity from the main fig (unconditional)
-unc_assort = read.csv(paste0(output.dir, "../main/csv/race/assort_race.csv"))
+unc_assort = read.csv(paste0(output.dir, "./csv/race/assort_race.csv"))
 colnames(unc_assort) = c("setting", "V1")
 unc_assort$setting = factor(unc_assort$setting,
                             levels = c("Total", "Household", "School", "Work", "Other"))

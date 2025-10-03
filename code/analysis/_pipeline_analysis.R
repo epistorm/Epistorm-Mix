@@ -86,13 +86,6 @@ source(paste0(global.dir, "gam_fig1.R"))
 ##        2_age_X.pdf in "main" folder (X = Setting)
 source(paste0(global.dir, "fig2.R"))
 
-### Create race-specific contact matrices (figure 3 of main text)
-##    Requires the following folders in working directory: "output/main", "output/main/csv/race"
-##    Saves matrices in the following folders:
-##        X-race-matrix.csv and assort_race.csv in "main/csv/race" folder (X = Setting)
-##        3_race_X.pdf in "main" folder (X = Setting)
-source(paste0(global.dir, "fig3.R"))
-
 ### Change output directory for supplementary material 
 output.dir = sm.dir
 
@@ -193,14 +186,22 @@ source(paste0(global.dir, "unw-analysis.R"))
 ##        13_Total-Y-imp-matrix.csv and 14_X-Y-imp-matrix.csv in "supmat/csv/raw" folder (X = Setting, Y = Age group)
 source(paste0(global.dir, "raw-analysis.R"))
 
-### Creates race-specific conditional contact matrices
+### Create race-specific contact matrices 
+##    Requires the following folders in working directory: "output/supmat", "output/supmat/csv/race"
+##    Saves matrices in the following folders:
+##        X-race-matrix.csv and assort_race.csv in "main/csv/race" folder (X = Setting)
+##        3_race_X.pdf in "main" folder (X = Setting)
+source(paste0(global.dir, "fig3.R"))
+
+### Creates race-specific contact matrices
 ##    Requires the following folders in working directory: "output/supmat", "output/supmat/csv/race", "output/main/csv/race"
 ##    Requires the following data:
 ##        assort_race.csv in "main/csv/race" folder
 ##    Saves the matrices and plots in the following folders:
-##        X-race-matrix-cond.csv in "supmat/csv/race" folder
-##        15_cond-reth-X.pdf in "supmat" folder (X = Setting)
+##        X-race-matrix.csv, X-race-matrix-cond.csv in "supmat/csv/race" folder
+##        3_race_X.pdf, 15_cond-reth-X.pdf in "supmat" folder (X = Setting)
 ##        16_Summary-Ethn-Matrix.pdf in "supmat"
+source(paste0(global.dir, "fig3.R")) # [Required to run race_assort.R]
 source(paste0(global.dir, "race.R")) # [Required to run race_assort.R]
 source(paste0(global.dir, "race_assort.R"))
 
