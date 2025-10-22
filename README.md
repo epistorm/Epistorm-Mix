@@ -1,6 +1,6 @@
 # Epistorm-Mix: Mapping Social Contact Patterns in the Post-Pandemic United States
 
-[**Website**]() | [**Tutorials**](https://github.com/allisandrak/Observatory-of-US-Contact-Patterns/tree/main/tutorials) 
+[**Website**]()
 
 The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a representative sample of the US population. Respondents reported all person-to-person contacts in the preceding day ("yesterday") from the time they woke up until the time they went to sleep. Using this individual survey data, we constructed contact matrices stratified by age, sex, and race/ethnicity, which can be used to simulate the spread of respiratory infectious diseases through compartmental modeling. This repository serves as an open-access resource for infectious disease modeling and public health planning. 
 
