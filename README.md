@@ -17,8 +17,8 @@ The analyses in this repository are conducted using the imputed data.
 
 ### Contact Matrices
 For the matrices, check the matrix folder ([Contact matrices](/matrices)) containing the following types of matrices:
-- M_matrix: total and setting-specific contact matrices by age
-- F_matrix: frequency-based, setting-specific contact matrices by age 
+- M_matrix: total and setting-specific contact matrices by age, where each cell represents the weighted mean number of contacts of a participant in age group i reported with individuals in age group j. 
+- F_matrix: frequency-based, setting-specific contact matrices by age, where each cell represents the per capita probability of contact of an individual of age i with an individual of age j in each setting.
 
 ### Code
 
