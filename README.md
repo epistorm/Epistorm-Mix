@@ -7,11 +7,11 @@ The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a
 ## Getting Started
 
 ### Contact Patterns Data
-Individual-level data is provided in the data folder ([Data](/data)) in the form of two datasets: i) a respondent-level dataset with all characteristics of the respondent, and ii) a contact-level dataset with all the characteristics of each reported contact. Respondent ID can be used to merge the two datasets. We recommend using the imputed data ([Data for analysis](/data/imputed_data)) for any subsequent analysis and creation of contact matrices. Codebooks are provided with the data.
+Individual-level data is provided in the [data](/data) folder in the form of two datasets: i) a respondent-level dataset with all characteristics of the respondent, and ii) a contact-level dataset with all the characteristics of each reported contact. Respondent ID can be used to merge the two datasets. We recommend using the [imputed data](/data/imputed_data) for any subsequent analysis and creation of contact matrices. Codebooks are provided with the data.
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
-For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before missing data imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts ([here]()), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
+For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before missing data imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts [manuscripts](), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
 
 The analyses in this repository are conducted using the imputed data. 
 
@@ -41,7 +41,7 @@ To reference the data and code presented in this GitHub repository, please use t
 ```bibtex 
 @article{XXX,
         author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani, Alessandro and Ajelli, Marco},    
-        title = {The Post-Pandemic Contact Landscape in the United States: Implications for Respiratory Pathogen Transmission},<br/>
+        title = {Epistorm-Mix: Mapping Social Contact Patterns for Respiratory Pathogen Spread in the Post-Pandemic United States},<br/>
         elocation-id = {},
         year = {2025},
         doi = {},
