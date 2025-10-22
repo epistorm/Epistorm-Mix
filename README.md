@@ -23,7 +23,7 @@ For the matrices, check the matrix folder ([Contact matrices](/matrices)) contai
 ### Code
 
 Code is provided for data wrangling and analyses (in R) and for the modeling (in Python). 
-For the code, check the code folder: [Code](/code)
+For the code, check the [code](/code) folder.
 
 ### Tutorials
 We provide a series of tutorials to help you get started with Epistorm-Mix. 
