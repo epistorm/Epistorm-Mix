@@ -11,7 +11,7 @@ Individual-level data is provided in the data folder ([Data](/data)) in the form
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
-For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before missing data imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts (LINK HERE), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
+For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before missing data imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts ([here]()), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
 
 The analyses in this repository are conducted using the imputed data. 
 
@@ -32,8 +32,11 @@ We provide a series of tutorials to help you get started with Epistorm-Mix.
 - [Tutorial 3](/tutorials/data-analysis/3_Visualizing_contact_matrices.md): Visualizing contact matrices
 - [Tutorial 4](/tutorials/mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md): Compartmental modeling with contact matrices 
 
+## Publications
+The preprint describing the data collection and estimation of the contact matrices is available [here](). 
+
 ## Citation
-The preprint describing the data collection and estimation of the contact matrices is available [here](). To reference our work, please use the following citation: 
+To reference the data and code presented in this GitHub repository, please use the following citation: 
 
 ```bibtex 
 @article{XXX,
@@ -55,6 +58,6 @@ This project is licensed under the CC BY-NC-SA 4.0 license. See the [LICENSE](/L
 
 
 ## Contact
-For questions or issues, please open an issue on GitHub or contact the maintainer at XXX.
+For questions or issues, please open an issue on GitHub or [contact the maintainer]().
 
 
