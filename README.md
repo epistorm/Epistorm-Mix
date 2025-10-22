@@ -16,7 +16,7 @@ For reproducibility and sensitivity analyses, the data folder also contains: i) 
 The analyses in this repository are conducted using the imputed data. 
 
 ### Contact Matrices
-For the matrices, check the matrix folder ([Contact matrices](/matrices)<br/>) containing the following types of matrices:
+For the matrices, check the matrix folder ([Contact matrices](/matrices)) containing the following types of matrices:
 - M_matrix: total and setting-specific contact matrices by age
 - F_matrix: frequency-based, setting-specific contact matrices by age 
 
