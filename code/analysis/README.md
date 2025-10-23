@@ -18,7 +18,7 @@ Comment any analysis subsections after pre-processing that you are not intereste
 ### Example
 
 Run the following code:
-> # analysis pipeline
+
 > ## Clean the environment
 > rm(list = ls())
 
