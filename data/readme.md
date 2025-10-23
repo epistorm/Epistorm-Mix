@@ -21,7 +21,7 @@ Codebooks contain: variable descriptions, response options for each variable, an
    This folder contains the specifications of the GAM models for the analysis of the total number of contacts and the number of non-household contacts. More details on the specification selection can be found in the Supplementary Materials of the [manuscript]().
 
    ### Mathematical Modeling Data
-   This folder contains all the data necessary to perform the mathematical modeling described in [manuscript](). This data is necessary to run the code in the [mathematical modeling](code/mathematical-model) folder.
+   This folder contains all the data necessary to perform the mathematical modeling described in [manuscript](). This data is necessary to run the code in the [mathematical modeling](../code/mathematical-model) folder.
 
    ### Raw Data
    Raw data is provided here for reproducibility purposes and potential sensitivity analyses for alternative missing data imputation strategies. The folder contains the respondent-level and contact-level datasets as well as the codebooks for each dataset.
