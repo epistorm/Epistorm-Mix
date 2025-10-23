@@ -44,6 +44,8 @@ if (!dir.exists("./output/supmat")){
 output.dir = "./output/main/"
 sm.dir = "./output/supmat/" # directory for the output later used for supplementary materials
 
+#### Required Preprocessing ####
+
 ### Creates additional variables and encodes existing variables in imputed data:
 ##    Installs the following packages: "dplyr", "survey", "tidyverse", "ggplot2","flextable", "gt", "gtsummary",
 ##                                      "fitdistrplus", "mgcv", "sjPlot", "patchwork", "doParallel", "extrafont",
@@ -54,6 +56,8 @@ sm.dir = "./output/supmat/" # directory for the output later used for supplement
 ##        imputed-contacts2.csv and imputed-resp2.csv in "imputed_data" folder
 ##        federal-state-holidays.csv in "external_data" folder
 source(paste0(global.dir, "analysis_prep.R")) ### [Required for all the code after]
+
+#### Analysis ####
 
 ### Creates table 1 for the main text:
 ##    Requires the following folders in working directory: "output/main", "output/main/csv" 
