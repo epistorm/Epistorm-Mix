@@ -1,6 +1,6 @@
 # Contact Matrices
 
-## Matrix
+## Matrix (M-matrices)
 
 Contact matrices ($M_{ij}$) are estimated where each cell represents the weighted 
 mean number of contacts of a participant in group *i* 
@@ -18,7 +18,7 @@ $$
 
 Matrices based on age used in the analysis are available: [M_matrix](./M_matrix)
 
-## Frequency-based matrix
+## Frequency-based matrix (F-matrices)
 
 Contact matrices calculated by using the relative abundance of contacts between 
 individuals of age *i* and individuals of age *j* reported by each respondent *r*
