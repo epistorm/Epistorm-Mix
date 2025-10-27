@@ -7,7 +7,7 @@ The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a
 ## Getting Started
 
 ### Contact Patterns Data
-Individual-level data is provided in the [data](/data) folder in the form of two datasets: i) a respondent-level dataset with all characteristics of the respondent, and ii) a contact-level dataset with all the characteristics of each reported contact. Respondent ID can be used to merge the two datasets. We recommend using the [imputed data](/data/imputed_data) for any subsequent analysis and creation of contact matrices. Codebooks are provided with the data.
+Individual-level data is provided in the data folder in the form of two datasets: i) a respondent-level dataset with all characteristics of the respondent, and ii) a contact-level dataset with all the characteristics of each reported contact. Respondent ID can be used to merge the two datasets. We recommend using the [imputed data](/data/imputed_data) for any subsequent analysis and creation of contact matrices. Codebooks are provided with the data.
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
