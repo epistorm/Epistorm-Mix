@@ -15,16 +15,16 @@ For reproducibility and sensitivity analyses, the data folder also contains: i) 
 
 The analyses in this repository are conducted using the imputed data. 
 
-### [Contact Matrices](/matrices)
+### [Contact Matrices](./matrices)
 The matrix folder contains the following types of matrices:
 - M_matrix: total and setting-specific contact matrices by age, where each cell represents the weighted mean number of contacts of a participant in age group i reported with individuals in age group j. 
 - F_matrix: frequency-based, setting-specific contact matrices by age, where each cell represents the per capita probability of contact of an individual of age i with an individual of age j in each setting.
 
-### [Code](/code)
+### [Code](./code)
 
 Code is provided for the mathematical modeling (in Python), missing data imputations, data wrangling and analyses (in R).
 
-### [Tutorials](/tutorials)
+### [Tutorials](./tutorials)
 We provide a series of tutorials to help you get started with Epistorm-Mix. 
 - [Tutorial 1](/tutorials/data-analysis/1_Accessing_and_extracting_data.md): Accessing and extracting data
 - [Tutorial 2](/tutorials/data-analysis/2_Constructing_contact_matrices.md): Constructing contact matrices
@@ -53,7 +53,7 @@ To reference the data and code presented in this GitHub repository, please use t
 
 
 ## License
-This project is licensed under the CC BY-NC-SA 4.0 license. See the [LICENSE](/LICENSE) file for more details.
+This project is licensed under the CC BY-NC-SA 4.0 license. See the [LICENSE](./LICENSE) file for more details.
 
 
 ## Contact
