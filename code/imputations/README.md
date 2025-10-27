@@ -1,6 +1,6 @@
 # Missing Data Strategy
 
-This folder contains the pipeline script that will conduct the full imputations for the clean raw data. Imputations include random forest multiple imputations of the missing data on individual contacts and sampling of age, race/ethnicity, and sex for missing data on multiple contacts reported as a group.
+This folder contains the pipeline script that will conduct the full imputations to create imputed data based on the clean raw data. Imputations include random forest multiple imputations of the missing data on individual contacts and sampling of age, race/ethnicity, and sex for missing data on multiple contacts reported as a group.
 
 ## Requirements
 
