@@ -1,5 +1,5 @@
 # External Data
-This data has been utilized in the analysis for comparison, the creation of variables, or missing data imputations.
+This data has been utilized in the analysis for the comparisons with other countries and pre-pandemic estimates, the creation of variables, or the missing data imputations.
 
 ## Sources
 ### Comparisons with contact matrices from other countries
