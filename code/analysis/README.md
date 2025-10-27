@@ -17,10 +17,11 @@ Comment out any analysis subsections after pre-processing that you are not inter
 
 Example:
 ``` r
+### To create only the contact matrices ###
 ## set these directories to save resulting figures and tables
 output.dir = "./output/main/"
-sm.dir = "./output/supmat/" # directory for the output later used for supplementary materials
-gam.results = "./data/gam_specifications/"
+# sm.dir = "./output/supmat/" # directory for the output later used for supplementary materials
+# gam.results = "./data/gam_specifications/"
 
 ### Creates additional variables and encodes existing variables in imputed data:
 source(paste0(global.dir, "analysis_prep.R")) ### [Required for all the code after]
