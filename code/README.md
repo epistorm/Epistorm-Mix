@@ -1,4 +1,4 @@
-# Code
+### Code
 
 This folder contains the code for: 
 i. The analysis of contact patterns data (in R)
