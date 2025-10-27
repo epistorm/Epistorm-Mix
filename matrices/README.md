@@ -1,5 +1,7 @@
 # Contact Matrices
 
+This folder contains the following types of matrices for mathematical modeling and visualization of contact patterns. Contact matrices are based on imputed data and can be recreated using the scripts provided in the code folder.
+
 ## Matrix (M-matrices)
 
 Each cell of the contact matrices $M_{ij}$ represents the weighted mean number of contacts with individuals in age group *j* reported by a participant in age group *i*.
