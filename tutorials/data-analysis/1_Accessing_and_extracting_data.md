@@ -3,7 +3,7 @@ In this tutorial, we demonstrate how to access contact patterns data and extract
 
 This data can then be used to estimate contact matrices (see [Tutorial 2](../data-analysis/2_Constructing_contact_matrices.md)), plot contact matrices (see [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md)), and develop epidemic models for infectious disease spread (see [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md)). 
 
-Epistorm-Mix data are stored in `.csv` files following a standard format established for social contact patterns data. This data is publicly available through GitHub.
+Epistorm-Mix data are stored in `.csv` files and are publicly available through GitHub.
 
 ## Requirements
 This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages. 
