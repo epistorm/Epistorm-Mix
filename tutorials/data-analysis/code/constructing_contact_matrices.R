@@ -1,3 +1,6 @@
+## Set working directory
+setwd("write here.../Epistorm-Mix/")
+
 ## Requires accessing_and_extracting_data.R
 resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")  # change if the data was saved in a different folder
 cont_imp = read.csv("./tutorials/data-analysis/data/imputed_cont.csv")  # change if the data was saved in a different folder
@@ -90,10 +93,10 @@ merged.df = left_join(resp_imp, cont_imp, by = "resp_id")
 
 settings = unique(merged.df$cont_setting)
                     
-# ## Uncomment this if using the code for the real data (these variables are already provided in tutorial data)
-# for(x in settings){
-#   merged.df[, paste("cont_", tolower(as.character(x)))] = ifelse(merged.df$cont_setting == x, 0, 1)
-# }
+## Uncomment this if using the code for the real data (these variables are already provided in tutorial data)
+for(x in settings){
+  merged.df[, paste("cont_", tolower(as.character(x)))] = ifelse(merged.df$cont_setting == x, 0, 1)
+}
                     
 cont_cols = paste("cont_", tolower(as.character(settings))) # substitute with the variable(s) that denote needed setting
 nocont = rowSums(!is.na(merged.df[, cont_cols])) == 0
@@ -106,8 +109,8 @@ age_matrix_n = resp_imp %>%
   summarise(n = sum(weight, na.rm = TRUE))
 
 ## prediction ages ##
-nd = expand.grid(resp_age = c(0:max(merged_df$resp_age)),
-                 cont_age = c(0:max(merged_df$resp_age)))
+nd = expand.grid(resp_age = c(0:max(merged.df$resp_age)),
+                 cont_age = c(0:max(merged.df$resp_age)))
 
 predict.m = as.data.frame(nd)
 
@@ -146,6 +149,10 @@ merged.df = create.age.groups(merged.df, input.var = "resp_age", # resp age
                               break.list = age.breaks,
                               suff.list = age.vars.names)
 merged.df = create.age.groups(merged.df, input.var = "cont_age", # contact age
+                              break.list = age.breaks,
+                              suff.list = age.vars.names)
+
+resp_imp = create.age.groups(resp_imp, input.var = "resp_age", # resp age
                               break.list = age.breaks,
                               suff.list = age.vars.names)
 
