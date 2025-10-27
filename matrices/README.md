@@ -1,6 +1,6 @@
 # Contact Matrices
 
-This folder contains the following types of matrices for mathematical modeling and visualization of contact patterns. Contact matrices are based on imputed data and can be recreated using the scripts provided in the code folder.
+This folder contains M-matrices and F-matrices for mathematical modeling and visualization of contact patterns. Contact matrices are based on imputed data and can be recreated using the scripts provided in the code folder.
 
 ## Matrix (M-matrices)
 
