@@ -6,7 +6,7 @@ The data based on some of the questions provided in these questionnaires is not 
 - providing this data together with the main respondent information risks violating de-identifiability.
 
 In the survey questionnaire, participants were asked to: 
-- provide information about themselves (their child) if not gathered previousely
+- provide information about themselves (their child) if not gathered previously
 - contextualize the previous day (“yesterday”). Examples:
   - whether they were sick yesterday
   - whether they worked or attended school yesterday
