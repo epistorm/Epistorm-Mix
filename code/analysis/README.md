@@ -1,8 +1,8 @@
 # Analysis of Contact Patterns Data
 
-This folder contains the pipeline script that will conduct the full analyses for both the main text figures and supplementary text figures of the [manuscript](). It also contains individual scripts for each subsection of the analysis.
+This folder contains the [pipeline](./_pipeline_analysis.R) script that will conduct the full analyses for both the main text figures and supplementary text figures of the [manuscript](). It also contains individual scripts for each subsection of the analysis.
 
-It is necessary to set the directories and run the required [pre-processing code](./analysis_prep.R) to perform any of the following individual analyses. The scripts have no other dependencies unless explicitly specified in the [pipeline](./_pipeline_analysis.R).
+It is necessary to set the directories and run the required [pre-processing code](./analysis_prep.R) to perform any of the following individual analyses. The scripts have no other dependencies unless explicitly specified in the pipeline.
 
 ## Requirements
 
