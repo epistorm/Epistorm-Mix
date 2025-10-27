@@ -1,6 +1,6 @@
 #### Requires constructing_contact_matrices.R ####
 
-## Let's use a household matrix as an example
+## Let's use a matrix for total contacts as an example (which has been created as element 1 in the list of contact matrices
 i = 1
 
 ## Let's create the visualization of the smoothed matrix
