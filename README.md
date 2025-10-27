@@ -1,6 +1,6 @@
 # Epistorm-Mix: Mapping Social Contact Patterns in the Post-Pandemic United States
 
-[**Website**]() | [**Tutorials**](/tutorials)
+[**Website**](https://www.epistorm.org/data/epistorm-mix)
 
 The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a representative sample of the US population. Respondents reported all person-to-person contacts in the preceding day ("yesterday") from the time they woke up until the time they went to sleep. Using this individual survey data, we constructed contact matrices stratified by age, sex, and race/ethnicity, which can be used to simulate the spread of respiratory infectious diseases through compartmental modeling. This repository serves as an open-access resource for infectious disease modeling and public health planning. 
 
@@ -15,16 +15,16 @@ For reproducibility and sensitivity analyses, the data folder also contains: i) 
 
 The analyses in this repository are conducted using the imputed data. 
 
-### [Contact Matrices](./matrices)
+### [Contact Matrices](/matrices)
 The matrix folder contains the following types of matrices:
 - M_matrix: total and setting-specific contact matrices by age, where each cell represents the weighted mean number of contacts of a participant in age group i reported with individuals in age group j. 
 - F_matrix: frequency-based, setting-specific contact matrices by age, where each cell represents the per capita probability of contact of an individual of age i with an individual of age j in each setting.
 
-### [Code](./code)
+### [Code](/code)
 
 Code is provided for the mathematical modeling (in Python), missing data imputations, data wrangling and analyses (in R).
 
-### Tutorials
+### [Tutorials](/tutorials)
 We provide a series of tutorials to help you get started with Epistorm-Mix. 
 - [Tutorial 1](/tutorials/data-analysis/1_Accessing_and_extracting_data.md): Accessing and extracting data
 - [Tutorial 2](/tutorials/data-analysis/2_Constructing_contact_matrices.md): Constructing contact matrices
