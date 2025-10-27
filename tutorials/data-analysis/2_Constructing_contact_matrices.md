@@ -38,7 +38,7 @@ and can be loaded into the program by:
 ```R
 cont_imp = read.csv("imputed_cont.csv")
 ```
-Documentation describing the variables of both contact patterns datasets are available [here]().
+Codebooks describing the variables of both contact patterns datasets are available [here](.../data/imputed_data).
 
 
 ## Estimating age-specific contact matrices 
@@ -50,14 +50,16 @@ merged_df = left_join(resp_imp, cont_imp, by = "resp_id")
 
 Then, we create a new binary variable that indicates whether or not a respondent reported contacts, where `0` = no  and `1` = yes.
 ```R
+### substitute this code (should start with the definition of "settings = ...")
 cont_cols = grep("^cont_", colnames(merged.df), value = TRUE)
 nocont = rowSums(!is.na(merged.df[, cont_cols])) == 0
 merged.df$binary_col = ifelse(nocont, 0, 1)
 ```
 
 ### Estimating the number of contacts between single-year respondent-contact age groups
-To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by using a `group-by` to group the respondent and estimate the mean of the weights to obtain the weight of the single respondent, and then we use `group_by` to group all respondents of a given age group and sum their weights to obtain the number of respondents of a given age. 
+To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by using the original responde-level dataset and a `group-by` to group all respondents belonging to a given age group and sum their weights to obtain the number of respondents of a given age. 
 ```R
+## substitute this code
 age_matrix_n = merged_df %>%
   group_by(resp_age, resp_id) %>%
   summarise(weight = mean(weight, na.rm = TRUE)) %>%
@@ -65,7 +67,7 @@ age_matrix_n = merged_df %>%
   summarise(n = sum(weight, na.rm = TRUE))
 ```
 
-Then, we used `expand.grid` to create a dataframe containing the ages to include in our matrix for both the participants and contacts: 
+Then, we used `expand.grid` to create a dataframe containing the combination of contact and respondent ages to include in our matrix: 
 ```R
 nd = expand.grid(resp_age = c(0:max(merged_df$resp_age)),
                  cont_age = c(0:max(merged_df$resp_age)))
@@ -74,6 +76,7 @@ predict.m = as.data.frame(nd)
 ```
 Then, we estimate the weighted sum of contacts by the respondent-contact age group. (Example: the weighted sum of contacts between respondents ages 0-4 years old with contacts ages 0-4 years old). Here, we assume that `NA` is equivalent to a weighted sum of 0. Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
 ```R
+
 # obtain the weighted sum of contacts per respondent-contact group
   age_matrix = merged_df %>%
     filter(!is.na(!!sym("cont_age"))) %>%
