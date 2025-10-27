@@ -1,6 +1,8 @@
-#### Requires constructing_contact_matrices.R ####
+#### Requires "constructing_contact_matrices.R" ####
+## Uncomment to run "constructing_contact_matrices.R"
+# source("./tutorials/data-analysis/code/constructing_contact_matrices.R")
 
-## Let's use a matrix for total contacts as an example (which has been created as element 1 in the list of contact matrices
+## Let's use a matrix for total contacts as an example (which has been created as element 1 in the list of contact matrices in the sourced code above)
 i = 1
 
 ## Let's create the visualization of the smoothed matrix
