@@ -1,4 +1,4 @@
-setwd("/Users/shsinc/Desktop/phd/Epistorm-survey/local-git/Epistorm-Mix/")
+setwd("./Epistorm-Mix/") # change this to your working directory
 
 # Loading data downloaded from github
 resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")
