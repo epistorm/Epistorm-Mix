@@ -11,19 +11,18 @@ Individual-level data is provided in the [data](/data) folder in the form of two
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
-For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before missing data imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts [manuscripts](), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
+For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts [manuscripts](), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
 
 The analyses in this repository are conducted using the imputed data. 
 
 ### Contact Matrices
-For the matrices, check the matrix folder ([Contact matrices](/matrices)) containing the following types of matrices:
+The matrix folder ([Contact matrices](/matrices)) contains the following types of matrices:
 - M_matrix: total and setting-specific contact matrices by age, where each cell represents the weighted mean number of contacts of a participant in age group i reported with individuals in age group j. 
 - F_matrix: frequency-based, setting-specific contact matrices by age, where each cell represents the per capita probability of contact of an individual of age i with an individual of age j in each setting.
 
 ### Code
 
-Code is provided for data wrangling and analyses (in R) and for the modeling (in Python). 
-For the code, check the [code](/code) folder.
+Code is provided for [data wrangling and analyses](./code/analysis) (in R) and for the [modeling](./code/mathematical-model) (in Python).
 
 ### Tutorials
 We provide a series of tutorials to help you get started with Epistorm-Mix. 
