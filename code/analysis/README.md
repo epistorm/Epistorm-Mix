@@ -13,29 +13,31 @@ my.folder = "[your preferred working directory name here]"
 setwd(my.folder)
 ```
 
-Comment any analysis subsections after pre-processing that you are not interested in.
+Comment out any analysis subsections after pre-processing that you are not interested in.
 
 ### Example
 
 Run the following code:
 
-> ## Clean the environment
+> Clean the environment
 > rm(list = ls())
 
-> #### Folders and Directories ####
+> Folders and Directories ####
 
-> ## Working directory
-> my.folder = "[your preferred working directory name here]"
+> Working directory
+> my.folder = "your preferred working directory name here"
 > setwd(my.folder)
 
-> ## Set global directory for sourcing the code
-> ## (This code is insurance in case you run any code files that change working directory)
+> Set global directory for sourcing the code
+> (This code is insurance in case you run any code files that change the working directory)
+> 
 > e = new.env()
 > e$global.dir = paste0(getwd(), "/code/analysis/")
 > attach(e, name = 'global.dir')
 
-> ## Output directory
-> ## create needed folders if they do not exist
+> Output directory
+> create needed folders if they do not exist
+> 
 > if(!dir.exists("./output")){
 >   dir.create("./output")
 > }
