@@ -1,6 +1,10 @@
 #### Requires constructing_contact_matrices.R ####
 
-ggplot(age_matrix_ls[[1]]) +
+## Let's use a household matrix as an example
+i = 1
+
+## Let's create the visualization of the smoothed matrix
+ggplot(age_matrix_ls[[i]]) +
   geom_raster(aes(x = resp_age, y = cont_age, fill = pred), interpolate = TRUE) +
   ggtitle("Title") + # Main title
   xlab("Respondent Age") + # X-axis title
@@ -23,6 +27,7 @@ ggplot(age_matrix_ls[[1]]) +
         plot.background = element_rect(fill = "transparent", color = NA)#,
   )
 
+## Let's create the visualization of the matrix by age group without smoothing
 ggplot(by5_matrix) +
   geom_tile(aes(x = resp_age_by5_80, y = cont_age_by5_80, fill = ncont)) +
   ggtitle("Total") + # Main title
