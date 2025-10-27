@@ -3,7 +3,8 @@
 This folder contains questionnaires administered online during each wave, both in English and Spanish. 
 The data based on some of the questions provided in these questionnaires is not shared due to two main reasons:
 - the data is under embargo
-- providing this data together with the main respondent information risks violating de-identifiability.
+- providing this data together with the main respondent information risks violating de-identifiability and may result in bias creation based on limited data.
+Each of the reasons above is explicitly noted next to the question name in the provided instruments.
 
 In the survey questionnaire, participants were asked to: 
 - provide information about themselves (their child) if not gathered previously
