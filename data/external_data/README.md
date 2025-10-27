@@ -9,8 +9,8 @@ This data has been utilized in the analysis for comparison, the creation of vari
   - Liang, Y., et al. "Social contact patterns and their impact on the transmission of respiratory pathogens in rural China." Infectious Disease Modelling 10.2 (2025): 439-452.
 - [matrices-Wang.xlsx](./matrices-Wang.xlsx) (contact matrices for administrative districts in Suzhou city, Jiangsu province, China)
   - Wang, M. et al. Social contacts patterns relevant to the transmission of infectious diseases in Suzhou, China following the COVID-19 epidemic. J. Health Popul. Nutr. 43, 58 (2024).
- - [resident_population_Italy.csv](./population-Italy.csv) (population age stucture for Italy)
-  - "Popolazione Residente." Istat.it, 2025
+- [resident_population_Italy.csv](./population-Italy.csv) (population age stucture for Italy)
+   - "Popolazione Residente." Istat.it, 2025
 - [Lucchini_bootstrap_age_group_total.zip](./Lucchini_bootstrap_age_group_total.zip), [Italy-sample-size.csv](./Italy-sample-size.csv) (contact matrices and sample age structure for Italy)
   - Lucchini, L., et al. “Post-Pandemic Social Contacts in Italy: Implications for Social Distancing Measures on In-Person School and Work Attendance.” ArXiv.org. (2024).
   
