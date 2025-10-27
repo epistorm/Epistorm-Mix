@@ -12,10 +12,18 @@
   - Mistry, D., et al. "Inferring high-resolution human mixing patterns for disease modeling." Nature communications 12.1 (2021): 323.
 - [matrices-Prem.xlsx](./matrices-Prem.xlsx)
   - Prem, K., Alex R. Cook, and Mark Jit. "Projecting social contact matrices in 152 countries using contact surveys and demographic data." PLoS computational biology 13.9 (2017): e1005697.
-- [federal-state-holidays.csv](./federal-state-holidays.csv), [student_agestr.csv](./student_agestr.csv)
+- [federal-state-holidays.csv](./federal-state-holidays.csv)
+  - "Columbus Day, Indigenous Peoples Day or just a regular Monday? It depends on where you are". Pew Research Center. Available [here](https://www.pewresearch.org/short-reads/2023/10/05/working-on-columbus-day-or-indigenous-peoples-day-it-depends-on-where-your-job-is/)
+  - "American holidays". USAGov Contact Center. Available [here](https://www.usa.gov/holidays).
+- [pop_agestr.csv](pop_agestr.csv), [student_agestr.csv](./student_agestr.csv)
   - Census Bureau, American Community Survey (ACS). Census.gov (2025). 
-- [population-Italy.csv](./population-Italy.csv)
-  - “Popolazione Residente.” Istat.it, 2025
+- [resident_population_Italy.csv](./population-Italy.csv)
+  - "Popolazione Residente." Istat.it, 2025
+- [Italy-sample-size.csv](Italy-sample-size.csv)
+  - 
 - [Lucchini_bootstrap_age_group_total.zip](./Lucchini_bootstrap_age_group_total.zip), [Italy-sample-size.csv](./Italy-sample-size.csv)
   - Lucchini, L., et al. “Post-Pandemic Social Contacts in Italy: Implications for Social Distancing Measures on In-Person School and Work Attendance.” ArXiv.org. (2024).
- 
+
+
+
+
