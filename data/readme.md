@@ -1,6 +1,6 @@
 # Data 
 
-## Imputed Data 
+## [Imputed Data](/imputed_data) 
 We recommend using imputed data for any further analysis of contact patterns.  
 Imputed data folder contains individual-level data ready for data analysis, including:
 - a respondent-level dataset with all characteristics of the respondent;
