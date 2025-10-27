@@ -6,8 +6,8 @@ The **Epistorm-Mix** contains post-COVID-19 pandemic contact patterns data for a
 
 ## Getting Started
 
-### Contact Patterns Data
-Individual-level data is provided in the data folder in the form of two datasets: i) a respondent-level dataset with all characteristics of the respondent, and ii) a contact-level dataset with all the characteristics of each reported contact. Respondent ID can be used to merge the two datasets. We recommend using the [imputed data](/data/imputed_data) for any subsequent analysis and creation of contact matrices. Codebooks are provided with the data.
+### [Contact Patterns Data](/data/imputed_data)
+Individual-level data is provided in the data folder in the form of two datasets: i) a respondent-level dataset with all characteristics of the respondent, and ii) a contact-level dataset with all the characteristics of each reported contact. Respondent ID can be used to merge the two datasets. We recommend using the imputed data for any subsequent analysis and creation of contact matrices. Codebooks are provided with the data.
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
@@ -15,14 +15,14 @@ For reproducibility and sensitivity analyses, the data folder also contains: i) 
 
 The analyses in this repository are conducted using the imputed data. 
 
-### Contact Matrices
-The matrix folder ([Contact matrices](/matrices)) contains the following types of matrices:
+### [Contact Matrices](./matrices)
+The matrix folder contains the following types of matrices:
 - M_matrix: total and setting-specific contact matrices by age, where each cell represents the weighted mean number of contacts of a participant in age group i reported with individuals in age group j. 
 - F_matrix: frequency-based, setting-specific contact matrices by age, where each cell represents the per capita probability of contact of an individual of age i with an individual of age j in each setting.
 
-### Code
+### [Code](./code)
 
-Code is provided for [data wrangling and analyses](./code/analysis) (in R) and for the [modeling](./code/mathematical-model) (in Python).
+Code is provided for the mathematical modeling (in Python), missing data imputations, data wrangling and analyses (in R).
 
 ### Tutorials
 We provide a series of tutorials to help you get started with Epistorm-Mix. 
