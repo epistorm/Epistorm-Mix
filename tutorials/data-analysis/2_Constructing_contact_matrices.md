@@ -50,6 +50,7 @@ merged.df = left_join(resp_imp, cont_imp, by = "resp_id")
 
 Then, we create a new binary variable that indicates whether or not a respondent reported contacts, where `0` = no  and `1` = yes.
 ```R
+settings = unique(merged.df$cont_setting)
 cont_cols = paste("cont_", tolower(as.character(settings))) # substitute with the variable(s) that denote needed setting
 nocont = rowSums(!is.na(merged.df[, cont_cols])) == 0
 merged.df$binary_col = ifelse(nocont, 0, 1)
