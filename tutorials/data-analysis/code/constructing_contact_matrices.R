@@ -114,7 +114,7 @@ tmp.vars = lapply(age.breaks, function(x) {
 for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
   ## in merged dataset
   for(x in c("resp_age", "cont_age")){
-    tmp.names = paste0(x, age.vars.names)
+    tmp.names = paste0(x, names(age.breaks)[i])
     merged.df[,tmp.names] = cut(merged.df[,x],
                                 breaks = age.breaks[[i]],
                                 labels = group.lbls[[i]],
@@ -122,7 +122,7 @@ for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
     )
   }
   ## in respondent dataset
-  tmp.names = paste0("resp_age", age.vars.names)
+  tmp.names = paste0("resp_age", names(age.breaks)[i])
   resp_imp[,tmp.names] = cut(resp_imp[,"resp_age"],
                               breaks = age.breaks[[i]],
                               labels = group.lbls[[i]],
@@ -135,7 +135,8 @@ age_matrix_n = resp_imp %>%
   group_by(resp_age_by5_80) %>%
   summarise(n = sum(weight, na.rm = TRUE))
 
-## prediction age groups ##
+## all age group combinations ##
+## in case some combinations are missing from the sample ##
 nd = expand.grid(resp_age_by5_80 = levels(merged.df$resp_age_by5_80),
                  cont_age_by5_80 = levels(merged.df$cont_age_by5_80))
 predict.m = as.data.frame(nd)
