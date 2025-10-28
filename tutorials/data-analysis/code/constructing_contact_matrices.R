@@ -77,9 +77,13 @@ age_matrix_s$ncont = age_matrix_s$weighted_sum/age_matrix_s$n
 
 # GAM (estimating smoothing)
 model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
-                       k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
+                       k = c(10,10), # k=10 fits our data best
+                       bs = c("cc","cc"), # cc = cyclic cubic spline (best suited for our data)
+                       m = c(0,0)),
             family = nb(),
             data = age_matrix_s)
+## For work contacts, the cc smoothing spline does not provide sufficient flexibility. 
+## Consider using thin plate (tp) regression spline that allows for more flexibility in modeling complex multi-dimensional and non-linear relationships.  
 
 # predictions (predicting smoothed contact matrices)
 age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
