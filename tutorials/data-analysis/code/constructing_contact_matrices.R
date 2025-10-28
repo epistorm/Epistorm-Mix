@@ -17,7 +17,7 @@ lapply(ps, function(x){
   x
 })
 
-## ESTIMATING AGE-SPECIFIC CONTACT MATRICES
+#### ESTIMATING AGE-SPECIFIC CONTACT MATRICES ####
                     
 ## Merge datasets
 merged.df = left_join(resp_imp, cont_imp, by = "resp_id")
@@ -51,7 +51,7 @@ predict.m = as.data.frame(nd)
 ## Define the settings for matrix calculations ##
 setting_names = c("binary_col") ## more can be added (household, school, work, other) from "cont_cols"
 
-## Smoothed matrices
+#### Smoothed matrices #### 
 
 # obtain the weighted sum of contacts per respondent-contact group
 age_matrix_s = merged.df %>%
@@ -88,7 +88,7 @@ model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
 # predictions (predicting smoothed contact matrices)
 age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 
-## Contact matrices using 5-year age brackets
+#### Contact matrices using 5-year age brackets #### 
 ## Set age brackets
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list, can create multiple age groups
 age.vars.names = names(age.breaks)
