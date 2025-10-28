@@ -160,7 +160,7 @@ merged.df[,tmp.names] = as.data.frame(tmp.vars)
 ```
 Respondent specific weights, weighted sum of contacts between respondent-contact age groups, and estimating the average number of contacts between groups follows the same procedures shown previously. For this example, we will reference these average contacts by age groups as `matrix_age`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to predict contacts as we do not need to smooth the estimates.  After `matrix_age` is obtained, we will use the `pivot_wider` function to convert this into a matrix by respondent-contact age groups. 
 ```R
- matrix_age = age.matrix.by5 %>% 
+ matrix_age = age_matrix %>% 
     select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 ```
