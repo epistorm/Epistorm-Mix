@@ -126,30 +126,17 @@ Once we have the average number of contacts, we can fit a generalized additive m
 ```R
 ## Fit GAM model for total number of contacts (calculated above
 model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
-                        k = c(10,10), bs = c("cc","cc"), m = c(0,0)), # k=10 degrees of freedom fits our data best (should be [explored](https://cran.r-project.org/web/packages/santaR/vignettes/selecting-optimal-df.html) for each new data)
-                family = nb(), #with a log link
+                        k = c(10,10), bs = c("cc","cc"), m = c(0,0)), # k=10 degrees of freedom fits our data best
+                family = nb(), # negative binomial is used as the number of contacts is distributed as a negative binomial in our data
                 data = age_matrix_s)
 ```
-In GAMs, one can use different smoothing procedures depending on the patterns observed in the data. For total contacts, we use a cyclic cubic smoothing spline, as this method assumes the contacts to be continuous and smooth across age groups.
+In GAMs, one can use different smoothing procedures depending on the patterns observed in the data. For total contacts, we use a cyclic cubic (cc) smoothing spline, as it assumes a continuous base function (which is the case for single-year age brackets) and allows us sufficient flexibility to approximate different degrees of contact assortativity and heterogeneity. The benefits of cyclic cubic smoothing splines also include higher computational efficiency relative to other approaches. The number of degrees of freedom (k) should be [explored](https://cran.r-project.org/web/packages/santaR/vignettes/selecting-optimal-df.html) for each model specification, as it depends on the data used.
 
-we also consider different smoothing procedures based on the setting of the contact, which were implemented using the function `te`.  For contacts in workplaces, we use a thin plate regression spline, which allows more flexibility in modeling complex non-linear relationships, such as those with workplace contacts.  
-
-The GAM for contacts in the workplace is formulated as:
-
-To continue with estimating contacts in the household, the GAM is formulated as: 
-
-That model would also be used for estimating contacts in schools and other settings. To estimate contacts in the workplace, the GAM would need to be formulated as: 
-```R
-model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
-                        k = c(4,4), bs = c("tp","tp"), m = c(0,0)),
-                family = nb(),
-                data = age_matrix_s)
-```
-
-Then, we predict the number of contacts by respondent-contact age group
+Then, we predict the number of contacts by respondent-contact age group using GAM model
 ```R
  age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 ```
+These predictions allow us to visualize smoothed contact matrices.
 
 ### Estimating the number of contacts between 5-year respondent-contact age groups
 Many times, you will opt for creating contact matrices using age groups rather than single-year ages. For the remainder of this tutorial, we will create the age-specific household contact matrix using 5-year age groups. 
