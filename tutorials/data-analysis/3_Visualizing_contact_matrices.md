@@ -8,7 +8,7 @@ This tutorial assumes some familiarity with programming languages and completion
 
 In the code examples, we directly use the following R packages: [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for the visualization.
 
-## Plot
+## Plots
 
 There were two age-specific contact matrices calculated in the previous tutorial: `age_matrix_s' - the smoothed contact matrix by age for single-year age brackets; and `age_matrix' - the contact matrix by age for 5-year age brackets (non-smoothed). Both of the calculated matrices were saved in the form of a data frame (long format) and in the form of a matrix (wide format). In this visualization, we will use the data frames for direct use in ggplot. If you would like to visualize a different matrix that is provided in the wide format using the approach below, please transform it into a data frame. Otherwise, please use a different tool for heatmaps.
 
