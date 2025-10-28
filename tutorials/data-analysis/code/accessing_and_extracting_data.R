@@ -1,7 +1,10 @@
-setwd("./Epistorm-Mix/") # change this to your working directory
+## set your project folder as your working directory
+setwd("./Epistorm-Mix/") # change the string in quotes to your working directory/project folder
 
-# Loading data downloaded from github
-resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")
+## read downloaded data
+resp_imp = read.csv("imputed_resp.csv")
+
+## see a subsample of the data
 head(resp_imp)
 
 # resp_id resp_age resp_gender resp_educator    weight
@@ -12,10 +15,13 @@ head(resp_imp)
 # 325231       15        Male            No   0.9484297
 # 344409        3      Female            No   0.4348620
 
-## Extracting data from github directly 
-resp.url = "https://raw.githubusercontent.com/allisandrak/Epistorm-Mix/refs/heads/main/tutorials/data-analysis/data/imputed_resp.csv?token=GHSAT0AAAAAADJQZFA53RC5T5BAEGBH7FGK2G375TA"
-resp_imp = read.csv(resp.url)
+## Extracting data from GitHub directly 
 
+## save the URL
+resp.url = "https://raw.githubusercontent.com/.../data/imputed_resp.csv?token=GHSAT0AAAAAADJQZFA53RC5T5BAEGBH7FGK2G375TA" ## paste the copied URL here
+
+## read using saved URL 
+resp_imp = read.csv(resp.url)
 
 
 
