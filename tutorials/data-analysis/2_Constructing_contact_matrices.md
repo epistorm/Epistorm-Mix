@@ -136,12 +136,13 @@ Then, we predict the number of contacts by respondent-contact age group using GA
 ```R
  age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 ```
-These predictions allow us to visualize smoothed contact matrices.
+These predictions allow us to visualize smoothed contact matrices (see [Tutorial 3](./3_Visualizing_contact_matrices.md)).
 
 ### Estimating the number of contacts between 5-year respondent-contact age groups
-Many times, you will opt for creating contact matrices using age groups rather than single-year ages. For the remainder of this tutorial, we will create the age-specific household contact matrix using 5-year age groups. 
+Many times, you will opt for creating contact matrices using age groups rather than single-year ages. For the remainder of this tutorial, we will create the age-specific contact matrix using 5-year age groups. 
 
-To do this, we need to specify the age groups for the respondents. The code shown below is repeated for contact age groups and for the respondent age groups in the respondent-only data. 
+To do this, we need to create the same age groups for respondents and contacts.
+
 ```R
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120))
 age.vars.names = c("_by5_80")
