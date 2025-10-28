@@ -6,7 +6,7 @@ resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")  # change
 cont_imp = read.csv("./tutorials/data-analysis/data/imputed_cont.csv")  # change if the data was saved in a different folder
 
 ## LIBRARIES
-ps = c("dplyr", "mgcv", "ggplot2", "tidyr", "fastDummies", "Hmisc")
+ps = c("dplyr", "mgcv", "tidyr")
 
 lapply(ps, function(x){
   if(!require(x, character.only = T)){
