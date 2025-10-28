@@ -49,13 +49,13 @@ Alternatively, you can access the data directly in R using a web link to the fil
 
 To extract the data from GitHub directly into your R environment, you will need to retrieve the URL of the data file. To obtain the URL, go to the data folder of the GitHub repository by clicking [here](./data). In this folder, click on the file you want to use for analysis. Then, press the `Raw` button at the top right-hand side of the file, as shown in the figure above.
 
-Copy the URL for the Raw data file. Note that the URL should start with `https://raw.githubusercontent.com/...`. If this is not the case, reading the data into R directly will not work. Once you have the correct URL, simply use the `read.csv` function with the URL instead of a file path:
+Copy the URL for the Raw data file. Note that the URL should start with `https://raw.githubusercontent.com/...`. If this is not the case, reading the data into R directly will not work. Once you have the correct URL, use the `read.csv` function with the URL instead of a file path:
 
 ``` r
-## save the file URL
+## save the URL
 resp.url = "https://raw.githubusercontent.com/.../data/imputed_resp.csv?token=GHSAT0AAAAAADJQZFA53RC5T5BAEGBH7FGK2G375TA" ## paste the copied URL here
 
-## read using save URL 
+## read using saved URL 
 resp_imp = read.csv(resp.url)
 ```
 
