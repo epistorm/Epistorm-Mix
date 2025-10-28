@@ -1,5 +1,5 @@
 ## Set working directory
-setwd("./Epistorm-Mix/")
+setwd("write-here.../Epistorm-Mix/")
 
 ## Requires accessing_and_extracting_data.R
 resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")  # change if the data was saved in a different folder
