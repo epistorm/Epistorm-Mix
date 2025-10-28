@@ -43,76 +43,101 @@ The contact-level patterns data are formatted as follows:
 
 <img src = "./figures/detailed-cont.png" width = 70%>
 
-Codebooks describing the variables of both contact patterns datasets are available [here](.../data/imputed_data).
+Codebooks describing the variables of both contact patterns datasets are available [here](../../data/imputed_data).
 
 
 ## Estimating age-specific contact matrices 
 ### Preparing the dataset for analysis
-Before we can create the contact matrices, we need to combine the respondent- and contact-level data into a single dataset, and we do this using a `left_join` function from the `dplyr` package. 
-```R
+Before we can create the contact matrices, we need to combine the respondent- and contact-level data into a single dataset. We do this using a `left_join` function from the `dplyr` package. 
+```r
 merged.df = left_join(resp_imp, cont_imp, by = "resp_id")
 ```
 
 Then, we create a new binary variable that indicates whether or not a respondent reported contacts, where `0` = no  and `1` = yes.
-```R
+```r
+## create a vector of setting names
 settings = unique(merged.df$cont_setting)
-cont_cols = paste("cont_", tolower(as.character(settings))) # substitute with the variable(s) that denote needed setting
+
+## create dummy variables for individual settings 
+for(x in settings){
+  merged.df[, paste("cont_", tolower(as.character(x)))] = ifelse(merged.df$cont_setting == x, 0, 1)
+}
+## save a vector of created dummies (or type the variable(s) that denote needed setting)
+cont_cols = paste("cont_", tolower(as.character(settings)))
+
+## create the binary variable to denote whether the respondent had non-zero contacts
 nocont = rowSums(!is.na(merged.df[, cont_cols])) == 0
 merged.df$binary_col = ifelse(nocont, 0, 1)
 ```
 
-### Estimating the number of contacts between single-year respondent-contact age groups
-To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by using the original responde-level dataset and a `group-by` to group all respondents belonging to a given age group and sum their weights to obtain the number of respondents of a given age. 
-```R
-age_matrix_n = merged.df %>%
-  group_by(resp_age, resp_id) %>%
-  summarise(weight = mean(weight, na.rm = TRUE)) %>%
+### Estimating single-year contact matrices (the number of contacts between single-year respondent-contact age groups)
+
+First, to ensure that the contact matrices are representative of the target population (the US in this case) by age, we must account for the weight of each participant in the sample. Here, we do this by using the original respondent-level dataset and provided sample weights. We group all respondents belonging to a given age bracket (single year in this case) and sum their weights to obtain the number of people of a given age they represent (i.e., weighted number of respondents). 
+
+```r
+## calculate weighted number of respondents
+age_matrix_n = resp_imp %>%
   group_by(resp_age) %>%
   summarise(n = sum(weight, na.rm = TRUE))
 ```
 
-Then, we used `expand.grid` to create a dataframe containing the combination of contact and respondent ages to include in our matrix: 
-```R
-nd = expand.grid(resp_age = c(0:max(merged.df$resp_age)),
-                 cont_age = c(0:max(merged.df$resp_age)))
+Then, we use `expand.grid` to create a dataframe containing all the combinations of possible contact and respondent ages to include in our matrix for smoothing.
+
+```r
+nd = expand.grid(resp_age = c(0:max(merged.df$resp_age)), # single-year brackets in this case
+                 cont_age = c(0:max(merged.df$resp_age))) # single-year brackets in this case
 
 predict.m = as.data.frame(nd)
 ```
-Then, we estimate the weighted sum of contacts by the respondent-contact age group. (Example: the weighted sum of contacts between respondents ages 0-4 years old with contacts ages 0-4 years old). Here, we assume that `NA` is equivalent to a weighted sum of 0. Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
-```R
+Then, we estimate the weighted sum of contacts by the respondent-contact age group for a defined setting (Example: between respondents 4 years old with contacts 4 years old). 
+
+```r
+## Define the settings for matrix calculations ##
+setting_names = c("binary_col") ## binary_col represents any contact, but a specific setting can be added (household, school, work, other) from "cont_cols"
+
 # obtain the weighted sum of contacts per respondent-contact group
-  age_matrix_s = merged.df %>%
-    filter(!is.na(!!sym("cont_age"))) %>%
-    arrange(!!sym("cont_age")) %>%
-    group_by(!!sym("cont_age"), !!sym("resp_age")) %>%
-    summarise(weighted_sum = sum(weight*!!sym(setting_names), na.rm = T))
-  
-  # combine weighted sum with the data for predictions
-  age_matrix_s = left_join(predict.m, age_matrix_s)
-  
-  # change NAs
-  age_matrix_s$weighted_sum[is.na(age_matrix_s$weighted_sum)] = 0
-  
-  # combine total weighted contact sum with weighted N of people
+age_matrix_s = merged.df %>%
+  filter(!is.na(cont_age)) %>%
+  arrange(cont_age) %>%
+  group_by(cont_age, resp_age) %>%
+  summarise(weighted_sum = sum(weight*!!sym(setting_names), na.rm = T))
+
+# combine weighted sum with the data for predictions
+age_matrix_s = left_join(predict.m, age_matrix_s) # NAs will be created if the combination of contact and respondent ages/age groups does not exist in the data
+
+# change NAs to 0s
+age_matrix_s$weighted_sum[is.na(age_matrix_s$weighted_sum)] = 0 # Here, we assume that `NA` (or absence of the age group combination) is due to extremely low contact rates between these age groups.
+```
+Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
+```R
+# combine N of contacts with N of people
   age_matrix_s = left_join(age_matrix_s, age_matrix_n)
   
-  # order
+  # order the data frame
   age_matrix_s = age_matrix_s[order(age_matrix_s[,"resp_age"], age_matrix_s[,"cont_age"]),]
   
-  # average number of contacts for the matrix
+  # calculate average number of contacts for the matrix (total number of contacts)
   age_matrix_s$ncont = age_matrix_s$weighted_sum/age_matrix_s$n
+  ```
+
+### Using generalized additive models to create smoothed contact matrices
+Once we have the average number of contacts, we can fit a generalized additive model (GAM), where the calculated average number of contacts depends on the respondent age/age group and the contact age/age group. We do this using the `gam ` function from the library `mgc`. Using a GAM allows us to capture potential non-linear relationships between age and the number of contacts.
+
+```R
+## Fit GAM model for total number of contacts (calculated above
+model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
+                        k = c(10,10), bs = c("cc","cc"), m = c(0,0)), # k=10 degrees of freedom fits our data best (should be [explored](https://cran.r-project.org/web/packages/santaR/vignettes/selecting-optimal-df.html) for each new data)
+                family = nb(), #with a log link
+                data = age_matrix_s)
 ```
-### Using generalized additive models to predict contacts
-Once we have the average number of contacts, we fit a generalized additive model (GAM) with a log link to the data where the average number of contacts is the dependent variable and the respodents age and the contacts age are the independent variables. We do this using the `gam ` function from the library `mgc`. Using a GAM allows us to capture non-linear realtionships between the respondent-contact age groups and the number of contacts they have. In the GAM, we also consider different smoothing procedures based on the setting of the contact, which were implemented using the function `te`. For contacts in workplaces, we use a thin plate regression spline which allows more flexibility in modeling complex non-linear relationships, such as those with workplace contacts. For contacts in other settings, we use a cyclic cubic smoothing spline as this method assumes the contacts to be continous and smooth across age groups. 
+In GAMs, one can use different smoothing procedures depending on the patterns observed in the data. For total contacts, we use a cyclic cubic smoothing spline, as this method assumes the contacts to be continuous and smooth across age groups.
+
+we also consider different smoothing procedures based on the setting of the contact, which were implemented using the function `te`.  For contacts in workplaces, we use a thin plate regression spline, which allows more flexibility in modeling complex non-linear relationships, such as those with workplace contacts.  
+
 The GAM for contacts in the workplace is formulated as:
 
 To continue with estimating contacts in the household, the GAM is formulated as: 
-```R
-model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
-                        k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
-                family = nb(),
-                data = age_matrix_s)
-```
+
 That model would also be used for estimating contacts in schools and other settings. To estimate contacts in the workplace, the GAM would need to be formulated as: 
 ```R
 model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
