@@ -1,5 +1,5 @@
 ## Set working directory
-setwd("write-here.../Epistorm-Mix/")
+setwd("type-your-directory-here")
 
 ## Requires accessing_and_extracting_data.R
 resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")  # change if the data was saved in a different folder
@@ -48,7 +48,7 @@ nd = expand.grid(resp_age = c(0:max(merged.df$resp_age)),
 
 predict.m = as.data.frame(nd)
 
-## calculating the matrices ##
+## Define the settings for matrix calculations ##
 setting_names = c("binary_col") ## more can be added (household, school, work, other) from "cont_cols"
 
 ## Smoothed matrices
