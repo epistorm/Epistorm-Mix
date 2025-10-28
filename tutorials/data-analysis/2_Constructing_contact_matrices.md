@@ -38,11 +38,11 @@ cont_imp = read.csv("imputed_cont.csv")
 
 The respondent-level contact patterns data are formatted as follows:
 
-<img src = "./figures/extract-data-1.png" width = 70%>
+<img src = "./figures/extract-data-1.png" width = 50%>
 
 The contact-level patterns data are formatted as follows: 
 
-<img src = "./figures/detailed-cont.png" width = 70%>
+<img src = "./figures/detailed-cont.png" width = 80%>
 
 Codebooks describing the variables of both contact patterns datasets are available [here](../../data/imputed_data).
 
