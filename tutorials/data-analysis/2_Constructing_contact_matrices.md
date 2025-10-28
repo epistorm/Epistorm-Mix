@@ -32,7 +32,7 @@ resp_imp = read.csv("imputed_resp.csv")
 
 The contact-level patterns data should be formatted as: 
 
-![Detailed Cont](./figures/detailed-cont.png | width=100)
+![Detailed Cont](./figures/detailed-cont.png)
 
 and can be loaded into the program by:
 ```R
