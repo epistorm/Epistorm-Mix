@@ -17,7 +17,7 @@ There were two age-specific contact matrices calculated in the previous tutorial
 The plot for the contact matrix on individual ages can be created using the code below. The plot shows the average number of contacts of a specific age per respondent age.
 
 ```         
-ggplot(age_matrix_ls[[1]]) +
+ggplot(age_matrix_s) +
     geom_raster(aes(x = resp_age_plot, y = cont_age_plot, fill = pred), interpolate = TRUE) +
     ggtitle("Title") + # Main title
     xlab("Respondent Age") + # X-axis title
@@ -46,7 +46,7 @@ ggplot(age_matrix_ls[[1]]) +
 The plot for the contact matrix on age groups (by 5 up to 80 years old) can be visualized using the code below. This plot shows the average number of contacts of one age group per respondent age group. 
 
 ```         
-ggplot(by5_matrix) +
+ggplot(age_matrix) +
       geom_tile(aes(x = resp_age_by5_80, y = cont_age_by5_80, fill = ncont)) +
       ggtitle("Total") + # Main title
       xlab("Respondent Age") + # X-axis title
