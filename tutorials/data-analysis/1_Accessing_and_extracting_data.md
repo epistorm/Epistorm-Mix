@@ -43,9 +43,7 @@ Alternatively to downloading the contact patterns data, you can access the data 
 
 ### Extracting data from `github`
 
-To extract the data from `github` directly, you will need to retrieve the url of the raw data file. To obtain the url for the raw data on `github`, go to the data folder of the `github` repository by clicking [here](https://github.com/allisandrak/Epistorm-Mix/tree/main/data). In this folder, click on the file you want to use for analysis. Then, press the `Raw` button at the top right-hand side of the file, as shown below:
-
-![extract-data1](./figures/extract-data1.png)
+To extract the data from `github` directly, you will need to retrieve the url of the raw data file. To obtain the url for the raw data on `github`, go to the data folder of the `github` repository by clicking [here](https://github.com/allisandrak/Epistorm-Mix/tree/main/data). In this folder, click on the file you want to use for analysis. Then, press the `Raw` button at the top right-hand side of the file, as shown in the figure above.
 
 Copy the url for the Raw data file. Note that the url should start with `https://raw.githubusercontent.com/...`, and if this is not the case then reading the data into R directly will not work. To load the data into your R program, simply use the `read.csv` function using the url instead of a file path:
 
