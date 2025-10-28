@@ -5,72 +5,6 @@ setwd("write here.../Epistorm-Mix/")
 resp_imp = read.csv("./tutorials/data-analysis/data/imputed_resp.csv")  # change if the data was saved in a different folder
 cont_imp = read.csv("./tutorials/data-analysis/data/imputed_cont.csv")  # change if the data was saved in a different folder
 
-## Function for estimating average contacts by respondent-contact age groups
-calc.m.num = function(mydata, # data to be used
-                      myattr, # vector of the names of the two attributes (e.g., "resp_age" and "cont_age")
-                      setting, # character name of the binary variable defining the setting the contact belongs to
-                      predict.m, # dataframe containing the combinations of respondent-contact groups (should be the same or a subsample of unique values in variables defined by myattr)
-                      denumer.n # number of people to be used as the denominator for the "average number of contacts" (dataframe containing variable "n")
-                     ){
-  # obtain the weighted sum of contacts per respondent-contact group
-  age_matrix = mydata %>%
-    filter(!is.na(!!sym(myattr[2]))) %>%
-    arrange(!!sym(myattr[2])) %>%
-    group_by(!!sym(myattr[2]), !!sym(myattr[1])) %>%
-    summarise(weighted_sum = sum(weight*!!sym(setting), na.rm = T))
-  
-  # combine weighted sum with the data for predictions
-  age_matrix = left_join(predict.m, age_matrix)
-  
-  # change NAs to 0s
-  age_matrix$weighted_sum[is.na(age_matrix$weighted_sum)] = 0
-  
-  # combine total weighted contact sum with weighted N of people
-  age_matrix = left_join(age_matrix, denumer.n)
-  
-  # order
-  age_matrix = age_matrix[order(age_matrix[,myattr[1]], age_matrix[,myattr[2]]),]
-  
-  # average number of contacts for the matrix
-  age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
-  
-  return(age_matrix)
-}
-
-#### create age group ####
-## helper function
-mycut = function(var, breaks){
-  maxv = breaks[length(breaks)]
-  if(maxv > max(var, na.rm = T)){
-    mylabels = c(paste(breaks[1:(length(breaks)-2)], 
-                       breaks[2:(length(breaks)-1)]-1, sep = "-"),
-                 paste0(breaks[length(breaks)-1],"+"))
-  }else{
-    mylabels = paste(breaks[1:(length(breaks)-1)], 
-                     breaks[2:length(breaks)]-1, sep = "-")
-  }
-  var = cut(var,
-            breaks = breaks,
-            labels = mylabels,
-            right = F)
-}
-## main age group function
-create.age.groups = function(mydata,
-                             input.var = "resp_age",
-                             break.list = list(seq(0,120, by = 5),
-                                               c(seq(0,75, by = 5), 120),
-                                               c(seq(0,80, by = 5), 120),
-                                               seq(0,120, by = 15),
-                                               age.groups),
-                             suff.list = paste0("_",c("by5", "by5_75","by5_80","by15","g"))){
-  
-  tmp.vars = lapply(break.list, function(x) mycut(mydata[,input.var],x))
-  tmp.names = paste0(input.var, suff.list)
-  names(tmp.vars) = tmp.names
-  mydata[,tmp.names] = as.data.frame(tmp.vars)
-  return(mydata)
-}
-
 ## LIBRARIES
 ps = c("dplyr", "mgcv", "ggplot2", "tidyr", "fastDummies", "Hmisc")
 
@@ -118,44 +52,121 @@ predict.m = as.data.frame(nd)
 setting_names = c("binary_col") ## more can be added (household, school, work, other) from "cont_cols"
 
 ## Smoothed matrices
-age_matrix_ls = lapply(setting_names, function(setting) {
-  
-  age_matrix = calc.m.num(mydata = merged.df,
-                          myattr = c("resp_age", "cont_age"), # vector of the names of the two attributes
-                          setting = setting,
-                          predict.m = predict.m,
-                          denumer.n = age_matrix_n)
-  
-  # GAM (estimating smoothing)
-  model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age), ## ncont is created in calc.m.num function above
-                         k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
-              family = nb(),
-              data = age_matrix)
-  
-  # predictions (predicting smoothed contact matrices)
-  age_matrix$pred = predict(model, newdata = age_matrix, type = "response")
-  
-  return(age_matrix)
-  
-})
+
+# obtain the weighted sum of contacts per respondent-contact group
+age_matrix = merged.df %>%
+  filter(!is.na(cont_age)) %>%
+  arrange(cont_age) %>%
+  group_by(cont_age, resp_age) %>%
+  summarise(weighted_sum = sum(weight*!!sym(setting_names), na.rm = T))
+
+# combine weighted sum with the data for predictions
+age_matrix = left_join(predict.m, age_matrix)
+
+# change NAs to 0s
+age_matrix$weighted_sum[is.na(age_matrix$weighted_sum)] = 0
+
+# combine total weighted contact sum with weighted N of people
+age_matrix = left_join(age_matrix, age_matrix_n)
+
+# order
+age_matrix = age_matrix[order(age_matrix[,"resp_age"], age_matrix[,"cont_age"]),]
+
+# average number of contacts for the matrix
+age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
+
+# GAM (estimating smoothing)
+model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
+                       k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
+            family = nb(),
+            data = age_matrix)
+
+# predictions (predicting smoothed contact matrices)
+age_matrix$pred = predict(model, newdata = age_matrix, type = "response")
 
 ## Contact matrices using 5-year age brackets
 ## Set age brackets and add age groups to df
-                    
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list
 age.vars.names = names(age.breaks)
 
-merged.df = create.age.groups(merged.df, input.var = "resp_age", # resp age
-                              break.list = age.breaks,
-                              suff.list = age.vars.names)
-merged.df = create.age.groups(merged.df, input.var = "cont_age", # contact age
-                              break.list = age.breaks,
-                              suff.list = age.vars.names)
+## create age groups 
+tmp.vars = lapply(age.breaks, function(x) {
+  maxv = x[length(x)]
+  if (maxv > max(merged.df[,"resp_age"], na.rm = TRUE)) {
+    mylabels = c(
+      paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
+      paste0(x[length(x)-1], "+")
+    )
+  } else {
+    mylabels = paste(
+      x[1:(length(x)-1)],
+      x[2:length(x)] - 1,
+      sep = "-"
+    )
+  }
+  
+  cut(
+    merged.df[,"resp_age"],
+    breaks = x,
+    labels = mylabels,
+    right = FALSE
+  )
+})
+tmp.names = paste0("resp_age", age.vars.names)
+names(tmp.vars) = tmp.names
+merged.df[,tmp.names] = as.data.frame(tmp.vars)
 
-resp_imp = create.age.groups(resp_imp, input.var = "resp_age", # resp age
-                              break.list = age.breaks,
-                              suff.list = age.vars.names)
+tmp.vars = lapply(age.breaks, function(x) {
+  maxv = x[length(x)]
+  if (maxv > max(merged.df[,"cont_age"], na.rm = TRUE)) {
+    mylabels = c(
+      paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
+      paste0(x[length(x)-1], "+")
+    )
+  } else {
+    mylabels = paste(
+      x[1:(length(x)-1)],
+      x[2:length(x)] - 1,
+      sep = "-"
+    )
+  }
+  
+  cut(
+    merged.df[,"cont_age"],
+    breaks = x,
+    labels = mylabels,
+    right = FALSE
+  )
+})
+tmp.names = paste0("cont_age", age.vars.names)
+names(tmp.vars) = tmp.names
+merged.df[,tmp.names] = as.data.frame(tmp.vars)
 
+tmp.vars = lapply(age.breaks, function(x) {
+  maxv = x[length(x)]
+  if (maxv > max(resp_imp[,"resp_age"], na.rm = TRUE)) {
+    mylabels = c(
+      paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
+      paste0(x[length(x)-1], "+")
+    )
+  } else {
+    mylabels = paste(
+      x[1:(length(x)-1)],
+      x[2:length(x)] - 1,
+      sep = "-"
+    )
+  }
+  
+  cut(
+    resp_imp[,"resp_age"],
+    breaks = x,
+    labels = mylabels,
+    right = FALSE
+  )
+})
+tmp.names = paste0("resp_age", age.vars.names)
+names(tmp.vars) = tmp.names
+resp_imp[,tmp.names] = as.data.frame(tmp.vars)
 
 ## weighted # of resp ##
 age_matrix_n = resp_imp %>%
@@ -167,12 +178,27 @@ nd = expand.grid(resp_age_by5_80 = levels(merged.df$resp_age_by5_80),
                  cont_age_by5_80 = levels(merged.df$cont_age_by5_80))
 predict.m = as.data.frame(nd)
 
-## matrices 
-by5_matrix = calc.m.num(mydata = merged.df,
-                          myattr = c("resp_age_by5_80", "cont_age_by5_80"), # vector of the names of the two attributes
-                          setting = "binary_col", ## setting-specific or "binary_col" for total contacts
-                          predict.m = predict.m,
-                          denumer.n = age_matrix_n)
+# obtain the weighted sum of contacts per respondent-contact group
+age_matrix = merged.df %>%
+  filter(!is.na(cont_age_by5_80)) %>%
+  arrange(cont_age_by5_80) %>%
+  group_by(cont_age_by5_80, resp_age_by5_80) %>%
+  summarise(weighted_sum = sum(weight*!!sym("binary_col"), na.rm = T))
+
+# combine weighted sum with the data for predictions
+age_matrix = left_join(predict.m, age_matrix)
+
+# change NAs to 0s
+age_matrix$weighted_sum[is.na(age_matrix$weighted_sum)] = 0
+
+# combine total weighted contact sum with weighted N of people
+age_matrix = left_join(age_matrix, age_matrix_n)
+
+# order
+age_matrix = age_matrix[order(age_matrix[,"resp_age"], age_matrix[,"cont_age"]),]
+
+# average number of contacts for the matrix
+age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
 
 matrix_age = by5_matrix %>% 
   dplyr::select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
