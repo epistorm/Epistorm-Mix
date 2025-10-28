@@ -27,7 +27,7 @@ merged.df = left_join(resp_imp, cont_imp, by = "resp_id")
 
 settings = unique(merged.df$cont_setting)
                     
-## Uncomment this if using the code for the real data (these variables are already provided in tutorial data)
+## Create dummy variables for individual settings 
 for(x in settings){
   merged.df[, paste("cont_", tolower(as.character(x)))] = ifelse(merged.df$cont_setting == x, 0, 1)
 }
