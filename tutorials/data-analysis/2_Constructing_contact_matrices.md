@@ -23,7 +23,7 @@ To estimate age-specific contact matrices, we need at least two data elements: r
 
 In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code. The respondent-level contact patterns data should be formatted as follows:
 
-![Detailed Data](./figures/extract-data1.png)
+![Detailed Data]<img src = "./figures/extract-data1.png" width = 50%>
 
 and can be loaded by: 
 ```R
@@ -32,7 +32,7 @@ resp_imp = read.csv("imputed_resp.csv")
 
 The contact-level patterns data should be formatted as: 
 
-![Detailed Cont](./figures/detailed-cont.png)
+![Detailed Cont]<img src = "./figures/detailed-cont.png" width = 50%>
 
 and can be loaded into the program by:
 ```R
