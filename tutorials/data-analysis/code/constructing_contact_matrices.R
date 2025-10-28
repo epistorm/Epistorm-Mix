@@ -90,10 +90,10 @@ age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 
 ## Contact matrices using 5-year age brackets
 ## Set age brackets
-age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list
+age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list, can create multiple age groups
 age.vars.names = names(age.breaks)
 
-## create age group labels
+## Create age group labels
 tmp.vars = lapply(age.breaks, function(x) {
   maxv = x[length(x)]
   if (maxv > max(merged.df[,c("resp_age", "cont_age")], na.rm = TRUE)) {
@@ -110,37 +110,25 @@ tmp.vars = lapply(age.breaks, function(x) {
   }
 })
 
-  cut(
-    merged.df[,"resp_age"],
-    breaks = x,
-    labels = mylabels,
-    right = FALSE
+## Create age group variables for respondents (in merged and respondent data) and contacts
+for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
+  ## in merged dataset
+  for(x in c("resp_age", "cont_age")){
+    tmp.names = paste0(x, age.vars.names)
+    merged.df[,tmp.names] = cut(merged.df[,x],
+                                breaks = age.breaks[[i]],
+                                labels = group.lbls[[i]],
+                                right = FALSE
+    )
+  }
+  ## in respondent dataset
+  tmp.names = paste0(x, age.vars.names)
+  resp_imp[,tmp.names] = cut(resp_imp[,"resp_age"],
+                              breaks = age.breaks[[i]],
+                              labels = group.lbls[[i]],
+                              right = FALSE
   )
-tmp.names = paste0("resp_age", age.vars.names)
-names(tmp.vars) = tmp.names
-merged.df[,tmp.names] = as.data.frame(tmp.vars)
-
-
-  cut(
-    merged.df[,"cont_age"],
-    breaks = x,
-    labels = mylabels,
-    right = FALSE
-  )
-
-tmp.names = paste0("cont_age", age.vars.names)
-names(tmp.vars) = tmp.names
-merged.df[,tmp.names] = as.data.frame(tmp.vars)
-  
-  cut(
-    resp_imp[,"resp_age"],
-    breaks = x,
-    labels = mylabels,
-    right = FALSE
-  )
-tmp.names = paste0("resp_age", age.vars.names)
-names(tmp.vars) = tmp.names
-resp_imp[,tmp.names] = as.data.frame(tmp.vars)
+}
 
 ## weighted # of resp ##
 age_matrix_n = resp_imp %>%
@@ -154,7 +142,7 @@ predict.m = as.data.frame(nd)
 
 # obtain the weighted sum of contacts per respondent-contact group
 age_matrix = merged.df %>%
-  filter(!is.na(cont_age_by5_80)) %>%
+  filter(!is.na(cont_age_by5_80)) %>% ## we exclude NA group from the contact matrix
   arrange(cont_age_by5_80) %>%
   group_by(cont_age_by5_80, resp_age_by5_80) %>%
   summarise(weighted_sum = sum(weight*!!sym("binary_col"), na.rm = T))
@@ -174,12 +162,17 @@ age_matrix = age_matrix[order(age_matrix[,"resp_age_by5_80"], age_matrix[,"cont_
 # average number of contacts for the matrix
 age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
 
-matrix_age = age_matrix %>% 
+## save the matrix as a data frame
+write.csv(matrix_age5, 
+          paste0("./matrices/Total-M-by5_80-df.csv"),
+          row.names = F)
+## transform dataframe into matrix form
+matrix_age5 = age_matrix %>% 
   dplyr::select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
   pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 
-write.csv(matrix_age, 
-          paste0("./matrices/-M-by5_80-matrix.csv"),
+write.csv(matrix_age5, 
+          paste0("./matrices/Total-M-by5_80-matrix.csv"),
           row.names = F)
 
 
