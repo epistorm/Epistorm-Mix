@@ -1,8 +1,10 @@
 # Accessing and extracting contact patterns data
 
-In this tutorial, we demonstrate how to access contact patterns data and extract it for analysis. This tutorial is designed for those with no previous experience with GitHub.
+In this tutorial, we demonstrate how to access contact patterns data and extract it for analysis using two methods:
+- Manual download ("Downloading from GitHub")
+- Direct download from R/RStudio ("Extracting data directly in RStudio")
 
-This data can then be used to estimate contact matrices (see [Tutorial 2](../data-analysis/2_Constructing_contact_matrices.md)), plot contact matrices (see [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md)), and develop epidemic models for infectious disease spread (see [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md)).
+This tutorial is designed for those with no previous experience with GitHub. Downloaded data can be used to estimate contact matrices (see [Tutorial 2](../data-analysis/2_Constructing_contact_matrices.md)), plot contact matrices (see [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md)), and develop epidemic models for infectious disease spread (see [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md)).
 
 This tutorial uses the data specifically created for these tutorials ([here](./tutorials/data_analysis/data)) and is intended as a learning resource. To reproduce the analysis on the full dataset, please use the code provided [here](.../code) and the data provided [here](.../data).
 
@@ -12,11 +14,11 @@ This tutorial is presented with code examples in [R](https://www.r-project.org/)
 
 ## Downloading the contact patterns data
 
-### Downloading from `github`
+### Downloading from GitHub
 
-To download the data files from `github`, go to the data folder of the `github` repository by clicking [here](https://github.com/allisandrak/Epistorm-Mix/tree/main/data). Within this folder, click on the file you want to download for analysis. Then, press the download button at the top right-hand side of the file, as shown below:
+To download the data files for this tutorial from GitHub, go to the data folder of the GitHub repository by clicking [here](./data). Within this folder, click on the file you want to download. Then, press the download button (<img width="34" height="34" src="https://github.com/user-attachments/assets/aeebfa19-f357-463f-b453-7b0f39b5443b" />) at the top right-hand side of the file, as shown below:
 
-![extract-data1](./figures/extract-data1.png)
+<img src="./figures/extract-data1.png" width=100% >
 
 This will automatically save the data file into the downloads folder on your computer, unless otherwise specified. It is recommended that you move this file from your download folder into a folder specifically for the analysis you are doing.
 
