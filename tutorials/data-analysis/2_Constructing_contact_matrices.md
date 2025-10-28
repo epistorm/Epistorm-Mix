@@ -78,26 +78,26 @@ Then, we estimate the weighted sum of contacts by the respondent-contact age gro
 ```R
 
 # obtain the weighted sum of contacts per respondent-contact group
-  age_matrix = merged.df %>%
+  age_matrix_s = merged.df %>%
     filter(!is.na(!!sym("cont_age"))) %>%
     arrange(!!sym("cont_age")) %>%
     group_by(!!sym("cont_age"), !!sym("resp_age")) %>%
-    summarise(weighted_sum = sum(weight*binary_col, na.rm = T))
+    summarise(weighted_sum = sum(weight*!!sym(setting_names), na.rm = T))
   
   # combine weighted sum with the data for predictions
-  age_matrix = left_join(predict.m, age_matrix)
+  age_matrix_s = left_join(predict.m, age_matrix_s)
   
   # change NAs
-  age_matrix$weighted_sum[is.na(age_matrix$weighted_sum)] = 0
+  age_matrix_s$weighted_sum[is.na(age_matrix_s$weighted_sum)] = 0
   
   # combine total weighted contact sum with weighted N of people
-  age_matrix = left_join(age_matrix, age_matrix_n)
+  age_matrix_s = left_join(age_matrix_s, age_matrix_n)
   
   # order
-  age_matrix = age_matrix[order(age_matrix[,"resp_age"], age_matrix[,"cont_age"]),]
+  age_matrix_s = age_matrix_s[order(age_matrix_s[,"resp_age"], age_matrix_s[,"cont_age"]),]
   
   # average number of contacts for the matrix
-  age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
+  age_matrix_s$ncont = age_matrix_s$weighted_sum/age_matrix_s$n
   
 ```
 ### Using generalized additive models to predict contacts
@@ -109,19 +109,19 @@ To continue with estimating contacts in the household, the GAM is formulated as:
 model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
                         k = c(10,10), bs = c("cc","cc"), m = c(0,0)),
                 family = nb(),
-                data = age_matrix)
+                data = age_matrix_s)
 ```
 That model would also be used for estimating contacts in schools and other settings. To estimate contacts in the workplace, the GAM would need to be formulated as: 
 ```R
 model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
                         k = c(4,4), bs = c("tp","tp"), m = c(0,0)),
                 family = nb(),
-                data = age_matrix)
+                data = age_matrix_s)
 ```
 
 Then, we predict the number of contacts by respondent-contact age group
 ```R
- age_matrix$pred = predict(model, newdata = age_matrix, type = "response")
+ age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 ```
 
 ### Estimating the number of contacts between 5-year respondent-contact age groups
