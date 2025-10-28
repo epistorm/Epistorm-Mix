@@ -59,7 +59,6 @@ merged.df$binary_col = ifelse(nocont, 0, 1)
 ### Estimating the number of contacts between single-year respondent-contact age groups
 To ensure that the contact matrices are representative of the target population (the US in this case), we must weight the number of participants by age. Here, we do this by using the original responde-level dataset and a `group-by` to group all respondents belonging to a given age group and sum their weights to obtain the number of respondents of a given age. 
 ```R
-## substitute this code
 age_matrix_n = merged.df %>%
   group_by(resp_age, resp_id) %>%
   summarise(weight = mean(weight, na.rm = TRUE)) %>%
