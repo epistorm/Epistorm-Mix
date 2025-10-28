@@ -2,9 +2,6 @@
 ## Uncomment to run "constructing_contact_matrices.R"
 # source("./tutorials/data-analysis/code/constructing_contact_matrices.R")
 
-## Let's use a matrix for total contacts as an example (which has been created as element 1 in the list of contact matrices age_matrix_ls in the sourced code above)
-i = 1
-
 ## Let's create the visualization of the smoothed matrix
 ggplot(age_matrix_s) + # needs to be a data frame (long format of the data)
   geom_raster(aes(x = resp_age, y = cont_age, fill = pred), interpolate = TRUE) +
