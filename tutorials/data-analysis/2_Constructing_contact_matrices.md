@@ -22,6 +22,7 @@ lapply(c("dplyr", "mgcv", "ggplot2", "tidyr"), function(x){
   library(x, character.only = T)
 })
 ```
+
 ## Loading the necessary data
 To estimate age-specific contact matrices, we need at least two datasets: respondent-level contact patterns data and contact-level contact patterns data.
 
