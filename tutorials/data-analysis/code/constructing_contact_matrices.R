@@ -89,14 +89,14 @@ model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
 age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 
 ## Contact matrices using 5-year age brackets
-## Set age brackets and add age groups to df
+## Set age brackets
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list
 age.vars.names = names(age.breaks)
 
-## create age groups 
+## create age group labels
 tmp.vars = lapply(age.breaks, function(x) {
   maxv = x[length(x)]
-  if (maxv > max(merged.df[,"resp_age"], na.rm = TRUE)) {
+  if (maxv > max(merged.df[,c("resp_age", "cont_age")], na.rm = TRUE)) {
     mylabels = c(
       paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
       paste0(x[length(x)-1], "+")
@@ -108,58 +108,29 @@ tmp.vars = lapply(age.breaks, function(x) {
       sep = "-"
     )
   }
-  
+})
+
   cut(
     merged.df[,"resp_age"],
     breaks = x,
     labels = mylabels,
     right = FALSE
   )
-})
 tmp.names = paste0("resp_age", age.vars.names)
 names(tmp.vars) = tmp.names
 merged.df[,tmp.names] = as.data.frame(tmp.vars)
 
-tmp.vars = lapply(age.breaks, function(x) {
-  maxv = x[length(x)]
-  if (maxv > max(merged.df[,"cont_age"], na.rm = TRUE)) {
-    mylabels = c(
-      paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
-      paste0(x[length(x)-1], "+")
-    )
-  } else {
-    mylabels = paste(
-      x[1:(length(x)-1)],
-      x[2:length(x)] - 1,
-      sep = "-"
-    )
-  }
-  
+
   cut(
     merged.df[,"cont_age"],
     breaks = x,
     labels = mylabels,
     right = FALSE
   )
-})
+
 tmp.names = paste0("cont_age", age.vars.names)
 names(tmp.vars) = tmp.names
 merged.df[,tmp.names] = as.data.frame(tmp.vars)
-
-tmp.vars = lapply(age.breaks, function(x) {
-  maxv = x[length(x)]
-  if (maxv > max(resp_imp[,"resp_age"], na.rm = TRUE)) {
-    mylabels = c(
-      paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
-      paste0(x[length(x)-1], "+")
-    )
-  } else {
-    mylabels = paste(
-      x[1:(length(x)-1)],
-      x[2:length(x)] - 1,
-      sep = "-"
-    )
-  }
   
   cut(
     resp_imp[,"resp_age"],
@@ -167,7 +138,6 @@ tmp.vars = lapply(age.breaks, function(x) {
     labels = mylabels,
     right = FALSE
   )
-})
 tmp.names = paste0("resp_age", age.vars.names)
 names(tmp.vars) = tmp.names
 resp_imp[,tmp.names] = as.data.frame(tmp.vars)
