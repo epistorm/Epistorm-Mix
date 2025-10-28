@@ -122,7 +122,7 @@ for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
     )
   }
   ## in respondent dataset
-  tmp.names = paste0(x, age.vars.names)
+  tmp.names = paste0("resp_age", age.vars.names)
   resp_imp[,tmp.names] = cut(resp_imp[,"resp_age"],
                               breaks = age.breaks[[i]],
                               labels = group.lbls[[i]],
@@ -130,7 +130,7 @@ for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
   )
 }
 
-## weighted # of resp ##
+## weighted N of resp ##
 age_matrix_n = resp_imp %>%
   group_by(resp_age_by5_80) %>%
   summarise(n = sum(weight, na.rm = TRUE))
@@ -163,22 +163,15 @@ age_matrix = age_matrix[order(age_matrix[,"resp_age_by5_80"], age_matrix[,"cont_
 age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
 
 ## save the matrix as a data frame
-write.csv(matrix_age5, 
-          paste0("./matrices/Total-M-by5_80-df.csv"),
+write.csv(age_matrix[, c("resp_age_by5_80", "cont_age_by5_80", "ncont")], 
+          paste0("./Total-M-by5_80-df.csv"),
           row.names = F)
+
 ## transform dataframe into matrix form
 matrix_age5 = age_matrix %>% 
   dplyr::select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
   pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 
 write.csv(matrix_age5, 
-          paste0("./matrices/Total-M-by5_80-matrix.csv"),
+          paste0("./Total-M-by5_80-matrix.csv"),
           row.names = F)
-
-
-
-
-
-
-
-
