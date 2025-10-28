@@ -10,24 +10,28 @@ This tutorial uses the data specifically created for these tutorials ([here](./t
 
 ## Requirements
 
-This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages.
+This tutorial is presented with code examples in R and assumes that both [R](https://www.r-project.org/) and [RStudio](https://posit.co/download/rstudio-desktop/) (or an alternative, like Jupiter Notebook) are installed. It also assumes some familiarity with programming languages. It is important to note that the sequence of steps would be similar in other languages (e.g., [python](https://www.python.org/)).
 
-## Downloading the contact patterns data
+## Downloading from GitHub
 
-### Downloading from GitHub
-
-To download the data files for this tutorial from GitHub, go to the data folder of the GitHub repository by clicking [here](./data). Within this folder, click on the file you want to download. Then, press the download button (<img width="34" height="34" src="https://github.com/user-attachments/assets/aeebfa19-f357-463f-b453-7b0f39b5443b" />) at the top right-hand side of the file, as shown below:
+To download the data files for this tutorial from GitHub, go to the data folder of the GitHub repository by clicking [here](./data). Within this folder, click on the file you want to download. Then, press the download button (<img width="24" height="24" src="https://github.com/user-attachments/assets/aeebfa19-f357-463f-b453-7b0f39b5443b" />) at the top right-hand side of the file, as shown below:
 
 <img src="./figures/extract-data1.png" width=100% >
 
-This will automatically save the data file into the downloads folder on your computer, unless otherwise specified. It is recommended that you move this file from your download folder into a folder specifically for the analysis you are doing.
+This will automatically save the data file into the pre-set folder for downloaded files on your computer, unless you specify a different location. It is recommended that you move this file into a folder specifically created for this tutorial - your project folder.
 
 ### Loading the downloaded file in R
 
-Once you have downloaded the data and saved it into your project folder, you can load the data into your R program:
+Once you have downloaded the data and saved it in your project folder, you can load the data into your R environment (we recommend using RStudio):
 
 ``` r
+## set your project folder as your working directory
+setwd("project folder address")
+
+## read downloaded data
 resp_imp = read.csv("imputed_resp.csv")
+
+## see a subsample of the data
 head(resp_imp)
 
 # resp_id resp_age resp_gender resp_educator    weight
@@ -39,18 +43,19 @@ head(resp_imp)
 # 344409        3      Female            No   0.4348620
 ```
 
-## Extracting data directly in Rstudio
+## Extracting data directly in RStudio
 
-Alternatively to downloading the contact patterns data, you can access the data directly in R.
+Alternatively, you can access the data directly in R using a web link to the file in the GitHub repository. This assumes that the repository is public (this repository is) and you have the authorization to access the selected file.
 
-### Extracting data from `github`
+To extract the data from GitHub directly into your R environment, you will need to retrieve the URL of the data file. To obtain the URL, go to the data folder of the GitHub repository by clicking [here](./data). In this folder, click on the file you want to use for analysis. Then, press the `Raw` button at the top right-hand side of the file, as shown in the figure above.
 
-To extract the data from `github` directly, you will need to retrieve the url of the raw data file. To obtain the url for the raw data on `github`, go to the data folder of the `github` repository by clicking [here](https://github.com/allisandrak/Epistorm-Mix/tree/main/data). In this folder, click on the file you want to use for analysis. Then, press the `Raw` button at the top right-hand side of the file, as shown in the figure above.
-
-Copy the url for the Raw data file. Note that the url should start with `https://raw.githubusercontent.com/...`, and if this is not the case then reading the data into R directly will not work. To load the data into your R program, simply use the `read.csv` function using the url instead of a file path:
+Copy the URL for the Raw data file. Note that the URL should start with `https://raw.githubusercontent.com/...`. If this is not the case, reading the data into R directly will not work. Once you have the correct URL, simply use the `read.csv` function with the URL instead of a file path:
 
 ``` r
-resp.url = "https://raw.githubusercontent.com/allisandrak/Epistorm-Mix/refs/heads/main/tutorials/data-analysis/data/imputed_resp.csv?token=GHSAT0AAAAAADJQZFA53RC5T5BAEGBH7FGK2G375TA"
+## save the file URL
+resp.url = "https://raw.githubusercontent.com/.../data/imputed_resp.csv?token=GHSAT0AAAAAADJQZFA53RC5T5BAEGBH7FGK2G375TA" ## paste the copied URL here
+
+## read using save URL 
 resp_imp = read.csv(resp.url)
 ```
 
