@@ -1,13 +1,17 @@
 # Estimating age-specific contact matrices 
-In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. Contact matrices can then be plotted, as described in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md). These contact matrices can then be used as an input in models that simulate epidemics, as described in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md).  
+In this tutorial, we will explore how to estimate age-specific contact matrices using contact patterns data. Contact matrices can then be plotted, as described in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md) and used as an input in models that simulate epidemics, as described in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md).  
+
+This tutorial uses the data specifically created for these tutorials ([here](./tutorials/data_analysis/data)) and is intended as a learning resource. To reproduce the analysis on the full dataset, please use the code provided [here](.../code) and the data provided [here](.../data).
 
 ## Requirements
-This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages. 
+This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). 
+It assumes that both [R](https://www.r-project.org/) and [RStudio](https://posit.co/download/rstudio-desktop/) (or an alternative, like Jupiter Notebook) are installed.
+It also assumes some familiarity with programming languages. 
 
 In the code examples, we directly use the following R packages: 
 - [`dplyr`](https://cran.r-project.org/web/packages/dplyr/) for efficient operations with dataframes.
 - [`tidyr`](https://cran.r-project.org/web/packages/tidyr/) for converting between long and wide dataframes.
-- [`mgcv`](https://cran.r-project.org/web/packages/mgcv/) for working with generalized additive models.
+- [`mgcv`](https://cran.r-project.org/web/packages/mgcv/) for smoothing with generalized additive models (GAM).
 
 The code was tested in Rstudio version 4.5.1. In a `.r` R code file, you can install these packages and load the libraries using:
 ```R
