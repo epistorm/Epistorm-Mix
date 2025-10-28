@@ -1,20 +1,18 @@
 # Visualizing contact matrices
 
-In this tutorial, we will explore how to visualize contact matrices using contact patterns data.
+In this tutorial, we will explore how to visualize contact matrices using [R](https://www.r-project.org/).
 
 ## Requirements
 
-This tutorial is presented with code examples in [R](https://www.r-project.org/), but the sequence of steps would be similar in other languages like [python](https://www.python.org/). In any case, it assumes some familiarity with programming languages.
+This tutorial assumes some familiarity with programming languages and completion of the previous tutorials ([Tutorial 1](./1_Accessing_and_extracting_data.md) and [Tutorial 2](./2_Constructing_contact_matrices.md)).
 
-In the code examples, we directly use the following R packages: [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for visualizing results.
-
-The example in this tutorial is based on the information from the previous tutorial. It is recommended to complete tutorial 2 on constructing contact matrices prior to starting this tutorial.
+In the code examples, we directly use the following R packages: [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/) for the visualization.
 
 ## Plot
 
-There were two age-specific contact matrices calculated in the previous tutorial. 
+There were two age-specific contact matrices calculated in the previous tutorial: `age_matrix_s' - the smoothed contact matrix by age for single-year age brackets; and `age_matrix' - the contact matrix by age for 5-year age brackets (non-smoothed). Both of the calculated matrices were saved in the form of a data frame (long format) and in the form of a matrix (wide format). In this visualization, we will use the data frames for direct use in ggplot. If you would like to visualize a different matrix that is provided in the wide format using the approach below, please transform it into a data frame. Otherwise, please use a different tool for heatmaps.
 
-The plot for the contact matrix on individual ages can be created using the code below. The plot shows the average number of contacts of a specific age per respondent age.
+A simple tile or raster visualization can be created for the contact matrices to illustrate the 3-dimensional data. Both visualizations below show the average number of contacts between a respondent of age group i and a contact of age group j.
 
 ```         
 ggplot(age_matrix_s) +
@@ -41,7 +39,7 @@ ggplot(age_matrix_s) +
     )
 ```
 
-![Age Plot 1](./figures/2_age_total.png)
+<img src = "./figures/2_age_total.png" width = 60%>
 
 The plot for the contact matrix on age groups (by 5 up to 80 years old) can be visualized using the code below. This plot shows the average number of contacts of one age group per respondent age group. 
 
@@ -65,7 +63,7 @@ ggplot(age_matrix) +
       )
 ```
 
-![Age Plot 2](./figures/2_by5_80-Unconditional-Total.png)
+<img src = "./figures/2_by5_80-Unconditional-Total.png" width = 70%>
 
 ### Full code
 
