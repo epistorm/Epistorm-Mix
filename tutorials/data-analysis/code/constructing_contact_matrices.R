@@ -195,12 +195,12 @@ age_matrix$weighted_sum[is.na(age_matrix$weighted_sum)] = 0
 age_matrix = left_join(age_matrix, age_matrix_n)
 
 # order
-age_matrix = age_matrix[order(age_matrix[,"resp_age"], age_matrix[,"cont_age"]),]
+age_matrix = age_matrix[order(age_matrix[,"resp_age_by5_80"], age_matrix[,"cont_age_by5_80"]),]
 
 # average number of contacts for the matrix
 age_matrix$ncont = age_matrix$weighted_sum/age_matrix$n
 
-matrix_age = by5_matrix %>% 
+matrix_age = age_matrix %>% 
   dplyr::select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
   pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 
