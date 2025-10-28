@@ -11,7 +11,7 @@ Individual-level data is provided in the data folder in the form of two datasets
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
-For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the manuscripts [manuscripts](), iv) "gam specifications" folder containing the files for GAM statatistical analysis of individual-level data.
+For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the [manuscripts](), iv) "gam specifications" folder containing the files for the GAM statistical analysis of individual-level data.
 
 The analyses in this repository are conducted using the imputed data. 
 
