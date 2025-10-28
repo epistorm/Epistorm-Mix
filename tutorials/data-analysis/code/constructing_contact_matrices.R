@@ -91,10 +91,9 @@ age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 #### Contact matrices using 5-year age brackets #### 
 ## Set age brackets
 age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list, can create multiple age groups
-age.vars.names = names(age.breaks)
 
 ## Create age group labels
-tmp.vars = lapply(age.breaks, function(x) {
+group.lbls = lapply(age.breaks, function(x) {
   maxv = x[length(x)]
   if (maxv > max(merged.df[,c("resp_age", "cont_age")], na.rm = TRUE)) {
     mylabels = c(
