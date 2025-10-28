@@ -13,35 +13,36 @@ In the code examples, we directly use the following R packages:
 - [`tidyr`](https://cran.r-project.org/web/packages/tidyr/) for converting between long and wide dataframes.
 - [`mgcv`](https://cran.r-project.org/web/packages/mgcv/) for smoothing with generalized additive models (GAM).
 
-The code was tested in Rstudio version 4.5.1. In a `.r` R code file, you can install these packages and load the libraries using:
-```R
+The code was tested in RStudio version 4.5.1. In an R code file, you can install these packages and load the libraries using:
+```r
 lapply(c("dplyr", "mgcv", "ggplot2", "tidyr"), function(x){
-  if(!require(x, character.only = T)){
+  if(!require(x, character.only = T)){ ## checks if the packages have already been installed
     install.packages(x)
   }
   library(x, character.only = T)
 })
 ```
 ## Loading the necessary data
-To estimate age-specific contact matrices, we need at least two data elements: respondent-level contact patterns data and contact-level contact patterns data.
+To estimate age-specific contact matrices, we need at least two datasets: respondent-level contact patterns data and contact-level contact patterns data.
 
-In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code. The respondent-level contact patterns data should be formatted as follows:
+In this tutorial, we will import our data from `.csv` files stored in the working directory of the R code (see [Tutorial 1](../1_Accessing_and_extracting_data.md)):
 
-<img src = "./figures/extract-data-1.png" width = 50%>
-
-and can be loaded by: 
-```R
+```r
+## read respondent-level data
 resp_imp = read.csv("imputed_resp.csv")
-```
 
-The contact-level patterns data should be formatted as: 
-
-<img src = "./figures/detailed-cont.png" width = 50%>
-
-and can be loaded into the program by:
-```R
+## read contact-level data
 cont_imp = read.csv("imputed_cont.csv")
 ```
+
+The respondent-level contact patterns data are formatted as follows:
+
+<img src = "./figures/extract-data-1.png" width = 70%>
+
+The contact-level patterns data are formatted as follows: 
+
+<img src = "./figures/detailed-cont.png" width = 70%>
+
 Codebooks describing the variables of both contact patterns datasets are available [here](.../data/imputed_data).
 
 
