@@ -186,14 +186,18 @@ for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
   )
 }
 ```
-We then follow the same procedure described for single-year age brackets to calculate the average number of contacts based on the weighted number of contacts and the weighted number of respondents. For this example, we will reference these average contacts by age groups as `matrix_age`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to create smoothed matrices.  After `matrix_age` is obtained, we will use the `pivot_wider` function to convert the created data frame into a matrix. 
+We then follow the same procedure described for single-year age brackets to calculate the average number of contacts based on the weighted number of contacts and the weighted number of respondents. For this example, we will reference these average contacts by age groups as `matrix_age`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to create smoothed matrices.  
+
+The resulting 5-year age-specific contact matrix can now be used in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md) to visualize contact matrices
+
+After `matrix_age` is obtained, we will use the `pivot_wider` function to convert the created data frame into a matrix. 
 
 ```R
  matrix_age5 = age_matrix %>% 
     select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix can now be used in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md) to visualize contact matrices and in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices are incorporated into compartmental models. 
+The resulting 5-year age-specific contact matrix (in matrix format) can now be used in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices are incorporated into compartmental models. 
 
 ### Full code
 You can see and download the full code for this tutorial here: [constructing_contact_matrices.R](./code/constructing_contact_matrices.R)
