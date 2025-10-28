@@ -6,7 +6,7 @@
 i = 1
 
 ## Let's create the visualization of the smoothed matrix
-ggplot(age_matrix_ls[[i]]) + # needs to be a data frame (long format of the data)
+ggplot(age_matrix_s) + # needs to be a data frame (long format of the data)
   geom_raster(aes(x = resp_age, y = cont_age, fill = pred), interpolate = TRUE) +
   ggtitle("Title") + # Main title
   xlab("Respondent Age") + # X-axis title
@@ -32,7 +32,7 @@ ggplot(age_matrix_ls[[i]]) + # needs to be a data frame (long format of the data
 ## Let's create the visualization of the matrix by age group without smoothing 
 ## (also created in the sourced code at the beginning of this script)
 
-ggplot(by5_matrix) + # should be a data frame (long format)
+ggplot(age_matrix) + # should be a data frame (long format)
   geom_tile(aes(x = resp_age_by5_80, y = cont_age_by5_80, fill = ncont)) +
   ggtitle("Total") + # Main title
   xlab("Respondent Age") + # X-axis title
