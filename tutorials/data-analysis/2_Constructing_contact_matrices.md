@@ -110,7 +110,7 @@ age_matrix_s = left_join(predict.m, age_matrix_s) # NAs will be created if the c
 age_matrix_s$weighted_sum[is.na(age_matrix_s$weighted_sum)] = 0 # Here, we assume that `NA` (or absence of the age group combination) is due to extremely low contact rates between these age groups.
 ```
 Then, we divide the weighted sum of contacts by the weighted number of respondents stored in `age_matrix_n` to obtain the average number of contacts by respondent-contact age group.  
-```R
+```r
 # combine N of contacts with N of people
   age_matrix_s = left_join(age_matrix_s, age_matrix_n)
   
@@ -124,17 +124,18 @@ Then, we divide the weighted sum of contacts by the weighted number of responden
 ### Using generalized additive models to create smoothed contact matrices
 Once we have the average number of contacts, we can fit a generalized additive model (GAM), where the calculated average number of contacts depends on the respondent age/age group and the contact age/age group. We do this using the `gam ` function from the library `mgc`. Using a GAM allows us to capture potential non-linear relationships between age and the number of contacts.
 
-```R
+```r
 ## Fit GAM model for total number of contacts (calculated above
 model = gam(ncont ~ te(as.numeric(resp_age), as.numeric(cont_age),
                         k = c(10,10), bs = c("cc","cc"), m = c(0,0)), # k=10 degrees of freedom fits our data best
                 family = nb(), # negative binomial is used as the number of contacts is distributed as a negative binomial in our data
                 data = age_matrix_s)
 ```
-In GAMs, one can use different smoothing procedures depending on the patterns observed in the data. For total contacts, we use a cyclic cubic (cc) smoothing spline, as it assumes a continuous base function (which is the case for single-year age brackets) and allows us sufficient flexibility to approximate different degrees of contact assortativity and heterogeneity. The benefits of cyclic cubic smoothing splines also include higher computational efficiency relative to other approaches. The number of degrees of freedom (k) should be [explored](https://cran.r-project.org/web/packages/santaR/vignettes/selecting-optimal-df.html) for each model specification, as it depends on the data used.
+
+In GAMs, one can use different smoothing procedures depending on the patterns observed in the data. For total contacts, we use a cyclic cubic (cc) smoothing spline, as it assumes a continuous base function (which is the case for continuous age) and allows us sufficient flexibility to approximate different degrees of contact assortativity and heterogeneity. The benefits of cyclic cubic smoothing splines also include higher computational efficiency relative to other approaches. The number of degrees of freedom (k) should be [explored](https://cran.r-project.org/web/packages/santaR/vignettes/selecting-optimal-df.html) for each model specification, as it depends on the data used.
 
 Then, we predict the number of contacts by respondent-contact age group using GAM model
-```R
+```r
  age_matrix_s$pred = predict(model, newdata = age_matrix_s, type = "response")
 ```
 These predictions allow us to visualize smoothed contact matrices (see [Tutorial 3](./3_Visualizing_contact_matrices.md)).
@@ -144,13 +145,14 @@ Many times, you will opt for creating contact matrices using age groups rather t
 
 To do this, we need to create the same age groups for respondents and contacts.
 
-```R
-age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120))
-age.vars.names = c("_by5_80")
+```r
+## Set age brackets
+age.breaks = list("_by5_80" = c(seq(0,80, by = 5), 120)) ## should be a named list, can create multiple age groups
 
+## Create age group labels
 tmp.vars = lapply(age.breaks, function(x) {
   maxv = x[length(x)]
-  if (maxv > max(merged.df[,"resp_age"], na.rm = TRUE)) {
+  if (maxv > max(merged.df[,c("resp_age", "cont_age")], na.rm = TRUE)) {
     mylabels = c(
       paste(x[1:(length(x)-2)], x[2:(length(x)-1)] - 1, sep = "-"),
       paste0(x[length(x)-1], "+")
@@ -162,25 +164,36 @@ tmp.vars = lapply(age.breaks, function(x) {
       sep = "-"
     )
   }
-  
-  cut(
-    merged.df[,"resp_age"],
-    breaks = x,
-    labels = mylabels,
-    right = FALSE
-  )
 })
-tmp.names = paste0("resp_age", age.vars.names)
-names(tmp.vars) = tmp.names
-merged.df[,tmp.names] = as.data.frame(tmp.vars)
+
+## Create age group variables for respondents (in merged and respondent data) and contacts
+for(i in seq_along(age.breaks)){ # the list may contain multiple age groups
+  ## in merged dataset
+  for(x in c("resp_age", "cont_age")){
+    tmp.names = paste0(x, names(age.breaks)[i])
+    merged.df[,tmp.names] = cut(merged.df[,x],
+                                breaks = age.breaks[[i]],
+                                labels = group.lbls[[i]],
+                                right = FALSE
+    )
+  }
+  ## in respondent dataset
+  tmp.names = paste0("resp_age", names(age.breaks)[i])
+  resp_imp[,tmp.names] = cut(resp_imp[,"resp_age"],
+                              breaks = age.breaks[[i]],
+                              labels = group.lbls[[i]],
+                              right = FALSE
+  )
+}
 ```
-Respondent specific weights, weighted sum of contacts between respondent-contact age groups, and estimating the average number of contacts between groups follows the same procedures shown previously. For this example, we will reference these average contacts by age groups as `matrix_age`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to predict contacts as we do not need to smooth the estimates.  After `matrix_age` is obtained, we will use the `pivot_wider` function to convert this into a matrix by respondent-contact age groups. 
+We then follow the same procedure described for single-year age brackets to calculate the average number of contacts based on the weighted number of contacts and the weighted number of respondents. For this example, we will reference these average contacts by age groups as `matrix_age`. It is important to note that for the 5-year age-specific contact matrices, we do not use a GAM to create smoothed matrices.  After `matrix_age` is obtained, we will use the `pivot_wider` function to convert the created data frame into a matrix. 
+
 ```R
- matrix_age = age_matrix %>% 
+ matrix_age5 = age_matrix %>% 
     select("resp_age_by5_80", "cont_age_by5_80", "ncont") %>% 
     pivot_wider(names_from = "cont_age_by5_80", values_from = "ncont")
 ```
-The resulting 5-year age-specific contact matrix is what will be used in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md) to visualize contact matrices and in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices can be used in compartmental models. 
+The resulting 5-year age-specific contact matrix can now be used in [Tutorial 3](../data-analysis/3_Visualizing_contact_matrices.md) to visualize contact matrices and in [Tutorial 4](../mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md) to show how contact matrices are incorporated into compartmental models. 
 
 ### Full code
-You can check out the full code for this tutorial here: [constructing_contact_matrices.R](./code/constructing_contact_matrices.R)
+You can see and download the full code for this tutorial here: [constructing_contact_matrices.R](./code/constructing_contact_matrices.R)
