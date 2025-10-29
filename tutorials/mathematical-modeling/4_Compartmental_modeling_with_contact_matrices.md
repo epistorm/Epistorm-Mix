@@ -1,19 +1,19 @@
 # Using contact matrices for compartmental epidemiological modeling
 
-In this tutorial, we will explore how to use the age-specific contact matrices estimated using contact patterns data to simulate an epidemic, using a compartmental transmission model formulation. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
+In this tutorial, we will explore how to use the survey-based age-specific contact matrices to simulate an epidemic using a compartmental transmission model. We illustrate this using a simple *Susceptible Infectious Removed* (SIR) model.
 
 
 ## Requirements
 
-This tutorial is presented with code examples in [python](https://www.python.org/), but the sequence of steps would be similar in other high-level languages like [R](https://www.r-project.org/) or [julia](https://julialang.org/). In any case, it assumes some familiarity with a programming language.   
+This tutorial is presented with code examples in [Python](https://www.python.org/), but the sequence of steps would be similar in other high-level languages like [R](https://www.r-project.org/) or [julia](https://julialang.org/). This tutorial assumes some familiarity with a programming language.   
 
-In the code examples, we directly use the following python packages:
+In the code examples, we directly use the following Python packages:
 
 - [`numpy`](https://numpy.org/) for efficient numeric operations with vectors and matrices.
 - [`pandas`](https://pandas.pydata.org/) for working with indexed data frames and series objects.
 - [`matplotlib`](https://matplotlib.org/) for visualizing results.
 
-The code was tested with a python interpreter version 3.9.6, numpy 2.0.2, pandas 2.2.3 and matplotlib 3.9.4. Having a python interpreter with `pip`, you can install these packages and all its dependencies by running the following line on a terminal:
+The code was tested with a Python interpreter version 3.9.6, numpy 2.0.2, pandas 2.2.3 and matplotlib 3.9.4. Having a Python interpreter with `pip`, you can install these packages and all their dependencies by running the following line in a terminal:
 
 ```shell
 pip install numpy pandas matplotlib
@@ -33,8 +33,8 @@ For simple transmission models, we need at least two data elements: a population
 ### Loading the population distribution by age
 
 Here, we will assume that we have a distribution with one-year resolution, 
-meaning that we know the number of individuals with 0 years old, 1 years old, 2 years old, and so on until the last age considered, for example, 99+ years or older. 
-Such population distribution can be represented as a csv file like this 
+meaning that we know the number of individuals 0 years old, 1 year old, 2 years old, and so on until the last age is considered, for example, 99+ years or older. 
+Such population distribution can be represented as a .csv file like this 
 (full example [here](./data/example_age_structure.csv)):
 
 ```csv
@@ -47,19 +47,19 @@ Such population distribution can be represented as a csv file like this
 ...
 ```
 
-This file can be loaded in python as a pandas dataframe:
+This file can be loaded in Python as a pandas dataframe:
 
 ```python
 age_structure_fpath = "data/example_age_structure.csv"
 age_distribution_df = pd.read_csv(age_structure_fpath, index_col="age")
 ```
 
-Where we use the `age` colum for indexing rows of the data frame, and the `n_indiv` column to represent the number of individuals having each age in the population. 
+In this data, we use the `age` column for indexing rows of the data frame and the `n_indiv` column to represent the number of individuals having each age in the population. 
 
 
 ### Loading a contact matrix
 
-A contact matrix between age groups can be stored as a csv file and look like this 
+A contact matrix between age groups can be stored as a .csv file and can look like this 
 (full example [here](./data/example_contact_matrix.csv)):
 
 ```csv
@@ -81,11 +81,9 @@ contact_matrix_df = pd.read_csv(
 
 ```
 
-Here we assume that the row index 
-of the contact matrix represents the respondent's age group, and the column 
-index represents the contact's age group.
-For the transmission model, we will also assume that the respondents will take 
-the infection _from_ their contacts. If you are working with a contact matrix that is transposed with respect to this logic, you can simply transpose it by adding:
+Here, we assume that the row index of the contact matrix represents the respondent age group, and the column index represents the contact age group.
+
+For the transmission model, we will also assume that the respondents will be infected _from_ their contacts. If you are working with a contact matrix that is transposed with respect to this logic, you can simply transpose it by adding:
 
 ```python
 contact_matrix_df = contact_matrix_df.T
@@ -93,7 +91,7 @@ contact_matrix_df = contact_matrix_df.T
 
 ### Aggregating the population distribution into age groups
 
-Before we can use the age distribution into an age-structured transmission model, we need a version of it that matches the age structure of the contact matrix, which is most often done by age groups instead of individual ages. 
+Before we can use the age distribution for an age-structured transmission model, we need a version of it that matches the age structure of the contact matrix. Contact matrices are most often provided by age groups instead of individual ages. 
 
 First, let's define the age groups as an array containing the first age of each age group. For example, from the contact matrix defined above, we would define:
 
@@ -101,14 +99,14 @@ First, let's define the age groups as an array containing the first age of each 
 age_groups = np.array([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80])
 ```
 
-Which reads as follows: the first age group goes from 0 to 4 years, the second ranges from 5 to 9, the third from 10 to 14, and so on. The last age group starts at 80 and represnts all ages 80 and older. Notice that, by manually defining the array of age groups, the definition must match that of the contact matrix. 
+Which reads as follows: the first age group goes from 0 to 4 years, the second ranges from 5 to 9, the third from 10 to 14, and so on. The last age group starts at 80 and represents all ages 80 and older. Notice that, by manually defining the array of age groups, the definition must match that of the contact matrix. 
 
 Then, we aggregate the age distribution by:
 
 1. Assigning an age group label to each age in the distribution data frame.
 2. Adding together all ages that belong to the same age group
 
-Below is a code snippet to perform this, along other operations that will be helpful for the transmission model. You can also check and use the function `aggregate_age_distribution()` in the [utilities file](./compartmental_epimodel/project_utils.py) of the transmission model project.
+Below is a code snippet to perform this, along with other operations that will be helpful for the transmission model. You can also check and use the function `aggregate_age_distribution()` in the [utilities file](./compartmental_epimodel/project_utils.py) of the transmission model project.
 
 ```python
 # Aggregate the population distribution from individual ages into age groups
@@ -145,9 +143,9 @@ age_distribution_df = df.set_index("age")
 
 
 ## Using the age-stratified contact matrices in a compartmental model
-Now that we have imported a contact matrix and have both aggregated and year-wise population distributions, we can use them into a compartmental transmission model. In this example, we will run a single simulation, but you may wish to run simulations in a loop with a different random state every iteration to obtain multiple independent executions.  
+Now that we have imported a contact matrix and age structure, and have both aggregated at the same resolution, we can use them in a compartmental transmission model. In this example, we will run a single simulation, but you may wish to run simulations in a loop with a different random state for every iteration to obtain multiple independent executions.  
 
-Before anything, let's define some model and simulation parameters, along with some useful data structures:
+First, let's define some model and simulation parameters, along with some useful data structures:
 
 ```python
 # Parameters
@@ -168,7 +166,7 @@ n_indiv_array = age_groups_distribution_df["n_indiv"].to_numpy()  # Population d
 
 ### Model Initialization 
 
-Let's first define the arrays that will keep information on the status of the model at each time step and for each age. Notice that we simulate each age individually $(0, 1, 2, ..., \text{numages - 1})$, although information on contacts is stratified into age groups.
+Let's define the arrays that will keep information on the status of the model at each time step and for each age. Notice that we simulate each age individually $(0, 1, 2, ..., \text{numages - 1})$, although information on contacts is stratified into age groups.
 
 ```python
 # Define structures and initialize simulation
@@ -178,7 +176,7 @@ R = np.zeros((n_steps + 1, num_ages), dtype=int)
 incidence = np.zeros((n_steps + 1, num_ages), dtype=int)
 ```
 
-Where `S`, `I` and `R` are arrays containing the numbers of susceptible, infectious and removed individuals, respectively. They are all 2D arrays with the first index representing time steps and the second index the age of individuals. 
+Where `S`, `I` and `R` are arrays containing the numbers of susceptible, infectious, and removed individuals, respectively. They are all 2D arrays with the first index representing time steps and the second index the age of individuals. 
 
 
 Next, let's initialize a random number generator (RNG) with numpy. 
@@ -191,10 +189,10 @@ seed = 42
 rng = np.random.default_rng(seed)
 ```
 
-Now we need to set the initial conditions of the system. As a simple approach, we can impose a given fraction of the population to start as infectious, attributing all initial infections to a single age. If the fraction is small enough, this should not affect the dynamic of outbreak and its final results. 
+Now we need to set the initial conditions of the system. As a simple approach, we can impose a given fraction of the population to be infectious in the model, attributing all initial infections to a single age. If the fraction is small enough, this should not affect the dynamics of the outbreak and its final results. 
 
 ```python
-# First define all individuals as susceptible
+# Define all individuals as susceptible
 S[0] = n_indiv_array  
 
 # Then set the infectious fraction
@@ -208,14 +206,14 @@ This leaves us ready to implement the dynamic rules of our compartmental model.
 
 ### Model simulation
 
-The simulation consists in repeating the model rules for multiple time steps. Thus, all code in this function must be placed inside a for loop like this:
+The simulation consists of repeating the model rules for multiple time steps. Thus, all code in this function must be placed inside a `for' loop like this:
 
 ```python
 for i_step in range(n_steps):
     # ....
 ```
 
-At each iteration, the first task is to calculate the probability of infection of a susceptible individual given its age. Remind that we design the model such that _respondents_ get the infection from their _contacts_. The probability of infection $p_a(t)$ of an individual belonging to age group $a$ at time $t$ is calculated as:
+At each iteration, the first task is to calculate the probability of infection for a susceptible individual given their age. Remember that we design the model such that _respondents_ get the infection from their _contacts_. The probability of infection $p_a(t)$ of an individual belonging to age group $a$ at time $t$ is calculated as:
 
 $$p_a(t) = \beta \cdot \Delta t \cdot \sum_{b} M_{ab} \cdot \frac{I_b(t)}{N_b}$$
 
