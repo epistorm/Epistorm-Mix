@@ -107,8 +107,7 @@ missForest2 = function (xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
     }
     convergence <- c()
     OOBerr <- numeric(1)
-  }
-  else {
+  }else {
     names(convNew) <- c("numeric", "factor")
     convergence <- matrix(NA, ncol = 2)
     OOBerr <- numeric(2)
@@ -214,7 +213,7 @@ missForest2 = function (xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
             if (parallelize == "forests") {
               xntree <- NULL
               RF <- foreach(xntree = idiv(ntree, chunks = getDoParWorkers()), 
-                            .combine = "combine", .multicombine = TRUE, 
+                            .combine = randomForest::combine, .multicombine = TRUE, 
                             .packages = "randomForest") %dorng% {
                               randomForest(x = obsX, y = obsY, ntree = xntree, 
                                            mtry = mtry, replace = replace, 
@@ -266,7 +265,7 @@ missForest2 = function (xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
                 # maxnodes1 = if (!is.null(maxnodes)) {maxnodes} else {NULL}
                 
                 RF <- foreach(xntree = idiv(ntree, chunks = getDoParWorkers()), 
-                              .combine = "combine", .multicombine = TRUE, 
+                              .combine = randomForest::combine, .multicombine = TRUE, 
                               .packages = "randomForest") %dorng% 
                   {
                     randomForest(x = obsX, y = obsY, 
@@ -304,8 +303,7 @@ missForest2 = function (xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
                                    #   maxnodes
                                    # else NULL
                 )
-                OOBerror[varInd] <- RF$err.rate[[ntree, 
-                                                 1]]
+                OOBerror[varInd] <- RF$err.rate[[ntree, 1]]
               }
               misY <- predict(RF, misX)
             }
