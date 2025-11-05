@@ -23,7 +23,6 @@ if(!dir.exists("./output")){
 if(!dir.exists("./output/main")){
   dir.create("./output/main") # all the main text figures
   dir.create("./output/main/csv") # used in multiple scripts
-  dir.create("./output/main/csv/race") # used in fig3.R
 } 
 
 if (!dir.exists("./output/supmat")){
@@ -189,13 +188,6 @@ source(paste0(global.dir, "unw-analysis.R"))
 ##        13_Total-Y-raw-matrix.csv and 14_X-Y-raw-matrix.csv in "supmat/csv/raw" folder (X = Setting, Y = Age group)
 ##        13_Total-Y-imp-matrix.csv and 14_X-Y-imp-matrix.csv in "supmat/csv/raw" folder (X = Setting, Y = Age group)
 source(paste0(global.dir, "raw-analysis.R"))
-
-### Create race-specific contact matrices 
-##    Requires the following folders in working directory: "output/supmat", "output/supmat/csv/race"
-##    Saves matrices in the following folders:
-##        X-race-matrix.csv and assort_race.csv in "main/csv/race" folder (X = Setting)
-##        3_race_X.pdf in "main" folder (X = Setting)
-source(paste0(global.dir, "fig3.R"))
 
 ### Creates race-specific contact matrices
 ##    Requires the following folders in working directory: "output/supmat", "output/supmat/csv/race", "output/main/csv/race"
