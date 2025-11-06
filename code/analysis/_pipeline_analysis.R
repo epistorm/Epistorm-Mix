@@ -3,7 +3,6 @@
 rm(list = ls())
 
 #### Folders and Directories ####
-
 ## Working directory
 my.folder = "[your preferred working directory name here]"
 setwd(my.folder)
@@ -171,12 +170,8 @@ source(paste0(global.dir, "sym-mat.R"))
 ##    Saves matrices and plots in the following folders:
 ##        7_X-Y.pdf in "supmat" folder (X = Attendance mode, Y = Age group)
 ##        X-Y-cond-matrix.csv in "supmat/csv/compare" folder (X = Attendance mode, Y = Age group) 
-source(paste0(global.dir, "inpers.R")) 
-
-### Creates barplot and estimates confidence intervals for number of contacts by mode of attendance
-##    Requires the following folders in working directory: "output/supmat"
-##    Saves barplot in the following folder:
 ##        8_summary-inpers-CI.pdf in "supmat" folder
+source(paste0(global.dir, "inpers.R"))
 source(paste0(global.dir, "inpers_barplot.R"))
 
 ### Sensitivity analysis: unweighted age matrices compared to weighted age matrices
@@ -207,7 +202,7 @@ source(paste0(global.dir, "raw-analysis.R"))
 ##    Saves the matrices and plots in the following folders:
 ##        X-race-matrix.csv, X-race-matrix-cond.csv in "supmat/csv/race" folder
 ##        3_race_X.pdf, 15_cond-reth-X.pdf in "supmat" folder (X = Setting)
-##        16_Summary-Ethn-Matrix.pdf in "supmat"
+##        3_race_summary.pdf, 16_Summary-Ethn-Matrix.pdf in "supmat"
 source(paste0(global.dir, "race.R")) # [Required to run race_assort.R]
 source(paste0(global.dir, "race_assort.R"))
 

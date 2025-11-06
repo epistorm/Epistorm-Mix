@@ -103,7 +103,6 @@ sum_ethn$Ethn = race_matrix$Total$resp_ethn
 sum_ethn_df = sum_ethn %>% 
   pivot_longer(cols = c("Total", "Household", "Work", "School", "Other"),
                names_to = "Setting", values_to = "Average")
-# sum_ethn_df$Ethn = factor(sum_ethn_df$Ethn, levels = ethn_cols)
 sum_ethn_df$Setting = factor(sum_ethn_df$Setting, 
                              levels = c("Total", "Household", 
                                         "School", "Work", "Other"))
