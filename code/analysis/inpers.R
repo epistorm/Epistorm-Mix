@@ -3,7 +3,7 @@ ra.var = c("resp_age_by5_80", "resp_age_by5_75")
 ca.var = c("cont_age_by5_80", "cont_age_by5_75")
 
 # define folders to save results
-csv.dir = paste0(output.dir, "csv/inpers/")
+csv.dir = paste0(output.dir, "csv/compare/")
 
 ## transform the mode of attendance into three-level variable
 merged.df$nothome[which(merged.df$nothome == "Not at work/in school")] = 
@@ -101,7 +101,6 @@ for (age in 1:length(ra.var)) {
   
   #### save the matrices as csv ####
   matrix_inpers = lapply(names(age_inperson_matrix_ls)[1:2], function(mat){
-    # uncomment below to save the matrix as dataframe
     # write.csv(age_inperson_matrix_ls[[mat]],
     #           paste0("csv/inpers/", mat, "-Cond.csv"),
     #           row.names = F)
@@ -111,12 +110,15 @@ for (age in 1:length(ra.var)) {
       pivot_wider(names_from = ca.var[age], values_from = "ncont_new")
     
     write.csv(matrix_inpers,
-              paste0(csv.dir, mat, "-", gsub("resp_age_","", ra.var[age]), 
+              paste0(csv.dir, gsub(" ","-",mat), "-", gsub("resp_age_","", ra.var[age]), 
                      "-cond-matrix.csv"),
               row.names = F)
     
     return(matrix_inpers)
     
-  })   
+  }) 
+  # names(matrix_inpers) = names(age_inperson_matrix_ls)[1:2]
+  # matrix_inpers$`In Person`[,-1] - matrix_inpers$`Not In Person`[,-1]
+  
 }
 

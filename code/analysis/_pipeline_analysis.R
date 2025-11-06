@@ -32,6 +32,7 @@ if (!dir.exists("./output/supmat")){
   dir.create("./output/supmat/csv/freq") # used in freq-m.R
   dir.create("./output/supmat/csv/sym") # used in sym-mat.R
   dir.create("./output/supmat/csv/compare") # used in inpers.R
+  dir.create("./output/supmat/csv/difference-matrices") # used in matrix-comp.R
   dir.create("./output/supmat/csv/unw") # used in unw-analysis.R
   dir.create("./output/supmat/csv/raw") # used in raw-analysis.R
   dir.create("./output/supmat/csv/race") # used in race.R
@@ -88,6 +89,16 @@ source(paste0(global.dir, "gam_fig1.R"))
 ##        X-pred-matrix.csv in "main/csv" folder (X = Setting)
 ##        2_age_X.pdf in "main" folder (X = Setting)
 source(paste0(global.dir, "fig2.R"))
+
+### Create frequency-based correlation contact matrices (figure 3 of main text)
+##    Requires the following folders in working directory: "matrices/M_matrix", 
+##        "matrices/F_matrix", "data/external_data", "data/external_data/mistry-data"
+##    Requires the following data:
+##        multiple csv and xlsx files in "data/external_data", "data/external_data/mistry-data",
+##        "matrices/M_matrix" and "matrices/F_matrix" folders
+##    Saves plots in the following folders:
+##        fig3-correlations.pdf in "main" folder (X = Setting)
+source(paste0(global.dir, "fig3-corr.R")) 
 
 ### Change output directory for supplementary material 
 output.dir = sm.dir
@@ -210,15 +221,17 @@ source(paste0(global.dir, "race_assort.R"))
 ##        Summary-Assort-Gender.pdf in "supmat" folder
 source(paste0(global.dir, "bysex.R"))
 
-### Creates additional matrices analysis: comparison to pre-pandemic US estimates and 
-## estimates from other European and Chinese countries
-##    Requires the following folders in working directory: "data/external_data", "output/supmat/csv/compare", 
-##        "data/external_data/matrices", "data/external_data/matrices/difference-matrices"
+### Creates additional matrices analysis: comparison to pre-pandemic US estimates 
+##  for in person and estimates from other European and Chinese countries
+##    Requires the following folders in working directory: "output/supmat", 
+##        "output/supmat/csv/freq", "output/supmat/csv/compare", 
+##        "data/external_data", "data/external_data/mistry-data"
 ##    Requires the following data:
-##        multiple csv and xlsx files in "external_data" and "external_data/matrices" folders
-##    Saves the matrices in the following folders:
+##        multiple csv and xlsx files in "data/external_data", "data/external_data/mistry-data",
+##        "output/supmat/csv/freq" and "output/supmat/csv/compare" folders
+##    Saves the matrices in the following output folders:
 ##        multiple matrices in csv format in "supmat/csv/compare" folder
-##        multiple plots in pdf format in "supmat/visualizations" folder
+##        multiple plots in pdf format in "supmat/" folder
 source(paste0(global.dir, "more-mat.R")) # [Required to run matrix-comp.R]
 source(paste0(global.dir, "matrix-comp.R"))
 

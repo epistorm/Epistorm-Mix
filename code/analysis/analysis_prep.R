@@ -15,7 +15,8 @@ source(func.dir)
 #### Packages and Libraries ####
 
 ps = c("dplyr", "survey", "tidyverse", "ggplot2","flextable", "gt", "gtsummary",
-       "fitdistrplus", "mgcv", "sjPlot", "patchwork", "doParallel", "extrafont")
+       "fitdistrplus", "mgcv", "sjPlot", "patchwork", "doParallel", "extrafont",
+       "data.table", "psych", "Hmisc")
 
 lapply(ps, function(x) load.myps(x))
 
@@ -128,7 +129,7 @@ if(length(idx.longsurvey) > 0){
 
 ### add state and federal holidays to weekends
 
-holidays = read.csv("./external_data/federal-state-holidays.csv")
+holidays = read.csv("./data/external_data/federal-state-holidays.csv")
 holidays.slist = strsplit(holidays$States, ", ")
 
 for(i in 1:nrow(holidays)){

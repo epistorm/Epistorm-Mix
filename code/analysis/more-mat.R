@@ -9,8 +9,8 @@ age.vars.breaks = list(c(0,5,12,18,30,40,50,60,70,120),
                        c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,120),
                        c(seq(0, 80, by = 5), 120))
 
-age.vars.names = c(paste0("_",c("uk.bel.neth", "swiss.prem", "suz","hun","italy",
-                                "mistry")))
+age.vars.names = c(paste0("_",c("school-groups", "by5_75", "by10_70", 
+                                "by3_10-by5_75","by5_70", "by5_80")))
 
 merged.df = create.age.groups(merged.df, input.var = "resp_age", # resp age
                              break.list = age.vars.breaks,
@@ -50,8 +50,8 @@ matrix_list <- lapply(seq_along(age_listr), function(age_g) {
   
   
 })
-names(matrix_list) <- c("uk.bel.neth", "swiss.prem", "Suzhou,China", 
-                        "AnhuaCounty,HunanProvince,China", "Italy", "US_Mistry")
+names(matrix_list) <- c("school-groups", "by5_75", "by10_70", "by3_10-by5_75",
+                        "by5_70", "by5_80")
 
 lapply(1:length(matrix_list), function(m) {
   
@@ -71,7 +71,7 @@ lapply(1:length(matrix_list), function(m) {
     )
   
   write.csv(mm_mat, 
-            paste0(output.dir, "csv/compare/", names(matrix_list)[m], "-matrix.csv"),
+            paste0(output.dir, "csv/compare/", names(matrix_list)[m], ".csv"),
             row.names = F)
   
 })
@@ -110,5 +110,5 @@ for(row_m in 1:(length(ageby5_80) - 1)){
 }
 
 write.csv(Mres, 
-          paste0(output.dir, "csv/compare/mistry-data/mistry-by5-matrix.csv"),
+          paste0(output.dir, "csv/compare/mistry-by5-matrix.csv"),
           row.names = F)

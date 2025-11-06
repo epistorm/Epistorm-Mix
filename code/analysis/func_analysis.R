@@ -675,5 +675,231 @@ assortativity.calc <- function(my.matrix) {
   
 }
 
+## relative ratio plots 
 
+create_rr_plots = function(m, terms_to_plot, mytb.vars.labels, mydata,
+                           manual_level, ## manually assign where to put reference level for hh_income
+                           group_order, ## define order to display variables (should match variables in the spec)
+                           plot_colors,
+                           ## plot design
+                           base_size = 12,
+                           x_lab = "Relative Ratio",
+                           strip_hjust = 0.5, 
+                           strip_angle = 90,
+                           dotlbl_vjust = -0.5, 
+                           dotlbl_hjust = -0.2,
+                           dot_size = 3.5,
+                           errbr_height = 0.2, errbr_linewidth = 0.4,
+                           grid_color = "#f0f0f0"
+){
+  # Extract the tidy data frame
+  plot_data = get_model_data(m, 
+                             type = "est",
+                             transform = "exp",
+                             ci.lvl = 0.95)
+  
+  plot_data = plot_data %>%
+    mutate(
+      stars = case_when(
+        p.value < 0.001 ~ "***", p.value < 0.01 ~ "**", p.value < 0.05 ~ "*",
+        TRUE ~ ""
+      ),
+      estimate_label = paste0(sprintf("%.2f", estimate), stars),
+      color_group = case_when(
+        estimate > 1 & p.value < 0.05  ~ "Positive (Significant)",
+        estimate > 1 & p.value >= 0.05 ~ "Positive (Not Significant)",
+        estimate < 1 & p.value < 0.05  ~ "Negative (Significant)",
+        TRUE                          ~ "Negative (Not Significant)"
+      )
+    ) 
+  
+  ## Create data points for the reference categories
+  # Identify which of the plotted variables are factors
+  plotted_factors = as.character(plot_data$term)
+  
+  # Add a helper column to both data frames to identify the main variable group
+  plot_data$group_var = sapply(plot_data$term, function(x) 
+    terms_to_plot[which(sapply(terms_to_plot, function(p) grepl(p, x)))[1]])
+  
+  plot_data = plot_data %>%
+    group_by(group_var) %>%
+    mutate(lev_n = row_number()+ 0.5)
+  
+  # Build a data frame of the reference levels
+  ref_rows = lapply(unique(plot_data$group_var), function(factor_name) {
+    
+    # The first level of a factor is always the reference level
+    ref_level_name = m$xlevels[[factor_name]][1]
+    
+    # Construct a 'term' name that matches the model's naming convention
+    ref_term = paste0(factor_name, ref_level_name)
+    
+    # Extract the factor original reference level
+    orig_levels = levels(mydata[[as.character(factor_name)]])[1]
+    
+    # Create a one-row data frame for this reference level
+    tibble(
+      term = ref_term,
+      estimate = 1.0,
+      conf.low = 1.0,
+      conf.high = 1.0,
+      p.value = 1.0,
+      stars = "",
+      estimate_label = "ref.",      # The text to display on the plot
+      lev_n = ifelse(factor_name == "hh_income", manual_level, 
+                     ifelse(!is.na(as.numeric(orig_levels)), 
+                            as.numeric(orig_levels), 1)),
+      color_group = "Reference",     # The new color group
+      group_var = factor_name
+    )
+  })
+  ref_data = bind_rows(ref_rows)
+  
+  ## Combine, reorder, and relabel the full data set
+  
+  # Combine the coefficient data with the new reference level data
+  full_plot_data = bind_rows(plot_data, ref_data) 
+  
+  ## Plot the results for the factor variables
+  
+  labels_plot = sapply(full_plot_data$term, function(xx){
+    idx = which(sapply(terms_to_plot, function(y) grepl(y, xx)))
+    if(length(idx) > 0){
+      split.label = unlist(strsplit(gsub(terms_to_plot[idx],"", xx),"_"))
+      if(length(split.label) > 1){
+        label = paste0(str_to_title(split.label[length(split.label)]), ": ",
+                       paste0(split.label[1:(length(split.label)-1)],
+                              collapse = " "))
+      }else{
+        label = str_to_title(split.label)
+      }
+      return(label)
+    }else{
+      return(NULL)
+    }
+  })
+  
+  labels_plot = labels_plot[!sapply(labels_plot, is.null)]
+  
+  # Convert group_var to a factor with the specified order and then arrange
+  full_plot_data = full_plot_data %>%
+    mutate(group_var = factor(group_var, levels = group_order)) %>%
+    arrange(group_var, lev_n)
+  
+  full_plot_data$group_name = unlist(mytb.vars.labels[match(as.character(full_plot_data$group_var),
+                                                            names(mytb.vars.labels))])
+  full_plot_data$group_name = factor(full_plot_data$group_name, levels = unlist(mytb.vars.labels[group_order]))
+  
+  # Create the final, ordered y-axis levels and labels
+  y_axis_levels = rev(full_plot_data$term)
+  y_axis_labels = rev(full_plot_data$term)
+  names(y_axis_labels) = y_axis_levels
+  
+  # Populate the labels vector
+  for(i in 1:length(y_axis_labels)){
+    term_name = names(y_axis_labels)[i]
+    if(term_name %in% names(labels_plot)){
+      y_axis_labels[i] = unlist(labels_plot[term_name]) # Use original label
+    } else {
+      factor_name = full_plot_data$group_var[full_plot_data$term == term_name]
+      y_axis_labels[i] = m$xlevels[[factor_name]][1] # Use ref level name
+    }
+  }
+  
+  full_plot_data$term = factor(full_plot_data$term, levels = y_axis_levels)
+  
+  
+  # If you need a different font, import all the fonts installed on your computer into R's database.
+  # This can take a few minutes.
+  # font_import() 
+  
+  # Build the final plot with the combined data
+  p = ggplot(full_plot_data, aes(x = estimate, y = term, color = color_group)) +
+    # geoms
+    geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), 
+                   height = errbr_height, 
+                   linewidth = errbr_linewidth, 
+                   na.rm = TRUE) +
+    geom_point(size = dot_size, na.rm = TRUE) +
+    geom_text(
+      aes(label = estimate_label), 
+      vjust = dotlbl_vjust, 
+      hjust = dotlbl_hjust,
+      show.legend = FALSE, 
+      na.rm = TRUE
+    ) +
+    # scales, facets, labels, etc.
+    scale_color_manual(
+      values = plot_colors
+    ) +
+    scale_y_discrete(labels = y_axis_labels) +
+    facet_grid(group_name ~ ., scales = "free_y", space = "free_y", switch = "y") +
+    coord_cartesian(clip = "off") +
+    guides(color = guide_legend(ncol = 1)) +
+    labs(x = x_lab, y = NULL) +
+    # theme
+    theme_minimal(base_size = base_size) + # Set base font for plot
+    theme(
+      legend.position = "bottom",
+      legend.justification = "left",
+      legend.title = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.grid.major.y = element_line(color = grid_color),
+      strip.placement = "outside",
+      strip.background = element_blank(),
+      strip.text.y.left = element_text(face = "bold", hjust = strip_hjust, angle = strip_angle)
+    )
+  
+  return(p)
+  
+}
 
+## correlation comparison plot function
+my.corr.comp = function(x, y, x_label, y_label){
+  
+  plot(x, y, xlab = x_label, ylab = y_label, axes = F, pch = 19)
+  axis(2, las = 2)
+  axis(1, las = 1)
+  box()
+  
+  ## Fit linear regression line to plot
+  fit = lm(y ~ x)
+  abline(fit, col = "red", lwd = 2.5)
+  
+  
+  ## Get p-values from regression
+  fit.pvalue = summary(fit)$coefficients[2, 4]
+  if(fit.pvalue < 0.001){
+    fit.pvalue = "< 0.001"
+  } else{
+    fit.pvalue = round(fit.pvalue, digits = 3)
+  }
+  
+  ## Check pearson correlation coefficient and p-values
+  pears.cor = corr.test(x, y, method = "pearson")
+  if(pears.cor$p < 0.001){
+    pears.pvalue = "< 0.001"
+  } else{
+    pears.pvalue = round(pears.cor$p, digits = 3)
+  }
+  
+  ## Check spearman correlation coefficient and p-values
+  spear.cor = corr.test(x, y, method = "spearman")
+  if(spear.cor$p < 0.001){
+    spear.pvalue = "< 0.001"
+  } else{
+    spear.pvalue = round(spear.cor$p, digits = 3)
+  }
+  
+  ## Add legend with p-values and coefficients
+  
+  legend("bottomright", 
+         legend = c(paste0("Pearson's r = ", round(pears.cor$r, digits = 3),
+                           ", p-value = ", pears.pvalue),
+                    paste0("Spearman's rs = ", round(spear.cor$r, digits = 3),
+                           ", p-value = ", spear.pvalue),
+                    paste0("R-squared = ", round(summary(fit)$r.squared, digits = 3), 
+                           ", p-value = ", fit.pvalue)),
+         bty = "n") 
+}
