@@ -98,7 +98,7 @@ source(paste0(global.dir, "fig2.R"))
 ##        "matrices/M_matrix" and "matrices/F_matrix" folders
 ##    Saves plots in the following folders:
 ##        fig3-correlations.pdf in "main" folder (X = Setting)
-source(paste0(global.dir, "fig3-corr.R")) 
+source(paste0(global.dir, "fig3.R")) 
 
 ### Change output directory for supplementary material 
 output.dir = sm.dir
@@ -208,7 +208,6 @@ source(paste0(global.dir, "raw-analysis.R"))
 ##        X-race-matrix.csv, X-race-matrix-cond.csv in "supmat/csv/race" folder
 ##        3_race_X.pdf, 15_cond-reth-X.pdf in "supmat" folder (X = Setting)
 ##        16_Summary-Ethn-Matrix.pdf in "supmat"
-source(paste0(global.dir, "fig3.R")) # [Required to run race_assort.R]
 source(paste0(global.dir, "race.R")) # [Required to run race_assort.R]
 source(paste0(global.dir, "race_assort.R"))
 
