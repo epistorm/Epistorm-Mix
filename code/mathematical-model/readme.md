@@ -51,19 +51,18 @@ For this, make sure you have a terminal open in the `code/compartmental_epimodel
 subdirectory, then run:
 
 ```shell
-python run_model.py inputs/input_example.yaml outputs/tests/example/01
+python run_model.py inputs/dev_in.yaml outputs/tests/example
 ```
 
-The first argument, `inputs/input_example.yaml`, is the path to the input
+The first argument, `inputs/dev_in.yaml`, is the path to the input
 file, which contains program parameters and other required file paths. The 
-second argument, `outputs/tests/example/01`, is an example of an output
+second argument, `outputs/tests/example`, is an example of an output
 directory where the model files are exported to. You can use any path you 
 want as the second argument; the directory and its parents will be created 
 automatically if they do not exist.
 
 
-For running multiple sets of simulation at a time, open `batch_run.py`, select the set of simulations you want to use, 
-then run it without arguments:
+For running all simulations used in the paper, run `batch_run.py` without arguments:
 
 ```shell
 python batch_run.py
