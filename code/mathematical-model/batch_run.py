@@ -10,27 +10,27 @@ import sys
 import subprocess
 from pathlib import Path
 
-# -()- Same beta, USA
-input_files = [
-    'inputs/usa_matrices_same_beta/beta_02/mistry_18_in.yaml',
-    'inputs/usa_matrices_same_beta/beta_02/epistorm_ageby5_80_in.yaml',
-    'inputs/usa_matrices_same_beta/beta_02/prem-2017-pcb_in.yaml',
-]
-general_out_dir = Path("outputs/same_beta_outs/beta_02")
-
-# # -()- Same reproduction number, USA, r0 = 1.3 or 1.5
-# r_str = "1p5"
+# # -()- Same beta, USA
 # input_files = [
-#     # f'inputs/usa_matrices_same_repnum/r0_{r_str}/mistry_18_in.yaml',
-#     f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_ageby5_80_in.yaml',
-#     # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g1-matrix_in.yaml',
-#     # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g2-matrix_in.yaml',
-#     # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g3-matrix_in.yaml',
-#     # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g4-matrix_in.yaml',
-#     # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g5-matrix_in.yaml',
-#     f'inputs/usa_matrices_same_repnum/r0_{r_str}/prem-2017-pcb_in.yaml',
+#     'inputs/usa_matrices_same_beta/beta_02/mistry_18_in.yaml',
+#     'inputs/usa_matrices_same_beta/beta_02/epistorm_ageby5_80_in.yaml',
+#     'inputs/usa_matrices_same_beta/beta_02/prem-2017-pcb_in.yaml',
 # ]
-# general_out_dir = Path(f"outputs/same_repnum/r0_{r_str}_out/")
+# general_out_dir = Path("outputs/same_beta_outs/beta_02")
+
+# -()- Same reproduction number, USA, r0 = 1.3 or 1.5
+r_str = "1p5"
+input_files = [
+    f'inputs/usa_matrices_same_repnum/r0_{r_str}/mistry_18_in.yaml',
+    f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_ageby5_80_in.yaml',
+    # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g1-matrix_in.yaml',
+    # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g2-matrix_in.yaml',
+    # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g3-matrix_in.yaml',
+    # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g4-matrix_in.yaml',
+    # f'inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_g5-matrix_in.yaml',
+    f'inputs/usa_matrices_same_repnum/r0_{r_str}/prem-2017-pcb_in.yaml',
+]
+general_out_dir = Path(f"outputs/same_repnum/r0_{r_str}_out/")
 
 # # -()- Countries
 # r_str = "1p5"
