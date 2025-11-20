@@ -1,0 +1,1 @@
+This folder contains all the necessary data for mathematical modeling using the [provided code](.../code/mathematical-model). This folder is self-sufficient; therefore, some overlap with the external data folder and analysis data folder may occur.
