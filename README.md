@@ -11,7 +11,7 @@ Individual-level data is provided in the data folder in the form of two datasets
 
 The sample is nationally representative by age, sex, race/ethnicity, household income, census region, and language for the Hispanic population. For each respondent, sample weights are provided in respondent-level data.
 
-For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the [manuscripts](), iv) "gam specifications" folder containing the files for the GAM statistical analysis of individual-level data.
+For reproducibility and sensitivity analyses, the data folder also contains: i) "raw data" (respondent-level and contact-level data) with clean data before imputations, ii) "external data" from other studies and sources that were used for comparisons, variable creation, and missing data imputations, iii) "math-model data" with all necessary data to reproduce mathematical modeling performed for the [manuscripts](https://www.medrxiv.org/content/10.1101/2025.11.20.25340662v1), iv) "gam specifications" folder containing the files for the GAM statistical analysis of individual-level data.
 
 The analyses in this repository are conducted using the imputed data. 
 
@@ -32,22 +32,23 @@ We provide a series of tutorials to help you get started with Epistorm-Mix.
 - [Tutorial 4](/tutorials/mathematical-modeling/4_Compartmental_modeling_with_contact_matrices.md): Compartmental modeling with contact matrices 
 
 ## Publications
-The preprint describing the data collection and estimation of the contact matrices is available [here](). 
+The preprint describing the data collection and estimation of the contact matrices:
+- Litvinova M., Sinclair S., Kummer A.G., Ventura P.C., Foster T., Shioda K., Halloran M.E., Vespignani A., and Ajelli M. ***Epistorm-Mix: Mapping Social Contact Patterns for Respiratory Pathogen Spread in the Post-Pandemic United States.*** medRxiv 2025.11.20.25340662; doi: https://doi.org/10.1101/2025.11.20.25340662 (available [here](https://www.medrxiv.org/content/10.1101/2025.11.20.25340662v1)). 
 
 ## Citation
 To reference the data and code presented in this GitHub repository, please use the following citation: 
 
 ```bibtex 
-@article{XXX,
-        author = {Litvinova, Maria and Sinclair, Shelly, and Kummer, Allisandra G., and Ventura, Pauo C. and Foster, Trevor and Shioda, Kayoko and Halloran, M. Elizabeth and Vespignani, Alessandro and Ajelli, Marco},    
-        title = {Epistorm-Mix: Mapping Social Contact Patterns for Respiratory Pathogen Spread in the Post-Pandemic United States},<br/>
-        elocation-id = {},
-        year = {2025},
-        doi = {},
-        publisher = {},
-        URL = {},
-        eprint = {},
-        journal = {}
+@article {Litvinova2025.11.20.25340662,
+	author = {Litvinova, Maria and Sinclair, Shelly and Kummer, Allisandra G and Ventura, Paulo C and Foster, Trevor and Shioda, Kayoko and Halloran, M Elizabeth and Vespignani, Alessandro and Ajelli, Marco},
+	title = {Epistorm-Mix: Mapping Social Contact Patterns for Respiratory Pathogen Spread in the Post-Pandemic United States},
+	elocation-id = {2025.11.20.25340662},
+	year = {2025},
+	doi = {10.1101/2025.11.20.25340662},
+	publisher = {Cold Spring Harbor Laboratory Press},
+	URL = {https://www.medrxiv.org/content/early/2025/11/21/2025.11.20.25340662},
+	eprint = {https://www.medrxiv.org/content/early/2025/11/21/2025.11.20.25340662.full.pdf},
+	journal = {medRxiv}
 }
 ```
 
@@ -57,6 +58,6 @@ This project is licensed under the CC BY-NC-SA 4.0 license. See the [LICENSE](./
 
 
 ## Contact
-For questions or issues, please open an issue on GitHub or [contact the maintainer]().
+For questions or issues, please open an issue on GitHub or [contact the maintainer](mailto:malitv@iu.edu).
 
 
