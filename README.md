@@ -52,6 +52,8 @@ To reference the data and code presented in this GitHub repository, please use t
 }
 ```
 
+## Funding 
+Authors acknowledge support from the CDC-RFA-FT-23-0069 cooperative agreement from the CDC's Center for Forecasting and Outbreak Analytics. The findings and conclusions in this study are those of the authors and do not necessarily represent the official position of the funding agencies. Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript. 
 
 ## License
 This project is licensed under the CC BY-NC-SA 4.0 license. See the [LICENSE](./LICENSE) file for more details.
