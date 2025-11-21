@@ -1,4 +1,4 @@
-**Epistorm-Mix dataset**
+## Epistorm-Mix dataset
 
 Epistorm-Mix is the first dataset containing contact patterns for all ages of the US population collected during the post-pandemic era from a statistically representative sample.
 
