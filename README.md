@@ -33,7 +33,7 @@ We provide a series of tutorials to help you get started with Epistorm-Mix.
 
 ## Publications
 The preprint describing the data collection and estimation of the contact matrices:
-- Litvinova M., Sinclair S., Kummer A.G., Ventura P.C., Foster T., Shioda K., Halloran M.E., Vespignani A., and Ajelli M. ***Epistorm-Mix: Mapping Social Contact Patterns for Respiratory Pathogen Spread in the Post-Pandemic United States.*** medRxiv 2025.11.20.25340662; doi: https://doi.org/10.1101/2025.11.20.25340662 (available [here](https://www.medrxiv.org/content/10.1101/2025.11.20.25340662v1)). 
+- Litvinova M., Sinclair S., Kummer A.G., Ventura P.C., Foster T., Shioda K., Halloran M.E., Vespignani A., and Ajelli M. ***Epistorm-Mix: Mapping Social Contact Patterns for Respiratory Pathogen Spread in the Post-Pandemic United States.*** medRxiv 2025.11.20.25340662; doi: 10.1101/2025.11.20.25340662 (available [here](https://www.medrxiv.org/content/10.1101/2025.11.20.25340662v1)). 
 
 ## Citation
 To reference the data and code presented in this GitHub repository, please use the following citation: 
