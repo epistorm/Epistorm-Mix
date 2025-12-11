@@ -25,7 +25,7 @@ Frequency-based (F) matrices reflect the per-capita probability of non-zero cont
 To obtain F-matrices, we first calculate the relative abundance of contacts between individuals of age *i* and individuals of age *j* reported by each respondent *r* in setting *k*:
 
 $$
-\Gamma_{ij}^{r(k)} = \frac{C_{ij}^{r(k)}}{\sum_{r=1}^{N_{ik}}C_{ij}^{r(k)}},
+\Gamma_{ij}^{r(k)} = \frac{C_{ij}^{r(k)}}{\sum_{j}C_{ij}^{r(k)}},
 $$
 
 where
@@ -33,15 +33,15 @@ where
 -   *j* is the group of the contact
 -   *r(k)* is the respondent who reported having the contact in the social setting *k*
 -   $C_{ij}^{r(k)}$ is the number of contacts in each age group *j* a respondent *r* of age group *i* reported to have in social setting *k*
--   $N_{ik}$ is the number of respondents in age group *i* who reported non-zero contacts in social setting *k*
 
 Second, we calculate the per-capita probability of contact:
 
 $$
-F_{ij}^k = \frac{\sum_{r}\Gamma_{ij}^{r(k)}}{N_i},
+F_{ij}^k = \frac{\sum_{r=1}^{N_{ik}}\Gamma_{ij}^{r(k)}}{N_i},
 $$
 
 where
+- $N_{ik}$ is the number of respondents in age group *i* who reported non-zero contacts in social setting *k*
 - $N_i$ is the total number of respondents of age group *i*
 
 The folder [F_matrix](./F_matrix) contains F-matrices for age groups in 5-year brackets. F-matrices for other age groups can be generated using the code "freq-m.R" in [code pipeline](../code/analysis/_pipeline_analysis.R).
