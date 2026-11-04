@@ -13,6 +13,13 @@ r_str = "1p5"
 
 input_files = list()
 
+# -()- By race and ethnicity
+input_files += [
+    f"inputs/usa_matrices_same_repnum/r0_{r_str}/epistorm_race-ethnicity_in.yaml",
+    f"inputs/countries/r0_{r_str}_in/UK_race-ethnicity_in.yaml"
+]
+
+
 # -()- USA, different surveys
 input_files += [
     f'inputs/usa_matrices_same_repnum/r0_{r_str}/mistry_18_in.yaml',
@@ -29,6 +36,11 @@ input_files += [
     f'inputs/countries/r0_{r_str}_in/Netherlands_in.yaml',
     f'inputs/countries/r0_{r_str}_in/China-Jiangsu_in.yaml',
     f'inputs/countries/r0_{r_str}_in/Belgium_in.yaml'
+]
+
+# -()- UK Alternative matrix
+input_files += [
+    f"inputs/countries/r0_{r_str}_in/UK_goodfellow_in.yaml",  # Goodfellow et al 2025
 ]
 
 general_out_dir = Path(f"outputs/r0_{r_str}_out")
